@@ -18,7 +18,9 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@react-native-async-storage/async-storage": "^3.1.1",
     "expo": "~57.0.18",
+    "expo-linking": "^57.0.8",
     "expo-router": "~57.0.17",
     "expo-splash-screen": "~57.0.8",
     "expo-sqlite": "~57.0.2",

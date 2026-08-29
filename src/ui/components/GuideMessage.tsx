@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, useColorScheme } from 'react-native';
+import { View, Text, StyleSheet, useColorScheme, TouchableOpacity } from 'react-native';
 import { GuideTurn } from '@/domain/models';
 import { BibleRepository } from '@/domain/repositories';
 import { getTheme, spacing, typography } from '@/ui/theme';
@@ -8,9 +8,10 @@ import { CitationCard } from './CitationCard';
 interface GuideMessageProps {
   turn: GuideTurn;
   bibleRepository?: BibleRepository;
+  onSuggestionPress?: (suggestionText: string) => void;
 }
 
-export function GuideMessage({ turn, bibleRepository }: GuideMessageProps) {
+export function GuideMessage({ turn, bibleRepository, onSuggestionPress }: GuideMessageProps) {
   const scheme = useColorScheme();
   const theme = getTheme(scheme);
 
@@ -18,6 +19,12 @@ export function GuideMessage({ turn, bibleRepository }: GuideMessageProps) {
 
   return (
     <View style={styles.container}>
+      {!isUser && (
+        <Text style={[styles.roleLabel, { color: theme.textTertiary }]} accessibilityRole="text">
+          Plumb Line
+        </Text>
+      )}
+
       <View
         style={[
           styles.message,
@@ -35,13 +42,18 @@ export function GuideMessage({ turn, bibleRepository }: GuideMessageProps) {
             },
           ]}
           accessibilityRole="text"
+          accessibilityLabel={isUser ? 'Your message' : 'Plumb Line response'}
         >
           {turn.content}
         </Text>
       </View>
 
       {!isUser && turn.citations && turn.citations.length > 0 && bibleRepository && (
-        <View style={styles.citations}>
+        <View
+          style={styles.citations}
+          accessibilityRole="list"
+          accessibilityLabel="Scripture citations"
+        >
           {turn.citations.map((citation, index) => (
             <CitationCard
               key={`${citation.book}-${citation.chapter}-${citation.verse}-${index}`}
@@ -55,15 +67,18 @@ export function GuideMessage({ turn, bibleRepository }: GuideMessageProps) {
       {!isUser && turn.suggestions && turn.suggestions.length > 0 && (
         <View style={styles.suggestions}>
           {turn.suggestions.map((suggestion, index) => (
-            <View
+            <TouchableOpacity
               key={index}
-              style={[styles.suggestion, { borderColor: theme.border }]}
+              style={styles.suggestionLink}
+              onPress={() => onSuggestionPress?.(suggestion.text)}
               accessibilityRole="button"
+              accessibilityLabel={suggestion.text}
+              accessibilityHint="Optional: continue reflecting on this passage"
             >
-              <Text style={[styles.suggestionText, { color: theme.textSecondary }]}>
+              <Text style={[styles.suggestionLinkText, { color: theme.textTertiary }]}>
                 {suggestion.text}
               </Text>
-            </View>
+            </TouchableOpacity>
           ))}
         </View>
       )}
@@ -73,7 +88,16 @@ export function GuideMessage({ turn, bibleRepository }: GuideMessageProps) {
 
 const styles = StyleSheet.create({
   container: {
-    marginBottom: spacing.md,
+    marginBottom: spacing.lg,
+  },
+  roleLabel: {
+    ...typography.bodySmall,
+    fontSize: 11,
+    fontWeight: '600',
+    textTransform: 'uppercase',
+    letterSpacing: 0.5,
+    marginBottom: spacing.xs,
+    marginLeft: spacing.xs,
   },
   message: {
     padding: spacing.md,
@@ -88,22 +112,22 @@ const styles = StyleSheet.create({
   },
   text: {
     ...typography.body,
+    lineHeight: 24,
   },
   citations: {
-    marginTop: spacing.sm,
-    paddingLeft: spacing.md,
+    marginTop: spacing.md,
   },
   suggestions: {
-    marginTop: spacing.sm,
-    paddingLeft: spacing.md,
+    marginTop: spacing.lg,
+    alignItems: 'flex-start',
   },
-  suggestion: {
-    padding: spacing.sm,
-    borderRadius: 8,
-    borderWidth: 1,
-    marginBottom: spacing.xs,
+  suggestionLink: {
+    paddingVertical: spacing.sm,
+    minHeight: 44,
+    justifyContent: 'center',
   },
-  suggestionText: {
+  suggestionLinkText: {
     ...typography.bodySmall,
+    fontSize: 14,
   },
 });

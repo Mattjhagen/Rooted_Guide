@@ -9,95 +9,108 @@ describe('MockGuideGateway', () => {
     gateway = new MockGuideGateway();
   });
 
-  it('returns anxiety response for anxiety keywords', async () => {
-    const request: GuideRequest = {
-      userInput: "I'm feeling anxious about tomorrow",
-    };
+  describe('conversational progression', () => {
+    it('first exchange: asks brief follow-up question without citations', async () => {
+      const request: GuideRequest = {
+        userInput: "I'm feeling anxious",
+        context: { previousTurns: [] },
+      };
 
-    const response = await gateway.sendMessage(request);
+      const response = await gateway.sendMessage(request);
 
-    expect(response.text).toContain('anxious');
-    expect(response.citations).toHaveLength(2);
-    expect(response.citations[0].book).toBe(BibleBook.Psalms);
-    expect(response.citations[0].chapter).toBe(23);
-    expect(response.suggestions.length).toBeGreaterThan(0);
+      expect(response.text).toBeTruthy();
+      expect(response.text.length).toBeLessThan(150);
+      expect(response.citations).toHaveLength(0);
+      expect(response.suggestions).toHaveLength(0);
+    });
+
+    it('second exchange: transitions to Scripture path', async () => {
+      const request: GuideRequest = {
+        userInput: "I'm worried about work",
+        context: {
+          previousTurns: [
+            {
+              id: '1',
+              role: 'user',
+              content: "I'm anxious",
+              timestamp: new Date(),
+            },
+            {
+              id: '2',
+              role: 'guide',
+              content: 'What is sitting with you?',
+              timestamp: new Date(),
+            },
+          ],
+        },
+      };
+
+      const response = await gateway.sendMessage(request);
+
+      expect(response.text).toContain('passage');
+      expect(response.citations).toHaveLength(0);
+      expect(response.suggestions).toHaveLength(0);
+    });
+
+    it('third exchange: presents Verse of the Day with citations', async () => {
+      const request: GuideRequest = {
+        userInput: 'Yes',
+        context: {
+          previousTurns: [
+            { id: '1', role: 'user', content: "I'm anxious", timestamp: new Date() },
+            { id: '2', role: 'guide', content: 'What is sitting?', timestamp: new Date() },
+            { id: '3', role: 'user', content: 'Work stress', timestamp: new Date() },
+            { id: '4', role: 'guide', content: 'Ready for passage?', timestamp: new Date() },
+          ],
+        },
+      };
+
+      const response = await gateway.sendMessage(request);
+
+      expect(response.text).toBeTruthy();
+      expect(response.citations.length).toBeGreaterThan(0);
+      expect(response.citations[0].book).toBe(BibleBook.Psalms);
+    });
+
+    it('includes optional continue suggestion in Scripture path', async () => {
+      const request: GuideRequest = {
+        userInput: 'Ready',
+        context: {
+          previousTurns: [
+            { id: '1', role: 'user', content: 'Start', timestamp: new Date() },
+            { id: '2', role: 'guide', content: 'How are you?', timestamp: new Date() },
+            { id: '3', role: 'user', content: 'Tired', timestamp: new Date() },
+            { id: '4', role: 'guide', content: 'Passage?', timestamp: new Date() },
+          ],
+        },
+      };
+
+      const response = await gateway.sendMessage(request);
+
+      expect(response.suggestions).toHaveLength(1);
+      expect(response.suggestions[0].text).toContain('Continue');
+    });
   });
 
-  it('returns love response for love keywords', async () => {
-    const request: GuideRequest = {
-      userInput: "Tell me about God's love",
-    };
+  describe('keyword recognition', () => {
+    it('responds to anxiety keywords in first exchange', async () => {
+      const request: GuideRequest = {
+        userInput: "I'm feeling anxious",
+      };
 
-    const response = await gateway.sendMessage(request);
+      const response = await gateway.sendMessage(request);
 
-    expect(response.text).toContain('love');
-    expect(response.citations).toContainEqual(
-      expect.objectContaining({
-        book: BibleBook.John,
-        chapter: 3,
-        verse: 16,
-      })
-    );
-  });
+      expect(response.text.toLowerCase()).toContain('hear');
+    });
 
-  it('returns beginning response for creation keywords', async () => {
-    const request: GuideRequest = {
-      userInput: 'Tell me about the beginning',
-    };
+    it('responds to gratitude keywords in first exchange', async () => {
+      const request: GuideRequest = {
+        userInput: "I'm grateful today",
+      };
 
-    const response = await gateway.sendMessage(request);
+      const response = await gateway.sendMessage(request);
 
-    expect(response.citations).toContainEqual(
-      expect.objectContaining({
-        book: BibleBook.Genesis,
-        chapter: 1,
-        verse: 1,
-      })
-    );
-  });
-
-  it('returns guidance response for seeking keywords', async () => {
-    const request: GuideRequest = {
-      userInput: 'I need guidance in my life',
-    };
-
-    const response = await gateway.sendMessage(request);
-
-    expect(response.citations).toContainEqual(
-      expect.objectContaining({
-        book: BibleBook.Matthew,
-        chapter: 6,
-        verse: 33,
-      })
-    );
-  });
-
-  it('returns default response for unrecognized input', async () => {
-    const request: GuideRequest = {
-      userInput: 'random text',
-    };
-
-    const response = await gateway.sendMessage(request);
-
-    expect(response.text).toBeTruthy();
-    expect(response.citations.length).toBeGreaterThan(0);
-    expect(response.suggestions.length).toBeGreaterThan(0);
-  });
-
-  it('includes structured suggestions in responses', async () => {
-    const request: GuideRequest = {
-      userInput: "I'm anxious",
-    };
-
-    const response = await gateway.sendMessage(request);
-
-    expect(response.suggestions).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({
-          type: expect.stringMatching(/^(reflection|question|related_verse)$/),
-          text: expect.any(String),
-        }),
-      ])
-    );
+      expect(response.text.toLowerCase()).toMatch(/gift|noticing|good/);
+    });
   });
 });

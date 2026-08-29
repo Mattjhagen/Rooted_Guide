@@ -1,54 +1,92 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useReducer, useRef } from 'react';
 import { GuideTurn, GuideRequest } from '@/domain/models';
 import { GuideGateway } from '@/domain/services';
+import { guideReducer, GuideState, canSubmit, canCancel } from './guideStateMachine';
+
+// Maximum number of turns to keep in context (prevents unbounded growth)
+const MAX_CONTEXT_TURNS = 50;
 
 interface UseGuideReturn {
   turns: GuideTurn[];
-  isLoading: boolean;
-  error: string | null;
+  state: GuideState;
   sendMessage: (userInput: string) => Promise<void>;
+  cancelMessage: () => void;
   clear: () => void;
+  retry: () => Promise<void>;
 }
 
 /**
- * Hook for managing guide conversation state
+ * Hook for managing guide conversation state with robust state machine
+ *
+ * Features:
+ * - Prevents duplicate submissions
+ * - Supports cancellation of in-flight requests
+ * - Prevents stale responses from overwriting current state
+ * - Bounds conversation context to prevent unbounded growth
+ * - Handles offline and recoverable error states
  */
 export function useGuide(gateway: GuideGateway): UseGuideReturn {
   const [turns, setTurns] = useState<GuideTurn[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [state, dispatch] = useReducer(guideReducer, { type: 'idle' });
+  const lastRequestRef = useRef<string | null>(null);
+  const lastInputRef = useRef<string | null>(null);
 
   const sendMessage = useCallback(
     async (userInput: string) => {
-      if (!userInput.trim()) return;
+      if (!userInput.trim() || !canSubmit(state)) return;
 
-      setIsLoading(true);
-      setError(null);
+      const requestId = `${Date.now()}-${Math.random()}`;
+      lastRequestRef.current = requestId;
+      lastInputRef.current = userInput;
+
+      dispatch({ type: 'SUBMIT', requestId, userInput });
 
       // Add user turn immediately
       const userTurn: GuideTurn = {
-        id: Date.now().toString(),
+        id: `user-${Date.now()}`,
         role: 'user',
         content: userInput,
         timestamp: new Date(),
       };
 
-      setTurns((prev) => [...prev, userTurn]);
+      setTurns((prev) => {
+        const updated = [...prev, userTurn];
+        // Bound context to prevent unbounded growth
+        return updated.length > MAX_CONTEXT_TURNS
+          ? updated.slice(updated.length - MAX_CONTEXT_TURNS)
+          : updated;
+      });
 
       try {
+        // Transition to responding state
+        dispatch({ type: 'RESPOND', requestId });
+
+        // Check if request was cancelled before we got here
+        if (lastRequestRef.current !== requestId) {
+          return;
+        }
+
+        // Get bounded context for request
+        const contextTurns = turns.slice(-MAX_CONTEXT_TURNS);
+
         // Send request to gateway
         const request: GuideRequest = {
           userInput,
           context: {
-            previousTurns: turns,
+            previousTurns: contextTurns,
           },
         };
 
         const response = await gateway.sendMessage(request);
 
+        // Check again if request was cancelled or superseded
+        if (lastRequestRef.current !== requestId) {
+          return;
+        }
+
         // Add guide turn
         const guideTurn: GuideTurn = {
-          id: (Date.now() + 1).toString(),
+          id: `guide-${Date.now()}`,
           role: 'guide',
           content: response.text,
           citations: response.citations,
@@ -56,26 +94,61 @@ export function useGuide(gateway: GuideGateway): UseGuideReturn {
           timestamp: new Date(),
         };
 
-        setTurns((prev) => [...prev, guideTurn]);
+        setTurns((prev) => {
+          const updated = [...prev, guideTurn];
+          return updated.length > MAX_CONTEXT_TURNS
+            ? updated.slice(updated.length - MAX_CONTEXT_TURNS)
+            : updated;
+        });
+
+        dispatch({ type: 'COMPLETE' });
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'Failed to send message');
-      } finally {
-        setIsLoading(false);
+        // Check if request was cancelled
+        if (lastRequestRef.current !== requestId) {
+          return;
+        }
+
+        const message = err instanceof Error ? err.message : 'Failed to send message';
+        const isOffline =
+          message.toLowerCase().includes('network') || message.toLowerCase().includes('offline');
+
+        if (isOffline) {
+          dispatch({ type: 'OFFLINE' });
+        } else {
+          dispatch({ type: 'ERROR', message, recoverable: true });
+        }
       }
     },
-    [gateway, turns]
+    [gateway, state, turns]
   );
+
+  const cancelMessage = useCallback(() => {
+    if (canCancel(state) && lastRequestRef.current) {
+      dispatch({ type: 'CANCEL', requestId: lastRequestRef.current });
+      lastRequestRef.current = null;
+    }
+  }, [state]);
+
+  const retry = useCallback(async () => {
+    if (state.type === 'error' && state.recoverable && lastInputRef.current) {
+      dispatch({ type: 'RESET' });
+      await sendMessage(lastInputRef.current);
+    }
+  }, [state, sendMessage]);
 
   const clear = useCallback(() => {
     setTurns([]);
-    setError(null);
+    dispatch({ type: 'RESET' });
+    lastRequestRef.current = null;
+    lastInputRef.current = null;
   }, []);
 
   return {
     turns,
-    isLoading,
-    error,
+    state,
     sendMessage,
+    cancelMessage,
     clear,
+    retry,
   };
 }

@@ -4,42 +4,85 @@ import { BibleBook } from '@/domain/models';
 
 /**
  * Deterministic mock implementation of GuideGateway
- * Returns structured responses based on simple keyword matching
+ * Creates brief conversational exchanges that naturally lead into Scripture
  * Does NOT call any external AI service
  */
 export class MockGuideGateway implements GuideGateway {
   async sendMessage(request: GuideRequest): Promise<GuideResponse> {
     const input = request.userInput.toLowerCase();
+    const turnCount = request.context?.previousTurns?.length || 0;
 
-    // Determine response based on keywords
-    if (input.includes('anxious') || input.includes('worry') || input.includes('afraid')) {
-      return this.createAnxietyResponse();
+    // First exchange: brief acknowledgment + natural question
+    if (turnCount === 0 || turnCount === 1) {
+      return this.createFirstExchange(input);
     }
 
-    if (input.includes('love') || input.includes('loved')) {
-      return this.createLoveResponse();
+    // Second exchange: deeper response + transition to Scripture path
+    if (turnCount === 2 || turnCount === 3) {
+      return this.createSecondExchange(input);
     }
 
-    if (
-      input.includes('begin') ||
-      input.includes('start') ||
-      input.includes('creation') ||
-      input.includes('beginning')
-    ) {
-      return this.createBeginningResponse();
-    }
-
-    if (input.includes('guidance') || input.includes('seeking') || input.includes('direction')) {
-      return this.createGuidanceResponse();
-    }
-
-    // Default response
-    return this.createDefaultResponse();
+    // Third+ exchange: Present Verse of the Day path
+    return this.createScripturePath(input);
   }
 
-  private createAnxietyResponse(): GuideResponse {
+  private createFirstExchange(input: string): GuideResponse {
+    // Brief, warm acknowledgment + natural question
+    if (input.includes('anxious') || input.includes('worry') || input.includes('tired')) {
+      return {
+        text: "I hear that. These early hours can feel heavy. What's sitting with you this morning?",
+        citations: [],
+        suggestions: [],
+      };
+    }
+
+    if (input.includes('grateful') || input.includes('thankful') || input.includes('good')) {
+      return {
+        text: "That's a gift. What are you noticing that feels good right now?",
+        citations: [],
+        suggestions: [],
+      };
+    }
+
+    // Default first exchange
     return {
-      text: "I hear that you're feeling anxious. Scripture reminds us that God cares for us deeply and invites us to bring our worries to Him. In Psalm 23, David describes God as a shepherd who provides rest and guidance even in difficult times.",
+      text: 'Thank you for sharing that. How does this morning feel for you?',
+      citations: [],
+      suggestions: [],
+    };
+  }
+
+  private createSecondExchange(input: string): GuideResponse {
+    // Deeper acknowledgment + gentle transition to Scripture
+    if (input.includes('work') || input.includes('pressure') || input.includes('stress')) {
+      return {
+        text: "That weight is real. Let's spend a few minutes with something that might speak to where you are. Would you like to receive today's passage?",
+        citations: [],
+        suggestions: [],
+      };
+    }
+
+    if (input.includes('peace') || input.includes('rest') || input.includes('calm')) {
+      return {
+        text: "There's a verse today about rest that might meet you right there. Shall we look at it together?",
+        citations: [],
+        suggestions: [],
+      };
+    }
+
+    // Default second exchange
+    return {
+      text: "I'd like to walk with you through today's passage. It's just 15 minutes—a space to arrive, receive, and reflect. Ready?",
+      citations: [],
+      suggestions: [],
+    };
+  }
+
+  private createScripturePath(_input: string): GuideResponse {
+    // Present Verse of the Day with 15-minute structured path
+    // Arrive → Receive → Reflect → Respond → Close
+    return {
+      text: 'Here\'s today\'s verse. Take a moment to receive it:\n\n"Yahweh is my shepherd: I shall lack nothing."\n\nThis is from Psalm 23—a song about trust in the midst of uncertainty. David wrote this from experience: as a shepherd himself, he knew what it meant to guide and protect.\n\nLet the words settle. What does "I shall lack nothing" stir in you right now?',
       citations: [
         {
           book: BibleBook.Psalms,
@@ -51,145 +94,16 @@ export class MockGuideGateway implements GuideGateway {
           chapter: 23,
           verse: 2,
         },
-      ],
-      suggestions: [
         {
-          type: 'reflection',
-          text: 'What would it look like to let God lead you beside still waters today?',
-        },
-        {
-          type: 'related_verse',
-          text: 'Explore what Jesus teaches about seeking God first',
-          reference: {
-            book: BibleBook.Matthew,
-            chapter: 6,
-            verse: 33,
-          },
-        },
-        {
-          type: 'question',
-          text: 'What specific worry would you like to bring to God right now?',
-        },
-      ],
-    };
-  }
-
-  private createLoveResponse(): GuideResponse {
-    return {
-      text: "God's love is at the very heart of the Gospel. John 3:16 is perhaps the most well-known verse in Scripture, and it beautifully captures the depth of God's love for humanity—a love so profound that He gave His Son.",
-      citations: [
-        {
-          book: BibleBook.John,
-          chapter: 3,
-          verse: 16,
-        },
-        {
-          book: BibleBook.John,
-          chapter: 3,
-          verse: 17,
-        },
-      ],
-      suggestions: [
-        {
-          type: 'reflection',
-          text: "How does knowing God's love changes how you see yourself?",
-        },
-        {
-          type: 'question',
-          text: 'Is there someone in your life who needs to hear about this love?',
-        },
-      ],
-    };
-  }
-
-  private createBeginningResponse(): GuideResponse {
-    return {
-      text: 'The very first words of the Bible establish the foundation for everything that follows: God is the Creator. Genesis 1 shows us that God spoke creation into existence—He brought order out of chaos, light out of darkness.',
-      citations: [
-        {
-          book: BibleBook.Genesis,
-          chapter: 1,
-          verse: 1,
-        },
-        {
-          book: BibleBook.Genesis,
-          chapter: 1,
+          book: BibleBook.Psalms,
+          chapter: 23,
           verse: 3,
         },
       ],
       suggestions: [
         {
           type: 'reflection',
-          text: 'If God brought light out of darkness in creation, what darkness in your life might He illuminate?',
-        },
-        {
-          type: 'related_verse',
-          text: "Consider God's love demonstrated in the Gospel",
-          reference: {
-            book: BibleBook.John,
-            chapter: 3,
-            verse: 16,
-          },
-        },
-      ],
-    };
-  }
-
-  private createGuidanceResponse(): GuideResponse {
-    return {
-      text: "Jesus teaches us to prioritize seeking God's kingdom above all else. When we put God first, He promises to provide for our needs. This isn't about ignoring practical concerns, but about orienting our hearts toward what matters most.",
-      citations: [
-        {
-          book: BibleBook.Matthew,
-          chapter: 6,
-          verse: 33,
-        },
-      ],
-      suggestions: [
-        {
-          type: 'reflection',
-          text: 'What does it look like to seek God first in your current situation?',
-        },
-        {
-          type: 'related_verse',
-          text: 'Read about God as shepherd and guide',
-          reference: {
-            book: BibleBook.Psalms,
-            chapter: 23,
-            verse: 1,
-          },
-        },
-      ],
-    };
-  }
-
-  private createDefaultResponse(): GuideResponse {
-    return {
-      text: "I'm here to help you explore Scripture and reflect on God's Word. Whether you're experiencing a specific emotion, have a question about faith, or want to dive into a particular passage, I'm ready to guide you.",
-      citations: [
-        {
-          book: BibleBook.John,
-          chapter: 3,
-          verse: 16,
-        },
-      ],
-      suggestions: [
-        {
-          type: 'question',
-          text: "What's on your heart today?",
-        },
-        {
-          type: 'reflection',
-          text: 'Think about a time when you felt close to God',
-        },
-        {
-          type: 'related_verse',
-          text: 'Begin with the foundation: creation',
-          reference: {
-            book: BibleBook.Genesis,
-            chapter: 1,
-            verse: 1,
-          },
+          text: 'Continue the conversation about this passage',
         },
       ],
     };

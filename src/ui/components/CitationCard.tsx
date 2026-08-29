@@ -1,9 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, useColorScheme, ActivityIndicator } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  useColorScheme,
+  ActivityIndicator,
+  TouchableOpacity,
+} from 'react-native';
 import { ScriptureCitation } from '@/domain/models';
 import { BibleRepository } from '@/domain/repositories';
 import { getTheme, spacing, typography } from '@/ui/theme';
 import { formatVerseRef } from '@/domain/models/VerseRef';
+import { PassageContextView } from './PassageContextView';
 
 interface CitationCardProps {
   citation: ScriptureCitation;
@@ -13,6 +21,7 @@ interface CitationCardProps {
 export function CitationCard({ citation, bibleRepository }: CitationCardProps) {
   const [verseText, setVerseText] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [showContext, setShowContext] = useState(false);
   const scheme = useColorScheme();
   const theme = getTheme(scheme);
 
@@ -43,28 +52,53 @@ export function CitationCard({ citation, bibleRepository }: CitationCardProps) {
   });
 
   return (
-    <View
-      style={[
-        styles.container,
-        {
-          backgroundColor: theme.citation,
-          borderColor: theme.citationBorder,
-        },
-      ]}
-      accessibilityRole="text"
-      accessibilityLabel={`Scripture citation: ${ref}`}
-    >
-      <Text style={[styles.reference, { color: theme.primary }]}>{ref}</Text>
-      {loading ? (
-        <ActivityIndicator size="small" color={theme.textSecondary} style={styles.loader} />
-      ) : verseText ? (
-        <Text style={[styles.text, { color: theme.text }]}>{verseText}</Text>
-      ) : (
-        <Text style={[styles.error, { color: theme.textSecondary }]}>
-          Verse not found in test corpus
-        </Text>
-      )}
-    </View>
+    <>
+      <View
+        style={[
+          styles.container,
+          {
+            backgroundColor: theme.citation,
+            borderColor: theme.citationBorder,
+          },
+        ]}
+        accessibilityRole="text"
+        accessibilityLabel={`Scripture citation: ${ref}`}
+      >
+        <View style={styles.header}>
+          <Text style={[styles.reference, { color: theme.primary }]}>{ref}</Text>
+          <Text style={[styles.translation, { color: theme.textTertiary }]}>WEB</Text>
+        </View>
+        {loading ? (
+          <ActivityIndicator size="small" color={theme.textSecondary} style={styles.loader} />
+        ) : verseText ? (
+          <>
+            <Text style={[styles.text, { color: theme.text }]}>{verseText}</Text>
+            <TouchableOpacity
+              style={[styles.contextButton, { borderTopColor: theme.border }]}
+              onPress={() => setShowContext(true)}
+              accessibilityRole="button"
+              accessibilityLabel="View passage context"
+              accessibilityHint="Opens a view showing surrounding verses"
+            >
+              <Text style={[styles.contextButtonText, { color: theme.primary }]}>
+                View passage context
+              </Text>
+            </TouchableOpacity>
+          </>
+        ) : (
+          <Text style={[styles.error, { color: theme.textSecondary }]}>
+            Verse not found in local WEB corpus
+          </Text>
+        )}
+      </View>
+
+      <PassageContextView
+        citation={citation}
+        bibleRepository={bibleRepository}
+        visible={showContext}
+        onClose={() => setShowContext(false)}
+      />
+    </>
   );
 }
 
@@ -75,9 +109,18 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     marginVertical: spacing.sm,
   },
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: spacing.xs,
+  },
   reference: {
     ...typography.label,
-    marginBottom: spacing.xs,
+  },
+  translation: {
+    ...typography.bodySmall,
+    fontSize: 11,
   },
   text: {
     ...typography.body,
@@ -88,5 +131,17 @@ const styles = StyleSheet.create({
   },
   loader: {
     marginVertical: spacing.sm,
+  },
+  contextButton: {
+    marginTop: spacing.md,
+    paddingTop: spacing.md,
+    borderTopWidth: 1,
+    alignItems: 'center',
+    minHeight: 44,
+    justifyContent: 'center',
+  },
+  contextButtonText: {
+    ...typography.bodySmall,
+    fontWeight: '600',
   },
 });

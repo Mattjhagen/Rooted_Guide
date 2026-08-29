@@ -57,11 +57,11 @@ Schema Version: 1
 
 ### Source-Level (Official USFM)
 
-| Metric                            | Value   |
-| --------------------------------- | ------- |
-| **Raw Verse Markers (`\v`)**     | 31,103  |
-| **Books**                         | 66      |
-| **Chapters**                      | 1,189   |
+| Metric                       | Value  |
+| ---------------------------- | ------ |
+| **Raw Verse Markers (`\v`)** | 31,103 |
+| **Books**                    | 66     |
+| **Chapters**                 | 1,189  |
 
 ### Normalized Database (User-Visible)
 
@@ -227,12 +227,14 @@ The mock AI gateway continues to provide placeholder guidance responses. Citatio
 The `scripture-integrity.test.ts` suite provides automated verification of the verse count reconciliation:
 
 **Official USFM Source:**
+
 - ✓ 66 canonical book files present
 - ✓ Exactly 31,103 raw verse markers (`\v`) in source
 - ✓ Exactly 5 verses become empty after parser normalization
 - ✓ All 5 empty verses contain only footnotes (no user-visible text)
 
 **Normalized SQLite Database:**
+
 - ✓ Database exists in app assets directory
 - ✓ Exactly 31,098 normalized verses (displayable text)
 - ✓ Exactly 66 books
@@ -243,6 +245,7 @@ The `scripture-integrity.test.ts` suite provides automated verification of the v
 - ✓ The 5 empty verse references are correctly excluded
 
 **Reconciliation:**
+
 - ✓ 31,103 - 5 = 31,098 (equation verified)
 
 ### Running Tests
@@ -253,6 +256,7 @@ npm test
 ```
 
 **Coverage:**
+
 - Verse count reconciliation enforced by automated tests
 - Database seeding and clean-install behavior verified
 - All 12 database initialization scenarios tested
