@@ -1,26 +1,51 @@
 {
   "expo": {
-    "name": "Rooted",
-    "slug": "rooted",
+    "name": "Plumb Line",
+    "slug": "plumb-line",
     "version": "0.1.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "scheme": "rooted",
+    "scheme": "plumbline",
     "userInterfaceStyle": "automatic",
     "splash": {
-      "backgroundColor": "#FFFFFF"
+      "image": "./assets/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#F8F9FA"
     },
     "ios": {
       "bundleIdentifier": "com.rooteddaily.bible",
       "supportsTablet": false,
+      "splash": {
+        "image": "./assets/splash-icon.png",
+        "resizeMode": "contain",
+        "backgroundColor": "#F8F9FA",
+        "dark": {
+          "image": "./assets/splash-icon.png",
+          "resizeMode": "contain",
+          "backgroundColor": "#1A1D23"
+        }
+      },
       "infoPlist": {
         "UISupportsDocumentBrowser": false
       }
     },
     "android": {
       "package": "com.rooteddaily.bible",
+      "splash": {
+        "image": "./assets/splash-icon.png",
+        "resizeMode": "contain",
+        "backgroundColor": "#F8F9FA",
+        "dark": {
+          "image": "./assets/splash-icon.png",
+          "resizeMode": "contain",
+          "backgroundColor": "#1A1D23"
+        }
+      },
       "adaptiveIcon": {
-        "backgroundColor": "#FFFFFF"
+        "foregroundImage": "./assets/android-icon-foreground.png",
+        "backgroundImage": "./assets/android-icon-background.png",
+        "monochromeImage": "./assets/android-icon-monochrome.png",
+        "backgroundColor": "#F8F9FA"
       },
       "permissions": []
     },

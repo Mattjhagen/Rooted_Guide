@@ -1,3 +1,11 @@
+/**
+ * Theme preference values
+ * - system: Follow device appearance (default)
+ * - light: Always use light theme
+ * - dark: Always use dark theme
+ */
+export type ThemePreference = 'system' | 'light' | 'dark';
+
 export interface ReaderPreferences {
   fontSize: 'small' | 'medium' | 'large' | 'xlarge';
   fontFamily: 'system' | 'serif' | 'sans-serif';
@@ -5,12 +13,21 @@ export interface ReaderPreferences {
 }
 
 export interface AccountPreferences {
+  theme: ThemePreference;
   syncEnabled: boolean;
   notificationsEnabled: boolean;
 }
+
+export const DEFAULT_THEME_PREFERENCE: ThemePreference = 'system';
 
 export const DEFAULT_READER_PREFERENCES: ReaderPreferences = {
   fontSize: 'medium',
   fontFamily: 'system',
   lineSpacing: 'normal',
+};
+
+export const DEFAULT_ACCOUNT_PREFERENCES: AccountPreferences = {
+  theme: DEFAULT_THEME_PREFERENCE,
+  syncEnabled: false,
+  notificationsEnabled: false,
 };

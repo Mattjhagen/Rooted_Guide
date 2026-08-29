@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+  <!--
+    Plumb Line Icon - 16px Optical Size (v3 Final)
+    Minimal but substantial geometry for reliable rasterization
+    Glyph height: 12px (y=2 to y=14)
+    No top cap at this size
+  -->
+
+  <!-- Background -->
+  <rect width="16" height="16" fill="#F8F9FA"/>
+
+  <!-- Vertical line (bold) -->
+  <rect x="7" y="2" width="2" height="9" fill="#2C3E50"/>
+
+  <!-- Plumb weight (simple triangle) -->
+  <path d="M 8 11 L 6 13.5 Q 6 14, 8 14 Q 10 14, 10 13.5 Z" fill="#2C3E50"/>
+</svg>

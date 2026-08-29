@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+  <!--
+    Plumb Line Icon - Dark Theme Variant (v2 - Revised)
+    Light mark on dark background
+  -->
+
+  <!-- Background: Deep neutral -->
+  <rect width="1024" height="1024" fill="#1A1D23"/>
+
+  <!-- Top anchor cap -->
+  <line
+    x1="488"
+    y1="160"
+    x2="536"
+    y2="160"
+    stroke="#E8EAED"
+    stroke-width="6"
+    stroke-linecap="round"/>
+
+  <!-- Vertical plumb line -->
+  <line
+    x1="512"
+    y1="170"
+    x2="512"
+    y2="740"
+    stroke="#E8EAED"
+    stroke-width="8"
+    stroke-linecap="round"/>
+
+  <!-- Plumb weight -->
+  <path
+    d="M 512 740 L 470 810 Q 470 860, 512 890 Q 554 860, 554 810 Z"
+    fill="#E8EAED"/>
+
+  <!-- Subtle shadow -->
+  <ellipse
+    cx="512"
+    cy="900"
+    rx="28"
+    ry="8"
+    fill="#FFFFFF"
+    opacity="0.05"/>
+</svg>

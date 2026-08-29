@@ -1,8 +1,11 @@
-# Rooted Architecture
+# Plumb Line Architecture
+
+**Repository:** Rooted_Guide  
+**Application:** Plumb Line
 
 ## Overview
 
-Rooted is built with a clean, feature-oriented architecture that maintains clear boundaries between UI, domain logic, persistence, and external services.
+Plumb Line is built with a clean, feature-oriented architecture that maintains clear boundaries between UI, domain logic, persistence, and external services.
 
 ## Directory Structure
 

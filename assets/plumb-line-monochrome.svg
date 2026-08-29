@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+  <!--
+    Plumb Line Icon - Monochrome Variant (v2 - Revised)
+    For Android adaptive icon monochrome layer
+    Single color, simplified for platform tinting
+  -->
+
+  <!-- Background: Transparent (platform provides background) -->
+  <rect width="1024" height="1024" fill="transparent"/>
+
+  <!-- Top anchor cap -->
+  <line
+    x1="488"
+    y1="160"
+    x2="536"
+    y2="160"
+    stroke="#000000"
+    stroke-width="8"
+    stroke-linecap="round"/>
+
+  <!-- Vertical plumb line (slightly thicker for monochrome legibility) -->
+  <line
+    x1="512"
+    y1="170"
+    x2="512"
+    y2="740"
+    stroke="#000000"
+    stroke-width="10"
+    stroke-linecap="round"/>
+
+  <!-- Plumb weight (simplified, bold) -->
+  <path
+    d="M 512 740 L 470 810 Q 470 860, 512 890 Q 554 860, 554 810 Z"
+    fill="#000000"/>
+</svg>

@@ -29,19 +29,19 @@ The legacy Bible corpus is **not suitable for immediate production adoption** wi
 
 ### 1.1 bibleFull.json
 
-| Attribute | Value |
-|-----------|-------|
-| **Path** | `/Users/matt/Documents/Rooted/Rooted_Daily/src/data/bibleFull.json` |
-| **Size** | 3.9 MB |
-| **SHA-256** | `585cdd971e78003c328aabf48cc8b4e136c9bb0e4841669dca48dd14aeebe8e7` |
-| **File Type** | Unicode text, UTF-8, no line terminators (minified JSON) |
-| **Top-Level Structure** | `{ books: [{ abbrev: string, chapters: string[][] }] }` |
-| **Translation Label** | None in file; code hardcodes "WEB" during import |
-| **Book Count** | 66 |
-| **Chapter Count** | **1,190** (⚠️ Expected 1,189 for 66-book Protestant canon) |
-| **Verse Count** | 31,109 |
-| **Completeness** | Appears complete except 4 null verses |
-| **Duplicates** | No duplicate data detected |
+| Attribute                   | Value                                                                     |
+| --------------------------- | ------------------------------------------------------------------------- |
+| **Path**                    | `/Users/matt/Documents/Rooted/Rooted_Daily/src/data/bibleFull.json`       |
+| **Size**                    | 3.9 MB                                                                    |
+| **SHA-256**                 | `585cdd971e78003c328aabf48cc8b4e136c9bb0e4841669dca48dd14aeebe8e7`        |
+| **File Type**               | Unicode text, UTF-8, no line terminators (minified JSON)                  |
+| **Top-Level Structure**     | `{ books: [{ abbrev: string, chapters: string[][] }] }`                   |
+| **Translation Label**       | None in file; code hardcodes "WEB" during import                          |
+| **Book Count**              | 66                                                                        |
+| **Chapter Count**           | **1,190** (⚠️ Expected 1,189 for 66-book Protestant canon)                |
+| **Verse Count**             | 31,109                                                                    |
+| **Completeness**            | Appears complete except 4 null verses                                     |
+| **Duplicates**              | No duplicate data detected                                                |
 | **Relation to Other Files** | Minified version of WEB corpus; shares Genesis 1:1 text with raw_web.json |
 
 #### Sample Structure
@@ -64,19 +64,19 @@ The legacy Bible corpus is **not suitable for immediate production adoption** wi
 
 ### 1.2 raw_web.json
 
-| Attribute | Value |
-|-----------|-------|
-| **Path** | `/Users/matt/Documents/Rooted/Rooted_Daily/src/data/raw_web.json` |
-| **Size** | 8.0 MB |
-| **SHA-256** | `5909490c78e013dc7d0b374415ee08f9317e72432f51614f2e59bad53362352f` |
-| **File Type** | ASCII text, no line terminators |
-| **Top-Level Structure** | `[{ pk: number, translation: string, book: number, chapter: number, verse: number, text: string }]` |
-| **Translation Label** | **"WEB"** (explicit field) |
-| **Book Count** | **83** (includes Apocrypha) |
-| **Verse Count** | 37,565 |
-| **Completeness** | More complete than bibleFull.json |
-| **Duplicates** | No duplicates detected |
-| **Relation to Other Files** | Expanded corpus; bibleFull.json is 66-book subset |
+| Attribute                   | Value                                                                                               |
+| --------------------------- | --------------------------------------------------------------------------------------------------- |
+| **Path**                    | `/Users/matt/Documents/Rooted/Rooted_Daily/src/data/raw_web.json`                                   |
+| **Size**                    | 8.0 MB                                                                                              |
+| **SHA-256**                 | `5909490c78e013dc7d0b374415ee08f9317e72432f51614f2e59bad53362352f`                                  |
+| **File Type**               | ASCII text, no line terminators                                                                     |
+| **Top-Level Structure**     | `[{ pk: number, translation: string, book: number, chapter: number, verse: number, text: string }]` |
+| **Translation Label**       | **"WEB"** (explicit field)                                                                          |
+| **Book Count**              | **83** (includes Apocrypha)                                                                         |
+| **Verse Count**             | 37,565                                                                                              |
+| **Completeness**            | More complete than bibleFull.json                                                                   |
+| **Duplicates**              | No duplicates detected                                                                              |
+| **Relation to Other Files** | Expanded corpus; bibleFull.json is 66-book subset                                                   |
 
 #### Sample Structure
 
@@ -95,15 +95,15 @@ The legacy Bible corpus is **not suitable for immediate production adoption** wi
 
 ### 1.3 webu.json
 
-| Attribute | Value |
-|-----------|-------|
-| **Path** | `/Users/matt/Documents/Rooted/Rooted_Daily/src/data/webu.json` |
-| **Size** | 1.8 KB |
-| **SHA-256** | `2c22cb461edf8bf9e71ff9430ec0a3e247230fe64d6a9c6d2694a87e1253f351` |
-| **Top-Level Structure** | Small test fixture with 2 books, 2 chapters, 2 verses |
-| **Purpose** | Test/prototype data; not production corpus |
-| **Completeness** | Incomplete (John 3:16, Philippians 4:6 only) |
-| **Relation to Other Files** | Independent test fixture |
+| Attribute                   | Value                                                              |
+| --------------------------- | ------------------------------------------------------------------ |
+| **Path**                    | `/Users/matt/Documents/Rooted/Rooted_Daily/src/data/webu.json`     |
+| **Size**                    | 1.8 KB                                                             |
+| **SHA-256**                 | `2c22cb461edf8bf9e71ff9430ec0a3e247230fe64d6a9c6d2694a87e1253f351` |
+| **Top-Level Structure**     | Small test fixture with 2 books, 2 chapters, 2 verses              |
+| **Purpose**                 | Test/prototype data; not production corpus                         |
+| **Completeness**            | Incomplete (John 3:16, Philippians 4:6 only)                       |
+| **Relation to Other Files** | Independent test fixture                                           |
 
 ---
 
@@ -141,12 +141,12 @@ The legacy Bible corpus is **not suitable for immediate production adoption** wi
 
 **Verification Samples:**
 
-| Reference | bibleFull.json Text | WEB Characteristic |
-|-----------|---------------------|-------------------|
-| Genesis 1:1 | "In the beginning, God  created the heavens and the earth." | ✅ Matches WEB (note extra space after "God") |
-| John 3:16 | "For God so loved the world, that he gave his **one and only Son**..." | ✅ WEB uses "one and only Son" (KJV: "only begotten Son") |
-| Psalm 23:1 | "**Yahweh** is my shepherd: I shall lack nothing." | ✅ WEB uses "Yahweh" (KJV: "LORD") |
-| Psalm 23:1 | "`<b>`A Psalm by David. `</b>`   **Yahweh** is my shepherd..." | ⚠️ Contains HTML markup |
+| Reference   | bibleFull.json Text                                                    | WEB Characteristic                                        |
+| ----------- | ---------------------------------------------------------------------- | --------------------------------------------------------- |
+| Genesis 1:1 | "In the beginning, God created the heavens and the earth."             | ✅ Matches WEB (note extra space after "God")             |
+| John 3:16   | "For God so loved the world, that he gave his **one and only Son**..." | ✅ WEB uses "one and only Son" (KJV: "only begotten Son") |
+| Psalm 23:1  | "**Yahweh** is my shepherd: I shall lack nothing."                     | ✅ WEB uses "Yahweh" (KJV: "LORD")                        |
+| Psalm 23:1  | "`<b>`A Psalm by David. `</b>` **Yahweh** is my shepherd..."           | ⚠️ Contains HTML markup                                   |
 
 **Conclusion:** The text is **consistent with WEB** translation wording.
 
@@ -211,7 +211,7 @@ bible-api.com is a **third-party public Bible API** that aggregates and serves B
 
 **Unintentional Modifications:**
 
-- Extra space in Genesis 1:1: "God  created" (likely bible-api.com artifact)
+- Extra space in Genesis 1:1: "God created" (likely bible-api.com artifact)
 
 ### 3.4 License and Attribution
 
@@ -282,20 +282,20 @@ d7558bdd 2026-04-08 17:41:57 feat: offline bible, dual reading plans, and smart 
 **Recommended Attribution:**
 
 ```
-Scripture quotations are from the World English Bible (WEB), 
+Scripture quotations are from the World English Bible (WEB),
 which is in the public domain. For more information, visit https://ebible.org.
 ```
 
 ### 4.3 Redistribution Suitability
 
-| Requirement | Status | Notes |
-|-------------|--------|-------|
-| **Public domain status** | ✅ YES | WEB is public domain |
-| **Commercial redistribution** | ✅ ALLOWED | No restrictions |
-| **Offline bundling in mobile app** | ✅ ALLOWED | No restrictions |
-| **Modification permission** | ✅ ALLOWED | Can strip HTML, reformat, etc. |
-| **Attribution requirement** | ⚠️ OPTIONAL | Not legally required but requested |
-| **Trademark compliance** | ⚠️ CONDITIONAL | Must not misrepresent as "KJV" or other translation |
+| Requirement                        | Status         | Notes                                               |
+| ---------------------------------- | -------------- | --------------------------------------------------- |
+| **Public domain status**           | ✅ YES         | WEB is public domain                                |
+| **Commercial redistribution**      | ✅ ALLOWED     | No restrictions                                     |
+| **Offline bundling in mobile app** | ✅ ALLOWED     | No restrictions                                     |
+| **Modification permission**        | ✅ ALLOWED     | Can strip HTML, reformat, etc.                      |
+| **Attribution requirement**        | ⚠️ OPTIONAL    | Not legally required but requested                  |
+| **Trademark compliance**           | ⚠️ CONDITIONAL | Must not misrepresent as "KJV" or other translation |
 
 ### 4.4 bible-api.com Terms
 
@@ -330,16 +330,16 @@ which is in the public domain. For more information, visit https://ebible.org.
 
 ### 5.1 Book Count
 
-| Metric | bibleFull.json | raw_web.json | Expected (66-book Protestant) |
-|--------|----------------|--------------|-------------------------------|
-| **Books** | 66 | 83 | 66 |
-| **Status** | ✅ PASS | ⚠️ Includes Apocrypha | ✅ |
+| Metric     | bibleFull.json | raw_web.json          | Expected (66-book Protestant) |
+| ---------- | -------------- | --------------------- | ----------------------------- |
+| **Books**  | 66             | 83                    | 66                            |
+| **Status** | ✅ PASS        | ⚠️ Includes Apocrypha | ✅                            |
 
 ### 5.2 Chapter Count
 
-| Metric | bibleFull.json | Expected (66-book Protestant) | Status |
-|--------|----------------|-------------------------------|--------|
-| **Total Chapters** | **1,190** | **1,189** | ❌ FAIL (+1 extra) |
+| Metric             | bibleFull.json | Expected (66-book Protestant) | Status             |
+| ------------------ | -------------- | ----------------------------- | ------------------ |
+| **Total Chapters** | **1,190**      | **1,189**                     | ❌ FAIL (+1 extra) |
 
 **Discrepancy:** One extra chapter.
 
@@ -354,22 +354,22 @@ jq '.books[] | select(.abbrev == "ps") | .chapters | length' src/data/bibleFull.
 
 ### 5.3 Verse Count
 
-| Metric | bibleFull.json | raw_web.json | Expected (WEB 66-book) |
-|--------|----------------|--------------|------------------------|
-| **Total Verses** | 31,109 | 37,565 | ~31,102 |
-| **Status** | ✅ PASS | ⚠️ Includes Apocrypha | ✅ |
+| Metric           | bibleFull.json | raw_web.json          | Expected (WEB 66-book) |
+| ---------------- | -------------- | --------------------- | ---------------------- |
+| **Total Verses** | 31,109         | 37,565                | ~31,102                |
+| **Status**       | ✅ PASS        | ⚠️ Includes Apocrypha | ✅                     |
 
 **Note:** The extra ~7 verses in bibleFull.json (31,109 vs. 31,102) are likely from Psalm 151.
 
 ### 5.4 Expected Chapter Counts (High-Risk Books)
 
-| Book | Expected Chapters | Actual Chapters (bibleFull.json) | Status |
-|------|-------------------|----------------------------------|--------|
-| Genesis | 50 | 50 | ✅ PASS |
-| Psalms | **150** | **151** | ❌ FAIL (+1) |
-| Isaiah | 66 | 66 | ✅ PASS |
-| Matthew | 28 | 28 | ✅ PASS |
-| Revelation | 22 | 22 | ✅ PASS |
+| Book       | Expected Chapters | Actual Chapters (bibleFull.json) | Status       |
+| ---------- | ----------------- | -------------------------------- | ------------ |
+| Genesis    | 50                | 50                               | ✅ PASS      |
+| Psalms     | **150**           | **151**                          | ❌ FAIL (+1) |
+| Isaiah     | 66                | 66                               | ✅ PASS      |
+| Matthew    | 28                | 28                               | ✅ PASS      |
+| Revelation | 22                | 22                               | ✅ PASS      |
 
 ### 5.5 Missing Books
 
@@ -380,8 +380,8 @@ jq '.books[] | select(.abbrev == "ps") | .chapters | length' src/data/bibleFull.
 **4 null verses detected:**
 
 ```bash
-jq -r '.books[] | .abbrev as $book | .chapters | to_entries[] | .key as $ch | 
-  .value | to_entries[] | select(.value == null or .value == "") | 
+jq -r '.books[] | .abbrev as $book | .chapters | to_entries[] | .key as $ch |
+  .value | to_entries[] | select(.value == null or .value == "") |
   "\($book) \($ch+1):\(.key+1)"' src/data/bibleFull.json
 ```
 
@@ -437,9 +437,9 @@ These are **textually uncertain verses** that do not appear in the earliest Gree
 **Method:** After SQLite import, duplicates would be detectable with:
 
 ```sql
-SELECT book, chapter, verse, COUNT(*) as count 
-FROM verses 
-GROUP BY book, chapter, verse 
+SELECT book, chapter, verse, COUNT(*) as count
+FROM verses
+GROUP BY book, chapter, verse
 HAVING count > 1
 ```
 
@@ -461,18 +461,18 @@ HAVING count > 1
 
 The following samples verify WEB text consistency across biblical sections:
 
-| Section | Reference | Fingerprint | WEB Match |
-|---------|-----------|-------------|-----------|
-| **Pentateuch** | Genesis 1:1 | "In the beginning, God  created..." | ✅ (extra space noted) |
-| **Historical** | 1 Samuel 17:4 (not sampled) | — | — |
-| **Poetry** | Psalm 23:1 | "**Yahweh** is my shepherd: I shall lack nothing." | ✅ |
-| **Major Prophets** | Isaiah 53:5 (not sampled) | — | — |
-| **Minor Prophets** | Jonah 2:1 (not sampled) | — | — |
-| **Gospels** | John 3:16 | "For God so loved the world, that he gave his **one and only Son**..." | ✅ |
-| **Acts** | Acts 1:8 (not sampled) | — | — |
-| **Pauline Epistles** | Romans 8:28 (not sampled) | — | — |
-| **General Epistles** | James 1:2 (not sampled) | — | — |
-| **Revelation** | Revelation 22:1 | "He showed me a  river of water of life, clear as crystal..." | ✅ (extra space noted) |
+| Section              | Reference                   | Fingerprint                                                            | WEB Match              |
+| -------------------- | --------------------------- | ---------------------------------------------------------------------- | ---------------------- |
+| **Pentateuch**       | Genesis 1:1                 | "In the beginning, God created..."                                     | ✅ (extra space noted) |
+| **Historical**       | 1 Samuel 17:4 (not sampled) | —                                                                      | —                      |
+| **Poetry**           | Psalm 23:1                  | "**Yahweh** is my shepherd: I shall lack nothing."                     | ✅                     |
+| **Major Prophets**   | Isaiah 53:5 (not sampled)   | —                                                                      | —                      |
+| **Minor Prophets**   | Jonah 2:1 (not sampled)     | —                                                                      | —                      |
+| **Gospels**          | John 3:16                   | "For God so loved the world, that he gave his **one and only Son**..." | ✅                     |
+| **Acts**             | Acts 1:8 (not sampled)      | —                                                                      | —                      |
+| **Pauline Epistles** | Romans 8:28 (not sampled)   | —                                                                      | —                      |
+| **General Epistles** | James 1:2 (not sampled)     | —                                                                      | —                      |
+| **Revelation**       | Revelation 22:1             | "He showed me a river of water of life, clear as crystal..."           | ✅ (extra space noted) |
 
 **Conclusion:** Sampled verses match **World English Bible** phrasing and vocabulary. The presence of "Yahweh" (instead of "LORD") and "one and only Son" (instead of "only begotten Son") are **WEB signatures**.
 
@@ -570,14 +570,14 @@ The following samples verify WEB text consistency across biblical sections:
 
 ### 7.5 Overlapping Responsibilities
 
-| Function | bibleLoader | bibleService | BibleEngine |
-|----------|-------------|--------------|-------------|
-| **Import Bible** | ✅ | — | — |
-| **Get verse** | ✅ (sync) | ✅ (async) | ✅ (async with RT fallback) |
-| **Get chapter** | ✅ (sync) | ✅ (async) | ✅ (async with RT fallback) |
-| **Search verses** | — | ✅ | — |
-| **Translation switching** | — | — | ✅ (unused RT logic) |
-| **Note filtering** | — | — | ✅ (out of scope) |
+| Function                  | bibleLoader | bibleService | BibleEngine                 |
+| ------------------------- | ----------- | ------------ | --------------------------- |
+| **Import Bible**          | ✅          | —            | —                           |
+| **Get verse**             | ✅ (sync)   | ✅ (async)   | ✅ (async with RT fallback) |
+| **Get chapter**           | ✅ (sync)   | ✅ (async)   | ✅ (async with RT fallback) |
+| **Search verses**         | —           | ✅           | —                           |
+| **Translation switching** | —           | —            | ✅ (unused RT logic)        |
+| **Note filtering**        | —           | —            | ✅ (out of scope)           |
 
 **Problem:** Three modules implement overlapping Bible access logic. This creates:
 
@@ -597,15 +597,15 @@ The following samples verify WEB text consistency across biblical sections:
 
 ### 8.2 Blocking Issues
 
-| Issue | Severity | Impact |
-|-------|----------|--------|
-| **Psalm 151 inclusion** | 🔴 CRITICAL | Violates Protestant 66-book canon; app claims 66 books but has 67 |
-| **HTML markup in text** | 🔴 CRITICAL | Will render as literal text; breaks search and accessibility |
-| **Null verses without handling** | 🟡 MAJOR | Null reference errors if not handled; confusing UX |
-| **Indirect provenance (bible-api.com)** | 🟡 MAJOR | No authoritative chain of custody; risk of data corruption |
-| **Missing attribution** | 🟡 MAJOR | Does not acknowledge WEB public domain source |
-| **Documentation mislabeling (KJV vs. WEB)** | 🟡 MAJOR | Misinforms users about translation |
-| **RT fallback logic** | 🟢 MINOR | Dead code; creates confusion but doesn't break functionality |
+| Issue                                       | Severity    | Impact                                                            |
+| ------------------------------------------- | ----------- | ----------------------------------------------------------------- |
+| **Psalm 151 inclusion**                     | 🔴 CRITICAL | Violates Protestant 66-book canon; app claims 66 books but has 67 |
+| **HTML markup in text**                     | 🔴 CRITICAL | Will render as literal text; breaks search and accessibility      |
+| **Null verses without handling**            | 🟡 MAJOR    | Null reference errors if not handled; confusing UX                |
+| **Indirect provenance (bible-api.com)**     | 🟡 MAJOR    | No authoritative chain of custody; risk of data corruption        |
+| **Missing attribution**                     | 🟡 MAJOR    | Does not acknowledge WEB public domain source                     |
+| **Documentation mislabeling (KJV vs. WEB)** | 🟡 MAJOR    | Misinforms users about translation                                |
+| **RT fallback logic**                       | 🟢 MINOR    | Dead code; creates confusion but doesn't break functionality      |
 
 ### 8.3 Evidence Supporting Rejection
 
@@ -734,9 +734,9 @@ jq '.books[] | select(.abbrev == "re") | .chapters[21][0:2]' src/data/bibleFull.
 
 ```bash
 # Find null/empty verses
-jq -r '.books[] | .abbrev as $book | .chapters | to_entries[] | 
-  .key as $ch | .value | to_entries[] | 
-  select(.value == null or .value == "") | 
+jq -r '.books[] | .abbrev as $book | .chapters | to_entries[] |
+  .key as $ch | .value | to_entries[] |
+  select(.value == null or .value == "") |
   "\($book) \($ch+1):\(.key+1)"' src/data/bibleFull.json
 
 # Find verses with HTML markup (will error due to null verses, but shows markup)
@@ -794,11 +794,11 @@ See "Files Read" list above.
 
 ### 10.3 Corpus Counts and Checksums
 
-| File | SHA-256 | Books | Chapters | Verses |
-|------|---------|-------|----------|--------|
-| **bibleFull.json** | `585cdd971e78003c328aabf48cc8b4e136c9bb0e4841669dca48dd14aeebe8e7` | 66 | 1,190 | 31,109 |
-| **raw_web.json** | `5909490c78e013dc7d0b374415ee08f9317e72432f51614f2e59bad53362352f` | 83 | — | 37,565 |
-| **webu.json** | `2c22cb461edf8bf9e71ff9430ec0a3e247230fe64d6a9c6d2694a87e1253f351` | 2 | 2 | 2 |
+| File               | SHA-256                                                            | Books | Chapters | Verses |
+| ------------------ | ------------------------------------------------------------------ | ----- | -------- | ------ |
+| **bibleFull.json** | `585cdd971e78003c328aabf48cc8b4e136c9bb0e4841669dca48dd14aeebe8e7` | 66    | 1,190    | 31,109 |
+| **raw_web.json**   | `5909490c78e013dc7d0b374415ee08f9317e72432f51614f2e59bad53362352f` | 83    | —        | 37,565 |
+| **webu.json**      | `2c22cb461edf8bf9e71ff9430ec0a3e247230fe64d6a9c6d2694a87e1253f351` | 2     | 2        | 2      |
 
 ### 10.4 Provenance and License Findings
 
@@ -814,7 +814,7 @@ See "Files Read" list above.
 1. ❌ **Psalm 151 present** (1,190 chapters instead of 1,189)
 2. ❌ **HTML markup** (`<b>`, `<i>`, `<span>`) embedded in verse text
 3. ⚠️ **4 null verses** (Luke 17:36, Acts 8:37, 15:34, 24:7) — textually uncertain
-4. ⚠️ **Extra spaces** in some verses (e.g., "God  created")
+4. ⚠️ **Extra spaces** in some verses (e.g., "God created")
 5. ⚠️ **RT fallback logic** in BibleEngine.ts references non-existent translation
 
 ### 10.6 Final Adoption Decision
@@ -947,30 +947,30 @@ The name "World English Bible" and abbreviation "WEB" are trademarks of Rainbow 
 
 #### 1.1 Edition Identification
 
-| Attribute | Value |
-|-----------|-------|
-| **Translation Title** | World English Bible |
-| **Edition Identifier** | engwebp / WEBP |
-| **Edition Description** | 2020 stable text edition |
-| **Canon** | 66-book Protestant canon only |
-| **Language** | English (American dialect) |
-| **Source Authority** | eBible.org |
-| **Master Repository** | https://eBible.org/web/ and https://WorldEnglish.Bible |
+| Attribute               | Value                                                  |
+| ----------------------- | ------------------------------------------------------ |
+| **Translation Title**   | World English Bible                                    |
+| **Edition Identifier**  | engwebp / WEBP                                         |
+| **Edition Description** | 2020 stable text edition                               |
+| **Canon**               | 66-book Protestant canon only                          |
+| **Language**            | English (American dialect)                             |
+| **Source Authority**    | eBible.org                                             |
+| **Master Repository**   | https://eBible.org/web/ and https://WorldEnglish.Bible |
 
 #### 1.2 Download Details
 
-| Attribute | Value |
-|-----------|-------|
-| **Official Edition Page** | https://ebible.org/find/details.php?id=engwebp |
-| **Official Terms Page** | https://ebible.org/study/content/texts/engwebp/about.html |
-| **Final Download URL** | https://eBible.org/Scriptures/engwebp_usfm.zip |
-| **Download Format** | USFM (Unified Standard Format Markers) |
-| **Retrieval Date** | 2026-08-29 15:20:48 UTC |
-| **Archive Filename** | engwebp_usfm.zip |
-| **Archive Size** | 2.8 MB (2,903,301 bytes) |
-| **Archive SHA-256** | `2d2dc7b443a4cf398dfe05d1001195887c74a80b388003358ccc8a6bfc1c5c07` |
-| **Source File Date** | 2026-08-26 02:06 UTC (all USFM files) |
-| **Generation Date** | 2026-08-26 02:09 UTC (HTML metadata) |
+| Attribute                 | Value                                                              |
+| ------------------------- | ------------------------------------------------------------------ |
+| **Official Edition Page** | https://ebible.org/find/details.php?id=engwebp                     |
+| **Official Terms Page**   | https://ebible.org/study/content/texts/engwebp/about.html          |
+| **Final Download URL**    | https://eBible.org/Scriptures/engwebp_usfm.zip                     |
+| **Download Format**       | USFM (Unified Standard Format Markers)                             |
+| **Retrieval Date**        | 2026-08-29 15:20:48 UTC                                            |
+| **Archive Filename**      | engwebp_usfm.zip                                                   |
+| **Archive Size**          | 2.8 MB (2,903,301 bytes)                                           |
+| **Archive SHA-256**       | `2d2dc7b443a4cf398dfe05d1001195887c74a80b388003358ccc8a6bfc1c5c07` |
+| **Source File Date**      | 2026-08-26 02:06 UTC (all USFM files)                              |
+| **Generation Date**       | 2026-08-26 02:09 UTC (HTML metadata)                               |
 
 #### 1.3 Source Format: USFM
 
@@ -1035,10 +1035,10 @@ Source: eBible.org
 **Detailed Attribution (Legal/About Section):**
 
 ```
-Scripture quotations are from the World English Bible (WEB), which is in 
+Scripture quotations are from the World English Bible (WEB), which is in
 the Public Domain. You may freely use, copy, and distribute this translation.
 
-"World English Bible" is a trademark of eBible.org. For more information, 
+"World English Bible" is a trademark of eBible.org. For more information,
 visit https://eBible.org/web/
 
 The master copy of this translation is maintained at eBible.org.
@@ -1091,6 +1091,7 @@ USFM files are plain text. No symlinks or executable content in archive.
 **Unexpected Content:**
 
 All files are expected:
+
 - 66 Bible books (Protestant canon)
 - Supplementary files (front matter, glossary, copyright, keys, CSS)
 
@@ -1126,9 +1127,11 @@ unzip -q engwebp_usfm.zip
 **Book List (by USFM file number):**
 
 Old Testament (39 books):
+
 - 02-GEN, 03-EXO, 04-LEV, 05-NUM, 06-DEU, 07-JOS, 08-JDG, 09-RUT, 10-1SA, 11-2SA, 12-1KI, 13-2KI, 14-1CH, 15-2CH, 16-EZR, 17-NEH, 18-EST, 19-JOB, 20-PSA, 21-PRO, 22-ECC, 23-SNG, 24-ISA, 25-JER, 26-LAM, 27-EZK, 28-DAN, 29-HOS, 30-JOL, 31-AMO, 32-OBA, 33-JON, 34-MIC, 35-NAM, 36-HAB, 37-ZEP, 38-HAG, 39-ZEC, 40-MAL
 
 New Testament (27 books):
+
 - 70-MAT, 71-MRK, 72-LUK, 73-JHN, 74-ACT, 75-ROM, 76-1CO, 77-2CO, 78-GAL, 79-EPH, 80-PHP, 81-COL, 82-1TH, 83-2TH, 84-1TI, 85-2TI, 86-TIT, 87-PHM, 88-HEB, 89-JAS, 90-1PE, 91-2PE, 92-1JN, 93-2JN, 94-3JN, 95-JUD, 96-REV
 
 #### 3.2 Canonical Ordering
@@ -1151,13 +1154,13 @@ Books are numbered in canonical Protestant order. File numbering system:
 
 **High-Risk Books Verification:**
 
-| Book | Expected | Actual | Status |
-|------|----------|--------|--------|
-| Genesis | 50 | 50 | ✅ |
-| Psalms | 150 | **150** | ✅ |
-| Isaiah | 66 | 66 | ✅ |
-| Matthew | 28 | 28 | ✅ |
-| Revelation | 22 | 22 | ✅ |
+| Book       | Expected | Actual  | Status |
+| ---------- | -------- | ------- | ------ |
+| Genesis    | 50       | 50      | ✅     |
+| Psalms     | 150      | **150** | ✅     |
+| Isaiah     | 66       | 66      | ✅     |
+| Matthew    | 28       | 28      | ✅     |
+| Revelation | 22       | 22      | ✅     |
 
 **Critical Finding:** ✅ **Psalms has exactly 150 chapters**
 
@@ -1205,7 +1208,7 @@ All 66 Protestant canon books are present. No deuterocanonical or apocryphal boo
 **Check Method:**
 
 ```bash
-for f in *.usfm; do 
+for f in *.usfm; do
   grep -c "^\\c " "$f"
 done
 ```
@@ -1350,10 +1353,10 @@ The following operations **modify Scripture text** and are **NOT permitted** wit
 **Example USFM Verse (Genesis 1:1):**
 
 ```
-\v 1 \w In|strong="H8064"\w* \w the|strong="H1254"\w* \w beginning|strong="H7225"\w*, 
-\w God|strong="H8064"\w*\f + \fr 1:1 \ft The Hebrew word rendered "God" is 
-"\+wh אֱלֹהִ֑ים\+wh*" (Elohim).\f* \w created|strong="H1254"\w* \w the|strong="H1254"\w* 
-\w heavens|strong="H8064"\w* \w and|strong="H8064"\w* \w the|strong="H1254"\w* 
+\v 1 \w In|strong="H8064"\w* \w the|strong="H1254"\w* \w beginning|strong="H7225"\w*,
+\w God|strong="H8064"\w*\f + \fr 1:1 \ft The Hebrew word rendered "God" is
+"\+wh אֱלֹהִ֑ים\+wh*" (Elohim).\f* \w created|strong="H1254"\w* \w the|strong="H1254"\w*
+\w heavens|strong="H8064"\w* \w and|strong="H8064"\w* \w the|strong="H1254"\w*
 \w earth|strong="H8064"\w*.
 ```
 
@@ -1450,13 +1453,13 @@ ls -1 *-*.usfm | wc -l
 
 ```bash
 # Count total chapters
-for f in 0[2-9]-*.usfm [1-4][0-9]-*.usfm [7-9][0-9]-*.usfm; do 
+for f in 0[2-9]-*.usfm [1-4][0-9]-*.usfm [7-9][0-9]-*.usfm; do
   grep -c "^\\c " "$f"
 done | awk '{sum+=$1} END {print sum}'
 # Expected: 1189
 
 # Count total verses
-for f in 0[2-9]-*.usfm [1-4][0-9]-*.usfm [7-9][0-9]-*.usfm; do 
+for f in 0[2-9]-*.usfm [1-4][0-9]-*.usfm [7-9][0-9]-*.usfm; do
   grep -c "^\\v [0-9]" "$f"
 done | awk '{sum+=$1} END {print sum}'
 # Expected: 31103
@@ -1574,8 +1577,8 @@ eBible.org
 ```
 SCRIPTURE TEXT
 
-The Scripture text used in Rooted is the World English Bible (WEB), 
-which is in the Public Domain. You may freely use, copy, and distribute 
+The Scripture text used in Rooted is the World English Bible (WEB),
+which is in the Public Domain. You may freely use, copy, and distribute
 this translation.
 
 "World English Bible" is a trademark of eBible.org.
@@ -1593,14 +1596,14 @@ Downloaded: 2026-08-29
 
 ATTRIBUTION
 
-While not legally required, eBible.org welcomes support for their work 
+While not legally required, eBible.org welcomes support for their work
 providing free access to God's Word. For more information, visit:
 https://MLJohnson.org/partner/
 
 ACCURACY
 
-Rooted displays the World English Bible text as provided by eBible.org. 
-The displayed verse text is a faithful copy of the source, with formatting 
+Rooted displays the World English Bible text as provided by eBible.org.
+The displayed verse text is a faithful copy of the source, with formatting
 markup removed for readability.
 ```
 
@@ -1628,13 +1631,13 @@ Learn more: eBible.org
 
 #### 6.5 Legal Compliance Summary
 
-| Requirement | Status | Implementation |
-|-------------|--------|----------------|
-| **Attribution legally required** | ❌ NO | Public domain = no legal requirement |
-| **Attribution requested** | ✅ YES | Requested by eBible.org for transparency |
-| **Trademark compliance** | ⚠️ YES | Must not misrepresent modified text as WEB |
-| **Recommended attribution** | ✅ YES | Concise + detailed attribution |
-| **Link to source** | ✅ RECOMMENDED | Provides provenance and transparency |
+| Requirement                      | Status         | Implementation                             |
+| -------------------------------- | -------------- | ------------------------------------------ |
+| **Attribution legally required** | ❌ NO          | Public domain = no legal requirement       |
+| **Attribution requested**        | ✅ YES         | Requested by eBible.org for transparency   |
+| **Trademark compliance**         | ⚠️ YES         | Must not misrepresent modified text as WEB |
+| **Recommended attribution**      | ✅ YES         | Concise + detailed attribution             |
+| **Link to source**               | ✅ RECOMMENDED | Provides provenance and transparency       |
 
 **Conclusion:** Attribution is **not legally mandatory**, but is **recommended** for:
 
@@ -1668,17 +1671,17 @@ The official World English Bible Protestant canon edition (engwebp) from eBible.
 
 ### 7.2 Advantages Over Legacy Corpus
 
-| Issue | Legacy Corpus | Official engwebp Corpus |
-|-------|---------------|-------------------------|
-| **Source** | bible-api.com (third-party) | eBible.org (authoritative) |
-| **Psalm 151** | ❌ Present (1,190 chapters) | ✅ Absent (1,189 chapters) |
-| **HTML Markup** | ❌ Extensive contamination | ✅ Clean USFM (no HTML) |
-| **Null Verses** | ❌ 4 null placeholders | ✅ Omitted (correct handling) |
-| **Format** | JSON (generated) | USFM (source format) |
-| **Provenance** | ❌ Unknown | ✅ Official eBible.org |
-| **Attribution** | ❌ Missing | ✅ Provided in copr.htm |
-| **Checksum** | ❌ Not documented | ✅ SHA-256 recorded |
-| **Versification** | ❌ Minor errors | ✅ Standards-compliant |
+| Issue             | Legacy Corpus               | Official engwebp Corpus       |
+| ----------------- | --------------------------- | ----------------------------- |
+| **Source**        | bible-api.com (third-party) | eBible.org (authoritative)    |
+| **Psalm 151**     | ❌ Present (1,190 chapters) | ✅ Absent (1,189 chapters)    |
+| **HTML Markup**   | ❌ Extensive contamination  | ✅ Clean USFM (no HTML)       |
+| **Null Verses**   | ❌ 4 null placeholders      | ✅ Omitted (correct handling) |
+| **Format**        | JSON (generated)            | USFM (source format)          |
+| **Provenance**    | ❌ Unknown                  | ✅ Official eBible.org        |
+| **Attribution**   | ❌ Missing                  | ✅ Provided in copr.htm       |
+| **Checksum**      | ❌ Not documented           | ✅ SHA-256 recorded           |
+| **Versification** | ❌ Minor errors             | ✅ Standards-compliant        |
 
 ### 7.3 Production Readiness Checklist
 
@@ -1698,20 +1701,20 @@ The official World English Bible Protestant canon edition (engwebp) from eBible.
 
 **Prompt 3B (SQLite implementation) is AUTHORIZED to proceed** with the following corpus:
 
-| Parameter | Value |
-|-----------|-------|
-| **Source Archive** | engwebp_usfm.zip |
-| **Source URL** | https://eBible.org/Scriptures/engwebp_usfm.zip |
+| Parameter           | Value                                                              |
+| ------------------- | ------------------------------------------------------------------ |
+| **Source Archive**  | engwebp_usfm.zip                                                   |
+| **Source URL**      | https://eBible.org/Scriptures/engwebp_usfm.zip                     |
 | **Archive SHA-256** | `2d2dc7b443a4cf398dfe05d1001195887c74a80b388003358ccc8a6bfc1c5c07` |
-| **Source Date** | 2026-08-26 |
-| **Download Date** | 2026-08-29 15:20:48 UTC |
-| **Format** | USFM 3.0 |
-| **Translation** | World English Bible (WEB) |
-| **Edition** | engwebp (2020 stable text edition) |
-| **Canon** | 66-book Protestant |
-| **Books** | 66 |
-| **Chapters** | 1,189 |
-| **Verses** | 31,103 |
+| **Source Date**     | 2026-08-26                                                         |
+| **Download Date**   | 2026-08-29 15:20:48 UTC                                            |
+| **Format**          | USFM 3.0                                                           |
+| **Translation**     | World English Bible (WEB)                                          |
+| **Edition**         | engwebp (2020 stable text edition)                                 |
+| **Canon**           | 66-book Protestant                                                 |
+| **Books**           | 66                                                                 |
+| **Chapters**        | 1,189                                                              |
+| **Verses**          | 31,103                                                             |
 
 **Implementation Requirements:**
 

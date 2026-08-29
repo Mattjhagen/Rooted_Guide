@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <!--
+    Plumb Line Splash Mark - Light Theme (v2 - Revised)
+    Simplified centered mark for native splash screen
+    Scaled proportionally with v2 improvements
+  -->
+
+  <rect width="200" height="200" fill="transparent"/>
+
+  <!-- Top anchor cap (scaled) -->
+  <line
+    x1="95"
+    y1="30"
+    x2="105"
+    y2="30"
+    stroke="#2C3E50"
+    stroke-width="2"
+    stroke-linecap="round"/>
+
+  <!-- Vertical line (proportionally thicker) -->
+  <line
+    x1="100"
+    y1="33"
+    x2="100"
+    y2="140"
+    stroke="#2C3E50"
+    stroke-width="3"
+    stroke-linecap="round"/>
+
+  <!-- Plumb weight (proportionally enlarged) -->
+  <path
+    d="M 100 140 L 83 165 Q 83 180, 100 190 Q 117 180, 117 165 Z"
+    fill="#2C3E50"/>
+</svg>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="48" height="48" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+  <!--
+    Plumb Line Icon - 48px Optical Size (v3 Final)
+    Simple geometry for reliable rasterization at favicon size
+    Glyph height: ~36px (y=6 to y=42)
+  -->
+
+  <!-- Background -->
+  <rect width="48" height="48" fill="#F8F9FA"/>
+
+  <!-- Top cap -->
+  <rect x="20" y="6" width="8" height="2" rx="1" fill="#2C3E50"/>
+
+  <!-- Vertical line -->
+  <rect x="22" y="7.5" width="4" height="27" fill="#2C3E50"/>
+
+  <!-- Plumb weight -->
+  <path d="M 24 34.5 L 20 39 Q 20 42, 24 42 Q 28 42, 28 39 Z" fill="#2C3E50"/>
+</svg>

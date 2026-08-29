@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+  <!--
+    Plumb Line App Icon - Master Source (v2 - Revised)
+    Concept: Vertical line with suspended plumb weight
+    Represents: Alignment, truth, examination, faithful direction
+
+    Changes from v1:
+    - Increased line stroke from 4px to 8px for better small-size visibility
+    - Enlarged plumb weight by ~40% for recognition at 32px
+    - Added subtle top anchor cap for distinction from pins/pendulums
+    - Increased overall visual scale to occupy ~55% of canvas height
+    - Improved optical centering accounting for weight mass
+    - Simplified weight geometry (removed tiny hole detail)
+  -->
+
+  <!-- Background (transparent for adaptive icon) -->
+  <rect width="1024" height="1024" fill="transparent"/>
+
+  <!-- Top anchor cap (restrained horizontal element) -->
+  <line
+    x1="488"
+    y1="160"
+    x2="536"
+    y2="160"
+    stroke="#2C3E50"
+    stroke-width="6"
+    stroke-linecap="round"/>
+
+  <!-- Vertical plumb line (increased weight for visibility) -->
+  <line
+    x1="512"
+    y1="170"
+    x2="512"
+    y2="740"
+    stroke="#2C3E50"
+    stroke-width="8"
+    stroke-linecap="round"/>
+
+  <!-- Plumb weight (enlarged, simplified teardrop) -->
+  <g id="plumb-weight">
+    <!-- Main weight body (geometric teardrop, no internal details) -->
+    <path
+      d="M 512 740 L 470 810 Q 470 860, 512 890 Q 554 860, 554 810 Z"
+      fill="#2C3E50"
+      stroke="none"/>
+  </g>
+
+  <!-- Optional: Very subtle shadow for depth (minimal opacity) -->
+  <ellipse
+    cx="512"
+    cy="900"
+    rx="28"
+    ry="8"
+    fill="#000000"
+    opacity="0.06"/>
+</svg>

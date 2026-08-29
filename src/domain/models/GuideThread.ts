@@ -1,5 +1,5 @@
 /**
- * Represents a conversation thread between the user and the Rooted guide
+ * Represents a conversation thread between the user and the guide
  */
 
 import { BibleBookValue } from './BibleBook';

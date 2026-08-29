@@ -39,7 +39,7 @@ export default function HomeScreen() {
           {turns.length === 0 ? (
             <View style={styles.emptyState}>
               <Text style={[styles.title, { color: theme.text }]} accessibilityRole="header">
-                Rooted
+                Plumb Line
               </Text>
               <Text style={[styles.subtitle, { color: theme.textSecondary }]}>
                 A personal Bible guide
