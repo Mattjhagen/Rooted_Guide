@@ -20,8 +20,8 @@ Use this capitalization exactly. The name is inspired by the biblical image of a
 
 - GitHub repository: `Rooted_Guide`
 - Git history: preserved from original Rooted working title
-- iOS bundle identifier: `com.rooteddaily.bible`
-- Android package: `com.rooteddaily.bible`
+- iOS bundle identifier: `com.mattjhagen.plumbline`
+- Android package: `com.mattjhagen.plumbline`
 
 **Update these user-facing values:**
 

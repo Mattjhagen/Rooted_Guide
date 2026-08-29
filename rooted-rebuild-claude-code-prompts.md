@@ -240,7 +240,7 @@ Design new migrations with least-privilege RLS for only the personal tables that
 
 Implement a sync engine behind SyncGateway with upload/download cursors, retry/backoff, offline queueing, idempotency, conflict tests, account-switch isolation, sign-out behavior, and a user-visible sync status. Define whether local data merges into a new account and require an explicit user choice before doing so. Support account deletion and remote-data deletion.
 
-Test RLS with two users and anonymous access, including attempts to read/update/delete another user’s content. Document redirect schemes for the final bundle ID com.rooteddaily.bible without carrying over stale deenbuddy or old Rooted identifiers.
+Test RLS with two users and anonymous access, including attempts to read/update/delete another user’s content. Document redirect schemes for the final bundle ID com.mattjhagen.plumbline.
 ```
 
 Exit gate: anonymous use still works, cross-device sync is predictable, and automated tests demonstrate that one user cannot access another user’s data.
@@ -276,7 +276,7 @@ Perform and document:
 - AI safety and fabricated-citation red-team cases
 - offline, slow-network, server-down, corrupted-local-data, migration, interrupted-sync, and fresh-install testing
 - screen-reader, dynamic-type, contrast, reduced-motion, keyboard, and touch-target review
-- iOS/Android release configuration for com.rooteddaily.bible, deep links, Sign in with Apple, icons, splash, versioning, and environment separation
+- iOS/Android release configuration for com.mattjhagen.plumbline, deep links, Sign in with Apple, icons, splash, versioning, and environment separation
 - performance budgets for cold start, Bible import, database size, search, first guide feedback, memory, and thread size
 - deterministic test suite plus a small end-to-end smoke suite
 

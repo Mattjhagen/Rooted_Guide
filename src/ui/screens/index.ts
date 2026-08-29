@@ -1,0 +1,1 @@
+export { DailyPassageScreen } from './DailyPassageScreen';

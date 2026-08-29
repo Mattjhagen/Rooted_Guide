@@ -13,8 +13,10 @@ import {
 } from 'react-native';
 import { useGuide } from '@/features/guide/useGuide';
 import { useDraftPersistence } from '@/features/guide/useDraftPersistence';
-import { MockGuideGateway, MockBibleRepository } from '@/infrastructure/adapters';
+import { useBibleRepository } from '@/infrastructure/scripture/useBibleRepository';
+import { createGuideGateway, isGuideServiceAvailable } from '@/infrastructure/config/guideConfig';
 import { Composer, GuideMessage } from '@/ui/components';
+import { DailyPassageScreen } from '@/ui/screens';
 import { getTheme, spacing, typography } from '@/ui/theme';
 
 export default function HomeScreen() {
@@ -22,16 +24,32 @@ export default function HomeScreen() {
   const theme = getTheme(scheme);
   const { height } = useWindowDimensions();
 
+  const [showGuide, setShowGuide] = useState(false);
+  const [_passageContext, setPassageContext] = useState<{
+    book: string;
+    chapter: number;
+    verses: number[];
+    text: string;
+  } | null>(null);
+
   const [draft, setDraft] = useState('');
   const { saveDraft, loadDraft, clearDraft } = useDraftPersistence();
 
-  // Initialize mock implementations for vertical slice
-  const guideGateway = useMemo(() => new MockGuideGateway(), []);
-  const bibleRepository = useMemo(() => new MockBibleRepository(), []);
+  // Initialize Bible repository from SQLite
+  const bibleRepository = useBibleRepository();
+
+  // Only create guide gateway when conversation starts (not on mount)
+  const guideGateway = useMemo(() => {
+    if (!showGuide) return null;
+    return createGuideGateway(bibleRepository);
+  }, [showGuide, bibleRepository]);
 
   const { turns, state, sendMessage } = useGuide(guideGateway);
 
   const isEmpty = turns.length === 0;
+
+  // Check if guide service is available (but don't create gateway yet)
+  const guideAvailable = isGuideServiceAvailable();
 
   // Load saved draft on mount
   useEffect(() => {
@@ -64,6 +82,29 @@ export default function HomeScreen() {
     saveDraft(text);
   };
 
+  const handleAskAboutPassage = (context: {
+    book: string;
+    chapter: number;
+    verses: number[];
+    text: string;
+  }) => {
+    setPassageContext(context);
+    setShowGuide(true);
+
+    // Pre-populate the first message with passage context
+    const initialMessage = `I'm reading ${context.book} ${context.chapter}:${context.verses[0]}-${context.verses[context.verses.length - 1]}. Can you help me understand this?`;
+    setDraft(initialMessage);
+    saveDraft(initialMessage);
+  };
+
+  // Show daily passage first, guide conversation only after explicit request
+  if (!showGuide) {
+    return (
+      <DailyPassageScreen onAskAboutThis={handleAskAboutPassage} guideAvailable={guideAvailable} />
+    );
+  }
+
+  // Show guide conversation (only reached after user taps "Ask about this")
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>
       <KeyboardAvoidingView
@@ -80,7 +121,7 @@ export default function HomeScreen() {
           {isEmpty ? (
             <View style={styles.emptyState}>
               <Text style={[styles.invitation, { color: theme.text }]} accessibilityRole="header">
-                Let's begin with where you are.
+                Let's reflect on this together.
               </Text>
             </View>
           ) : (

@@ -24,8 +24,9 @@ interface UseGuideReturn {
  * - Prevents stale responses from overwriting current state
  * - Bounds conversation context to prevent unbounded growth
  * - Handles offline and recoverable error states
+ * - Gracefully handles null gateway (service unavailable)
  */
-export function useGuide(gateway: GuideGateway): UseGuideReturn {
+export function useGuide(gateway: GuideGateway | null): UseGuideReturn {
   const [turns, setTurns] = useState<GuideTurn[]>([]);
   const [state, dispatch] = useReducer(guideReducer, { type: 'idle' });
   const lastRequestRef = useRef<string | null>(null);
@@ -34,6 +35,12 @@ export function useGuide(gateway: GuideGateway): UseGuideReturn {
   const sendMessage = useCallback(
     async (userInput: string) => {
       if (!userInput.trim() || !canSubmit(state)) return;
+
+      // If no gateway available, show offline state
+      if (!gateway) {
+        dispatch({ type: 'OFFLINE' });
+        return;
+      }
 
       const requestId = `${Date.now()}-${Math.random()}`;
       lastRequestRef.current = requestId;

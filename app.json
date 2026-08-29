@@ -13,7 +13,7 @@
       "backgroundColor": "#F8F9FA"
     },
     "ios": {
-      "bundleIdentifier": "com.rooteddaily.bible",
+      "bundleIdentifier": "com.mattjhagen.plumbline",
       "supportsTablet": false,
       "splash": {
         "image": "./assets/splash-icon.png",
@@ -30,7 +30,7 @@
       }
     },
     "android": {
-      "package": "com.rooteddaily.bible",
+      "package": "com.mattjhagen.plumbline",
       "splash": {
         "image": "./assets/splash-icon.png",
         "resizeMode": "contain",

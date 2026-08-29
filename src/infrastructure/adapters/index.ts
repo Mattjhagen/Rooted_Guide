@@ -1,6 +1,8 @@
 export * from './testFixtures';
 export * from './MockBibleRepository';
 export * from './MockGuideGateway';
+export * from './HTTPGuideGateway';
+export * from './LocalDevGuideGateway';
 
 // Production Scripture Repository
 export { SQLiteBibleRepository } from '../scripture/SQLiteBibleRepository';

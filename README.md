@@ -18,15 +18,19 @@ The legacy [`Rooted_Daily`](https://github.com/Mattjhagen/Rooted_Daily) reposito
 ## Documentation
 
 - [Product Vision](./docs/product-vision.md) — Core product identity, onboarding strategy, design principles, and boundaries
+- [App Identity](./docs/app-identity.md) — Bundle IDs, versioning, and EAS/App Store setup
 - [Rebuild Audit](./docs/rebuild-audit.md) — Legacy repository audit and architecture decisions
 - [Bible Corpus Audit](./docs/bible-corpus-audit.md) — Translation provenance, licensing, and integrity verification
 - [Staged Rebuild Prompts](./rooted-rebuild-claude-code-prompts.md) — Complete implementation sequence
+- [Server Integration](./docs/server-integration.md) — Guide service API contract and deployment
 
 ## Current status
 
 **Prompt 1:** ✅ Clean-room boundary established  
 **Prompt 2:** ✅ Fresh foundation with vertical slice  
-**Prompt 3A:** ✅ Bible corpus audit (engwebp approved)  
-**Prompt 3B:** ⏳ Next — SQLite Bible repository implementation
+**Prompt 3:** ✅ Validated offline WEB Scripture engine  
+**Prompt 4:** ✅ Conversational guide into Scripture  
+**Prompt 5:** ⏳ In progress — Server-mediated AI guide service  
+**Prompt 6:** ⬜ Next — Local-first personal data persistence
 
 Application implementation is in progress following the staged prompt sequence.

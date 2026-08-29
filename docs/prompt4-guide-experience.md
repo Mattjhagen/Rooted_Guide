@@ -1,60 +1,55 @@
-# Prompt 4: Plumb Line Guide Experience (Revised)
+# Prompt 4: Plumb Line Guide Experience (CORRECTED)
 
-**Status**: Refined — Conversational Direction  
-**Date**: 2026-08-29
+**Status**: Architecture Corrected — Daily-First Flow  
+**Date**: 2026-08-29  
+**Correction**: 2026-08-29
 
 ## Overview
 
-Prompt 4 implements a personally-guided journey into Scripture. The app opens to a blinking cursor with the invitation "Let's begin with where you are." — not a questionnaire, not a chat interface, but a continuing conversation that naturally leads into today's Bible passage.
+Prompt 4 implements a daily Scripture-first experience with optional conversational guidance. The app opens **directly to Scripture** (today's passage), not to a conversation. The guide is supplemental and contextual — invoked only after the user has read Scripture and explicitly chooses "Ask about this."
 
-## Product Invariant
+## Product Invariant (CORRECTED)
 
-> The user is being personally guided through the Bible — not configuring an app, not chatting with an AI.
+> The user reads Scripture first — not configures an app, not chats with AI.
 >
-> The blinking cursor is the opening.  
-> The conversation deepens context.  
-> Scripture is the destination.
+> **Scripture is the entry point.**  
+> The guide is supplemental and contextual.  
+> Offline reading must always work.
 
-## Implementation
+## Implementation (CORRECTED)
 
-### 1. Opening Surface
+### 1. Opening Screen: Daily Scripture Passage
 
-The app launches directly into a quiet writing surface:
+The app launches **directly to Scripture**, not to a conversation:
 
-- **Focus**: Auto-focused multiline composer with visible blinking cursor
-- **Invitation**: "Let's begin with where you are." — typography-led, spacious
-- **No starter cards**: No option grids, preference chips, or questionnaire UI
-- **No placeholder text**: The cursor itself is the invitation
-- **Design**: Generous whitespace, calm typography, no chrome or dashboard elements
+- **Display**: Today's passage (e.g., Psalm 23:1-6) rendered from local SQLite
+- **Always available**: Works perfectly offline, no AI service required
+- **Typography**: Generous whitespace, calm typography, readable verse layout
+- **Translation**: "World English Bible" label
+- **No conversation UI**: No composer, no chat interface, no blinking cursor yet
 
-### 2. Conversational Progression
+### 2. Optional Guide Entry Point
 
-The conversation unfolds in three natural stages:
+After reading the passage, user MAY choose to reflect with guidance:
 
-**First Exchange** (Turn 0-1):
-- User shares where they are
-- Plumb Line responds briefly and warmly (under 150 characters)
-- Asks a natural follow-up question
-- **No citations, no suggestions** — just conversation
-- Examples: "I hear that. What's sitting with you this morning?"
+- **Button**: "Ask about this" appears at bottom (only if service available)
+- **Contextual**: Passes the specific passage reference and text to guide
+- **Offline graceful**: If service unavailable, button is hidden (no error shown)
+- **Explicit action**: User must tap button to enter conversation mode
 
-**Second Exchange** (Turn 2-3):
-- User deepens context
-- Plumb Line acknowledges and gently transitions toward Scripture
-- Invites them into today's 15-minute passage
-- **Still no citations** — just the natural bridge
-- Examples: "Let's spend a few minutes with something that might speak to where you are. Would you like to receive today's passage?"
+### 3. Conversational Mode (Post-Reading)
 
-**Scripture Path** (Turn 4+):
-- Presents today's Verse of the Day with context
-- Shows verified WEB citations from local SQLite
-- Includes the 15-minute structure: Arrive → Receive → Reflect → Respond → Close
-- **Optional "Continue the conversation" link** appears subtly below (not prominent)
+Only after user taps "Ask about this", show the guide interface:
 
-**Visual Distinction**:
+- **Context pre-loaded**: "I'm reading Psalm 23:1-6. Can you help me understand this?"
+- **Focused conversation**: Guide knows exactly what passage user is reading
+- **Bounded context**: Only that passage's verses are supplied to the guide
+- **Back navigation**: User can return to daily passage reading
+
+**Visual Distinction in Guide Mode**:
 - User messages: Right-aligned, blue background
 - Guide responses: Left-aligned, "PLUMB LINE" label, neutral background
-- Citations: Dedicated cards with canonical reference, WEB label, and "View passage context"
+- Citations: Dedicated cards with canonical reference, WEB label
 
 ### 3. Guide State Machine
 
@@ -255,4 +250,4 @@ All verification points from the refined direction:
 ✅ Comprehensive tests (103 passing)  
 ✅ Documentation updated  
 ✅ Mock AI only, no real AI/auth/sync  
-✅ Bundle ID: `com.rooteddaily.bible`
+✅ Bundle ID: `com.mattjhagen.plumbline`
