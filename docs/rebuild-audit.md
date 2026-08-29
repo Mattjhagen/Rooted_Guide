@@ -13,6 +13,7 @@ The legacy Rooted_Daily application is a feature-rich Expo/React Native devotion
 ### 1.1 Bible Data and Domain Logic
 
 #### World English Bible Translation Data
+
 - **Path:** `src/data/bibleFull.json`
 - **Size:** 3.9MB (minified JSON, single line)
 - **Structure:** `{ books: [{ abbrev: string, chapters: string[][] }] }`
@@ -20,26 +21,31 @@ The legacy Rooted_Daily application is a feature-rich Expo/React Native devotion
 - **Reason:** Complete 66-book Bible corpus with ~31,000 verses. WEB translation is public domain and suitable for the rebuild. Requires verification audit (see Section 4).
 
 #### Bible Book Abbreviation Mapping
+
 - **Path:** `src/constants/bibleMapping.ts`
 - **Decision:** **PORT DATA**
 - **Reason:** Essential mapping from 2-4 character abbreviations (gn, ex, ps, mt, etc.) to canonical book names. Required for parsing bibleFull.json.
 
 #### Bible Initialization Logic
+
 - **Path:** `src/features/bible/bibleLoader.ts`
 - **Decision:** **REWRITE BEHAVIOR**
 - **Reason:** Solid pattern for loading JSON into SQLite with progress tracking. Port the algorithmic approach (per-book transactions, progress callbacks), but rewrite for new stack and local-first persistence layer.
 
 #### Bible Data Service
+
 - **Path:** `src/features/bible/bibleService.ts`
 - **Decision:** **REWRITE BEHAVIOR**
 - **Reason:** Clean verse/chapter retrieval API. Port the interface pattern (getVerse, getChapter, searchVerses), but reimplement against the new local database and type system.
 
 #### Bible Chapter Parser
+
 - **Path:** `src/features/bible/bibleParser.ts`
 - **Decision:** **DEFER**
 - **Reason:** Unknown parsing logic. Inspect only if bibleFull.json format requires transformation before storage.
 
 #### Bible Engine
+
 - **Path:** `src/features/bible/BibleEngine.ts`
 - **Decision:** **DEFER**
 - **Reason:** Unknown orchestration logic. Inspect only if needed for Bible navigation or citation resolution.
@@ -47,21 +53,25 @@ The legacy Rooted_Daily application is a feature-rich Expo/React Native devotion
 ### 1.2 Personal Data
 
 #### Journal Store
+
 - **Path:** `src/features/journal/journalStore.ts`
 - **Decision:** **REWRITE BEHAVIOR**
 - **Reason:** Zustand + AsyncStorage pattern for local journal entries. Port the state management pattern (entries, create, update, delete), but rewrite for new persistence layer and privacy-preserving sync boundaries.
 
 #### Bookmarks Store
+
 - **Path:** `src/features/bible/bookmarksStore.ts`
 - **Decision:** **REWRITE BEHAVIOR**
 - **Reason:** Verse bookmark persistence. Port the domain model (book/chapter/verse reference), rewrite for new database schema.
 
 #### Highlights Store
+
 - **Path:** `src/features/bible/highlightsStore.ts`
 - **Decision:** **REWRITE BEHAVIOR**
 - **Reason:** Verse highlighting with color. Port the domain model (reference + color), rewrite for new schema.
 
 #### Reading Plan Data
+
 - **Path:** `src/data/readingPlanData.ts`
 - **Decision:** **REJECT**
 - **Reason:** Reading plans are not part of the rebuild product vision. Rooted opens to a cursor, not a plan tracker.
@@ -69,21 +79,25 @@ The legacy Rooted_Daily application is a feature-rich Expo/React Native devotion
 ### 1.3 Authentication and Synchronization
 
 #### Supabase Client
+
 - **Path:** `src/services/supabase.ts`
 - **Decision:** **REJECT**
 - **Reason:** Current implementation uses client-exposed anon key. Rebuild will use optional user accounts with server-side session management.
 
 #### Auth Service
+
 - **Path:** `src/services/auth/AuthService.ts`
 - **Decision:** **REJECT**
 - **Reason:** OAuth patterns (Google, Apple, YouVersion) with client secret exposure and unsafe token storage. Rebuild requires server-side OAuth callback handling and secure session tokens.
 
 #### YouVersion OAuth Integration
+
 - **Paths:** Multiple files referencing `EXPO_PUBLIC_YOUVERSION_CLIENT_SECRET`
 - **Decision:** **REJECT**
 - **Reason:** Client secret must never be embedded in client bundle. If YouVersion integration is needed, implement server-side OAuth flow.
 
 #### Supabase Migrations
+
 - **Path:** `supabase/migrations/`
 - **Files:**
   - `001_devotionals.sql.skip` (skipped migration)
@@ -98,11 +112,13 @@ The legacy Rooted_Daily application is a feature-rich Expo/React Native devotion
 ### 1.4 AI
 
 #### Chat Service (Multi-Provider Fallback)
+
 - **Path:** `src/features/chat/chatService.ts`
 - **Decision:** **REJECT**
 - **Reason:** Client-exposed API keys (Gemini, OpenAI, Claude) and hardcoded AI proxy URL. Rebuild will use server-side AI with credential rotation and structured responses.
 
 #### System Prompt
+
 - **Path:** `src/features/chat/systemPrompt.ts`
 - **Decision:** **PORT DATA** (with modifications)
 - **Reason:** Well-crafted prompt that establishes tone ("charismatic, understanding, personal"), rules (never invent verses, conversational), and structured output format (SUGGESTIONS_JSON). Port the prompt principles, but:
@@ -111,6 +127,7 @@ The legacy Rooted_Daily application is a feature-rich Expo/React Native devotion
   - Add instruction to return structured references for verse lookups
 
 #### Devotional Service
+
 - **Path:** `src/features/devotionals/PersonalizedDevotionalService.ts`
 - **Decision:** **REJECT**
 - **Reason:** Devotionals are not part of the rebuild product vision.
@@ -118,6 +135,7 @@ The legacy Rooted_Daily application is a feature-rich Expo/React Native devotion
 ### 1.5 Settings
 
 #### Reader Settings Sheet
+
 - **Path:** `src/components/ReaderSettingsSheet.tsx`
 - **Decision:** **DEFER**
 - **Reason:** Inspect only if font size, theme, or reading view preferences are needed in rebuild.
@@ -125,6 +143,7 @@ The legacy Rooted_Daily application is a feature-rich Expo/React Native devotion
 ### 1.6 Audio and Notifications
 
 #### Audio Services
+
 - **Paths:**
   - `src/services/audio/` (directory)
   - `src/features/audio/` (directory)
@@ -132,6 +151,7 @@ The legacy Rooted_Daily application is a feature-rich Expo/React Native devotion
 - **Reason:** Audio Bible playback is not in initial rebuild scope. Defer until text-based experience is validated.
 
 #### Notification Service
+
 - **Path:** `src/services/NotificationService.ts`
 - **Decision:** **DEFER**
 - **Reason:** Push notifications are not in initial rebuild scope.
@@ -139,6 +159,7 @@ The legacy Rooted_Daily application is a feature-rich Expo/React Native devotion
 ### 1.7 Theme and Visual Assets
 
 #### Theme System
+
 - **Paths:**
   - `src/theme/colors.ts`
   - `src/theme/spacing.ts`
@@ -147,6 +168,7 @@ The legacy Rooted_Daily application is a feature-rich Expo/React Native devotion
 - **Reason:** Reusable design tokens. Port color palette, spacing scale, and typography styles. Verify that these align with the "calm, personal" product vision (no aggressive gamification colors).
 
 #### Logo and Icon Assets
+
 - **Paths:**
   - `rooted_app_icon.svg`
   - `rooted_icon_512.png`
@@ -155,6 +177,7 @@ The legacy Rooted_Daily application is a feature-rich Expo/React Native devotion
 - **Reason:** Brand identity assets. Port for use in new application.
 
 #### Font Assets
+
 - **Path:** `assets/fonts/`
 - **Decision:** **PORT DATA**
 - **Reason:** Custom fonts contribute to calm, personal aesthetic. Port if fonts are brand-specific.
@@ -162,11 +185,13 @@ The legacy Rooted_Daily application is a feature-rich Expo/React Native devotion
 ### 1.8 Rejected Architecture
 
 #### Multi-Tab Navigation
+
 - **Path:** `app/(tabs)/`
 - **Decision:** **REJECT**
 - **Reason:** Rebuild opens to a cursor, not a dashboard with tabs. Navigation emerges from conversation.
 
 #### Community Features
+
 - **Paths:**
   - `src/components/CommunityInsights.tsx`
   - `app/chat/community.tsx`
@@ -175,6 +200,7 @@ The legacy Rooted_Daily application is a feature-rich Expo/React Native devotion
 - **Reason:** Social/community features are explicitly excluded from rebuild. Rooted is a personal guide, not a social platform.
 
 #### Reading Plans Feature
+
 - **Paths:**
   - `src/features/plans/`
   - `src/components/PlanCard.tsx`
@@ -183,6 +209,7 @@ The legacy Rooted_Daily application is a feature-rich Expo/React Native devotion
 - **Reason:** Reading plan tracking is a dashboard pattern. Rebuild uses conversation-based navigation.
 
 #### Devotionals Feature
+
 - **Paths:**
   - `src/features/devotionals/`
   - `src/components/DevotionalCard.tsx`
@@ -190,11 +217,13 @@ The legacy Rooted_Daily application is a feature-rich Expo/React Native devotion
 - **Reason:** Devotionals are curated content separate from Scripture grounding. Not part of rebuild vision.
 
 #### Admin Features
+
 - **Path:** `app/admin/`
 - **Decision:** **REJECT**
 - **Reason:** No admin panel needed in rebuild.
 
 #### YouVersion Integration
+
 - **Paths:**
   - `src/services/youversion/`
   - `src/features/bible/youVersionStore.ts`
@@ -206,24 +235,28 @@ The legacy Rooted_Daily application is a feature-rich Expo/React Native devotion
 ### 2.1 Critical Security Vulnerabilities
 
 #### ⚠️ Client-Exposed AI API Keys
+
 - **Issue:** `EXPO_PUBLIC_GEMINI_API_KEY`, `EXPO_PUBLIC_OPENAI_API_KEY`, `EXPO_PUBLIC_ANTHROPIC_API_KEY` are embedded in client bundle
 - **Location:** `src/features/chat/chatService.ts:5-7`, `.env.example:18,23,28`
 - **Risk:** API key exposure in decompiled client. Quota exhaustion, cost abuse, credential rotation required.
 - **Mitigation:** Rebuild must use server-side AI proxy. Client sends user messages to server, server calls AI with rotatable API keys.
 
 #### ⚠️ Client-Exposed OAuth Client Secret
+
 - **Issue:** `EXPO_PUBLIC_YOUVERSION_CLIENT_SECRET` is embedded in client bundle
 - **Location:** `src/services/auth/AuthService.ts:14`, `.env.example:74`
 - **Risk:** OAuth client secret must never be in client code. Allows impersonation of application in OAuth flows.
 - **Mitigation:** Rebuild must implement server-side OAuth callback handler. Client redirects to server, server exchanges code for token.
 
 #### ⚠️ Client-Exposed Supabase Service Role Key
+
 - **Issue:** `EXPO_PUBLIC_SUPABASE_SERVICE_KEY` referenced in code (may not be actively used)
 - **Location:** `src/features/devotionals/devotionalService.ts:7`
 - **Risk:** Service role key bypasses Row Level Security (RLS). Client with this key can read/write/delete any data in database.
 - **Mitigation:** Immediately verify this key is not in any .env file. Service role key must only exist on server. Rebuild will use anon key + RLS on client, service key only in server functions.
 
 #### ⚠️ Hardcoded Service Endpoints
+
 - **Issue:** AI proxy URL `https://rooted-ai.mattjhagen.workers.dev` is hardcoded
 - **Location:** `src/features/chat/chatService.ts:9`
 - **Risk:** Cannot rotate endpoint without app update. Cloudflare Worker endpoint may be public.
@@ -232,12 +265,14 @@ The legacy Rooted_Daily application is a feature-rich Expo/React Native devotion
 ### 2.2 Authentication and Token Storage
 
 #### Unsafe YouVersion Token Storage
+
 - **Issue:** YouVersion OAuth access token stored in Supabase user metadata
 - **Location:** `src/services/auth/AuthService.ts:170-173`
 - **Risk:** User metadata may be readable by other users depending on RLS policies. Third-party token should not be stored in user-readable fields.
 - **Mitigation:** If YouVersion integration is needed in rebuild, store tokens in separate table with strict RLS, or re-fetch on demand with refresh token.
 
 #### Synthetic Password Pattern
+
 - **Issue:** YouVersion users are created with password `youversion_${userData.id}_${YOUVERSION_CLIENT_ID}`
 - **Location:** `src/services/auth/AuthService.ts:145-146`
 - **Risk:** Deterministic password generation. If client ID leaks, attacker can impersonate any YouVersion user.
@@ -246,12 +281,14 @@ The legacy Rooted_Daily application is a feature-rich Expo/React Native devotion
 ### 2.3 Stale AI Provider Assumptions
 
 #### Outdated Claude Model
+
 - **Issue:** Hardcoded `claude-3-haiku-20240307` model
 - **Location:** `src/features/chat/chatService.ts:103`
 - **Risk:** Model may be deprecated. Rebuild should use current Claude 3.7 models.
 - **Mitigation:** Use latest Claude Haiku or Sonnet model IDs from Anthropic API documentation.
 
 #### Dangerous Browser Header
+
 - **Issue:** `'dangerously-allow-browser': 'true'` in Claude API request
 - **Location:** `src/features/chat/chatService.ts:100`
 - **Risk:** This header bypasses CORS protection intended to prevent client-side API key exposure. Confirms that AI calls should not be made from client.
@@ -270,31 +307,37 @@ The legacy Rooted_Daily application is a feature-rich Expo/React Native devotion
 ### 3.2 Expected Counts and Verification
 
 #### Books (Expected: 66)
+
 - **Actual Count:** 66 books confirmed in bibleFull.json
 - **Verification Status:** ✅ PASS
 - **Method:** `jq -r '.books | length' src/data/bibleFull.json` → 66
 
 #### Chapters (Expected: 1,189)
+
 - **Verification Status:** ⏳ PENDING
 - **Method:** Sum chapter counts across all books: `jq '[.books[].chapters | length] | add' src/data/bibleFull.json`
 
 #### Verses (Expected: ~31,102 for WEB)
+
 - **Verification Status:** ⏳ PENDING
 - **Method:** Sum verse counts across all chapters: `jq '[.books[].chapters[] | length] | add' src/data/bibleFull.json`
 
 ### 3.3 Structural Integrity Checks
 
 #### Psalms Numbering and Psalm 151
+
 - **Expected:** 150 Psalms (Psalm 151 is apocryphal, not in Protestant canon)
 - **Verification Status:** ⏳ PENDING
 - **Method:** `jq '.books[] | select(.abbrev == "ps") | .chapters | length' src/data/bibleFull.json`
 
 #### Missing Books
+
 - **Expected 66 Books:** Genesis, Exodus, Leviticus, Numbers, Deuteronomy, Joshua, Judges, Ruth, 1 Samuel, 2 Samuel, 1 Kings, 2 Kings, 1 Chronicles, 2 Chronicles, Ezra, Nehemiah, Esther, Job, Psalms, Proverbs, Ecclesiastes, Song of Solomon, Isaiah, Jeremiah, Lamentations, Ezekiel, Daniel, Hosea, Joel, Amos, Obadiah, Jonah, Micah, Nahum, Habakkuk, Zephaniah, Haggai, Zechariah, Malachi, Matthew, Mark, Luke, John, Acts, Romans, 1 Corinthians, 2 Corinthians, Galatians, Ephesians, Philippians, Colossians, 1 Thessalonians, 2 Thessalonians, 1 Timothy, 2 Timothy, Titus, Philemon, Hebrews, James, 1 Peter, 2 Peter, 1 John, 2 John, 3 John, Jude, Revelation
 - **Verification Status:** ⏳ PENDING
 - **Method:** Extract all abbreviations from bibleFull.json, map to canonical names via bibleMapping.ts, diff against expected list
 
 #### Missing Chapters
+
 - **High-Risk Books:**
   - Genesis: 50 chapters expected
   - Psalms: 150 chapters expected
@@ -305,11 +348,13 @@ The legacy Rooted_Daily application is a feature-rich Expo/React Native devotion
 - **Method:** Compare actual chapter counts against known Bible structure
 
 #### Duplicate Verses
+
 - **Risk:** JSON generation errors may create duplicate verse entries
 - **Verification Status:** ⏳ PENDING
 - **Method:** After loading into SQLite, run: `SELECT book, chapter, verse, COUNT(*) as count FROM verses GROUP BY book, chapter, verse HAVING count > 1`
 
 #### Malformed Content
+
 - **Checks:**
   - Empty verse text: `SELECT COUNT(*) FROM verses WHERE text = '' OR text IS NULL`
   - Suspiciously short verses: `SELECT * FROM verses WHERE LENGTH(text) < 2`
@@ -376,17 +421,19 @@ Store checksums in docs/ for future integrity verification.
 - **Proposed Schema:**
   ```typescript
   {
-    text: string;                    // Main response
-    citations: Array<{               // Verses mentioned
+    text: string; // Main response
+    citations: Array<{
+      // Verses mentioned
       book: string;
       chapter: number;
       verse: number;
-      text?: string;                 // Optional: full verse text
+      text?: string; // Optional: full verse text
     }>;
-    suggestions: Array<{             // Follow-up prompts
+    suggestions: Array<{
+      // Follow-up prompts
       type: 'reflection' | 'question' | 'related_verse';
       text: string;
-      reference?: { book, chapter, verse };
+      reference?: { book; chapter; verse };
     }>;
   }
   ```
@@ -476,12 +523,12 @@ Store checksums in docs/ for future integrity verification.
   - Native iOS only?
   - Web-first PWA?
 
-- **What is the tech stack?**  
+- **What is the tech stack?**
   - Frontend: React Native, React (web), SwiftUI, Flutter?
   - Backend: Node.js, Python, Go, serverless functions?
   - Database: Supabase, Firebase, custom Postgres, SQLite + sync server?
 
-- **What is the deployment model?**  
+- **What is the deployment model?**
   - Self-hosted (user runs own backend)?
   - Managed service (Rooted hosts backend)?
   - Hybrid (local-first with optional cloud sync)?
@@ -496,24 +543,24 @@ Store checksums in docs/ for future integrity verification.
 
 ### 5.5 Privacy
 
-- **What is the data retention policy?**  
+- **What is the data retention policy?**
   - Are conversations stored server-side? If yes, for how long?
   - Is journal content end-to-end encrypted?
   - Can users export or delete their data?
 
-- **What is the third-party data sharing policy?**  
+- **What is the third-party data sharing policy?**
   - Does Rooted share any user data with AI providers (OpenAI, Anthropic)?
   - Are prompts anonymized?
   - Is telemetry opt-in or opt-out?
 
 ### 5.6 Legal
 
-- **What is the terms of service and privacy policy?**  
+- **What is the terms of service and privacy policy?**
   - Who owns user content (journal entries, highlights)?
   - What happens if Rooted shuts down?
   - GDPR/CCPA compliance requirements?
 
-- **What is the Bible translation licensing?**  
+- **What is the Bible translation licensing?**
   - WEB is public domain, but if other translations are added (NIV, ESV), licensing fees apply.
   - Who negotiates and pays for translation licenses?
 
@@ -544,6 +591,7 @@ The audit is complete. Proceed to Prompt 2 only after reviewing this document an
 ### Legacy Files Inspected
 
 **Bible Data:**
+
 - `src/data/bibleFull.json` (3.9MB)
 - `src/constants/bibleMapping.ts`
 - `src/features/bible/bibleLoader.ts`
@@ -552,29 +600,35 @@ The audit is complete. Proceed to Prompt 2 only after reviewing this document an
 - `src/features/bible/BibleEngine.ts` (not inspected)
 
 **Personal Data:**
+
 - `src/features/journal/journalStore.ts`
 - `src/features/bible/bookmarksStore.ts`
 - `src/features/bible/highlightsStore.ts`
 
 **Authentication:**
+
 - `src/services/supabase.ts`
 - `src/services/auth/AuthService.ts`
 
 **AI:**
+
 - `src/features/chat/chatService.ts`
 - `src/features/chat/systemPrompt.ts`
 
 **Theme:**
+
 - `src/theme/colors.ts` (not read)
 - `src/theme/spacing.ts` (not read)
 - `src/theme/typography.ts` (not read)
 
 **Configuration:**
+
 - `package.json`
 - `.env.example`
 - `app.json` (not read)
 
 **Database:**
+
 - `supabase/migrations/001_devotionals.sql.skip`
 - `supabase/migrations/002_community_chat.sql`
 - `supabase/migrations/003_journal_sync.sql`
@@ -583,6 +637,7 @@ The audit is complete. Proceed to Prompt 2 only after reviewing this document an
 - `supabase/migrations/006_moderation_rls.sql`
 
 **Documentation:**
+
 - `README.md`
 - `.env.example`
 
