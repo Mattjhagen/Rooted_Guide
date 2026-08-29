@@ -6,7 +6,7 @@ Run these prompts in order in the **new Rooted repository**, with the legacy `Ro
 
 Do not give Claude blanket permission to copy the old application. Each stage below defines what may be ported and what must be rebuilt. Have Claude finish, test, and summarize one stage before moving to the next. Commit between stages if you want easy rollback.
 
-## Product north star
+## Core product vision
 
 Rooted opens as a calm, personal Bible guide—not a dashboard, social feed, reading-plan tracker, or generic chatbot. The dominant first impression is an empty writing surface with a blinking cursor and a gentle invitation such as “What’s on your heart?” A person can type a feeling, situation, question, prayer, topic, or Bible reference. Rooted responds by guiding them into Scripture, using verified local Bible text, then makes it natural to continue reflecting, save a note, bookmark a passage, or pray.
 
@@ -282,7 +282,7 @@ Perform and document:
 
 Create docs/release-readiness.md with pass/fail evidence and remaining blockers. Create docs/deferred-scope.md that explicitly keeps community, public notes, DMs, organizations, devotional publishing/admin, reading plans, gamification, proprietary translations, and multi-provider client fallbacks out of this release.
 
-Finally verify the north star in a manual acceptance script:
+Finally verify the core product vision in a manual acceptance script:
 1. Fresh launch lands on the blinking cursor.
 2. A user writes what is on their heart without creating an account.
 3. Rooted responds compassionately with only verified citations.
@@ -305,4 +305,3 @@ At the end of every stage, require Claude to report:
 4. Security, privacy, licensing, or product questions still unresolved.
 5. Confirmation that no deferred/rejected feature slipped into scope.
 6. A recommendation to proceed or stop before the next prompt.
-
