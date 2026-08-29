@@ -53,3 +53,7 @@ coverage/
 # temporary files
 *.log
 .gitignore.new
+
+# Build artifacts
+scripts/*.js
+scripts/*.js.map
