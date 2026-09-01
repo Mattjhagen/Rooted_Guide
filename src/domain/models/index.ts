@@ -7,3 +7,6 @@ export * from './Note';
 export * from './Bookmark';
 export * from './Highlight';
 export * from './Preferences';
+export * from './DailyPath';
+export * from './TodaysPassage';
+export * from './Reflection';

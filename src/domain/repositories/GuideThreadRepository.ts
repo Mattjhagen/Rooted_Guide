@@ -1,4 +1,4 @@
-import { GuideThread, GuideTurn } from '../models';
+import { GuideThread, GuideTurn, PassageRef } from '../models';
 
 /**
  * Repository interface for persisting guide conversation threads
@@ -17,7 +17,7 @@ export interface GuideThreadRepository {
   /**
    * Create a new thread
    */
-  createThread(): Promise<GuideThread>;
+  createThread(passageRef?: PassageRef): Promise<GuideThread>;
 
   /**
    * Add a turn to a thread

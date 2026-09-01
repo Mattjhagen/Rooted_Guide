@@ -2,6 +2,7 @@ import * as SQLite from 'expo-sqlite';
 import { BibleRepository } from '@/domain/repositories';
 import { Verse, VerseRef, ChapterRef, PassageRef, BibleBookValue } from '@/domain/models';
 import { CANONICAL_BOOKS } from './schema';
+import { createDBAdapter, DBAdapter } from '@/infrastructure/persistence/dbAdapter';
 
 /**
  * SQLite implementation of BibleRepository
@@ -13,11 +14,11 @@ import { CANONICAL_BOOKS } from './schema';
  * No schema initialization is needed - the database is imported from assets/bible.db on first launch.
  */
 export class SQLiteBibleRepository implements BibleRepository {
-  private db: SQLite.SQLiteDatabase;
+  private dbAdapter: DBAdapter;
   private ftsAvailable: boolean = false;
 
-  constructor(db: SQLite.SQLiteDatabase) {
-    this.db = db;
+  constructor(db: SQLite.SQLiteDatabase | any) {
+    this.dbAdapter = createDBAdapter(db);
     this.detectFTS5Support();
   }
 
@@ -27,7 +28,7 @@ export class SQLiteBibleRepository implements BibleRepository {
   private detectFTS5Support(): void {
     try {
       // Try to create a test FTS5 table
-      this.db.execSync(`
+      this.dbAdapter.exec(`
         CREATE VIRTUAL TABLE IF NOT EXISTS _fts_test USING fts5(content);
         DROP TABLE IF EXISTS _fts_test;
       `);
@@ -53,7 +54,7 @@ export class SQLiteBibleRepository implements BibleRepository {
       const bookId = this.getBookIdFromValue(ref.book);
       if (!bookId) return null;
 
-      const result = this.db.getFirstSync<{ text: string; translation: string }>(
+      const result = this.dbAdapter.getFirst<{ text: string; translation: string }>(
         `SELECT text, 'WEB' as translation
          FROM verses
          WHERE book_id = ? AND chapter = ? AND verse = ?`,
@@ -81,7 +82,7 @@ export class SQLiteBibleRepository implements BibleRepository {
       const bookId = this.getBookIdFromValue(ref.book);
       if (!bookId) return [];
 
-      const rows = this.db.getAllSync<{ verse: number; text: string }>(
+      const rows = this.dbAdapter.getAll<{ verse: number; text: string }>(
         `SELECT verse, text
          FROM verses
          WHERE book_id = ? AND chapter = ?
@@ -108,7 +109,7 @@ export class SQLiteBibleRepository implements BibleRepository {
       const bookId = this.getBookIdFromValue(ref.book);
       if (!bookId) return [];
 
-      const rows = this.db.getAllSync<{ verse: number; text: string }>(
+      const rows = this.dbAdapter.getAll<{ verse: number; text: string }>(
         `SELECT verse, text
          FROM verses
          WHERE book_id = ? AND chapter = ? AND verse >= ? AND verse <= ?
@@ -149,7 +150,7 @@ export class SQLiteBibleRepository implements BibleRepository {
    * Search using FTS5 full-text index
    */
   private searchWithFTS5(query: string, limit: number): Verse[] {
-    const rows = this.db.getAllSync<{
+    const rows = this.dbAdapter.getAll<{
       book_id: number;
       chapter: number;
       verse: number;
@@ -179,7 +180,7 @@ export class SQLiteBibleRepository implements BibleRepository {
   private searchWithLike(query: string, limit: number): Verse[] {
     const searchPattern = `%${query}%`;
 
-    const rows = this.db.getAllSync<{
+    const rows = this.dbAdapter.getAll<{
       book_id: number;
       chapter: number;
       verse: number;
@@ -225,7 +226,7 @@ export class SQLiteBibleRepository implements BibleRepository {
    */
   public getVerseCount(): number {
     try {
-      const result = this.db.getFirstSync<{ count: number }>(
+      const result = this.dbAdapter.getFirst<{ count: number }>(
         `SELECT COUNT(*) as count FROM verses`
       );
       return result?.count || 0;
@@ -240,7 +241,9 @@ export class SQLiteBibleRepository implements BibleRepository {
    */
   public getBookCount(): number {
     try {
-      const result = this.db.getFirstSync<{ count: number }>(`SELECT COUNT(*) as count FROM books`);
+      const result = this.dbAdapter.getFirst<{ count: number }>(
+        `SELECT COUNT(*) as count FROM books`
+      );
       return result?.count || 0;
     } catch (error) {
       console.error('Error getting book count:', error);
@@ -253,7 +256,7 @@ export class SQLiteBibleRepository implements BibleRepository {
    */
   public getMetadata(key: string): string | null {
     try {
-      const result = this.db.getFirstSync<{ value: string }>(
+      const result = this.dbAdapter.getFirst<{ value: string }>(
         `SELECT value FROM translation_metadata WHERE key = ?`,
         [key]
       );

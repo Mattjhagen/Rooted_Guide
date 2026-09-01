@@ -10,6 +10,7 @@ export interface ReaderPreferences {
   fontSize: 'small' | 'medium' | 'large' | 'xlarge';
   fontFamily: 'system' | 'serif' | 'sans-serif';
   lineSpacing: 'compact' | 'normal' | 'relaxed';
+  lastReadRef: string | null;
 }
 
 export interface AccountPreferences {
@@ -24,6 +25,7 @@ export const DEFAULT_READER_PREFERENCES: ReaderPreferences = {
   fontSize: 'medium',
   fontFamily: 'system',
   lineSpacing: 'normal',
+  lastReadRef: null,
 };
 
 export const DEFAULT_ACCOUNT_PREFERENCES: AccountPreferences = {

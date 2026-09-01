@@ -3,6 +3,7 @@
 ## Identifiers
 
 ### Display Names
+
 - **App Name**: Plumb Line
 - **Repository**: Rooted_Guide (unchanged)
 - **Package Name**: plumb-line
@@ -10,11 +11,13 @@
 ### Platform Identifiers
 
 #### iOS
+
 - **Bundle Identifier**: `com.mattjhagen.plumbline`
 - **Display Name**: Plumb Line
 - **URL Scheme**: `plumbline://`
 
 #### Android
+
 - **Package Name**: `com.mattjhagen.plumbline`
 - **App Name**: Plumb Line
 - **Deep Link Scheme**: `plumbline://`
@@ -36,6 +39,7 @@ Plumb Line is a **separate application** from Rooted Daily:
 - **Independent release cadence**
 
 ### Repository Structure
+
 - **Rooted_Guide**: Contains Plumb Line codebase (this repository)
 - **Rooted_Daily**: Remains unchanged with its own identity (`com.rooteddaily.bible`)
 
@@ -50,13 +54,16 @@ Both applications can coexist on the same device without conflict.
 Before creating production builds:
 
 1. **Create New EAS Project**:
+
    ```bash
    cd /Users/matt/Documents/Rooted/Rooted_Guide
    eas init --id NEW_PROJECT_ID
    ```
+
    This will create a NEW EAS project linked to Plumb Line's bundle IDs.
 
 2. **Configure EAS Build** (`eas.json`):
+
    ```json
    {
      "build": {
@@ -106,17 +113,21 @@ Before creating production builds:
 ## Deep Linking
 
 ### URL Scheme
+
 Both platforms use: `plumbline://`
 
 ### Universal Links (iOS)
+
 Will be configured in future prompt with domain: `plumbline.app` or similar
 
 ### App Links (Android)
+
 Will be configured in future prompt with domain: `plumbline.app` or similar
 
 ## Sign in with Apple
 
 When implementing authentication (Prompt 8):
+
 - Use bundle ID: `com.mattjhagen.plumbline`
 - Create NEW Apple Developer service ID for Plumb Line
 - Do NOT reuse Rooted Daily's Sign in with Apple configuration

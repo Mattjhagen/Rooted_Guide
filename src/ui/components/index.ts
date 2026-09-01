@@ -3,5 +3,7 @@ export * from './CitationCard';
 export * from './GuideMessage';
 export * from './StarterSuggestions';
 export * from './PassageContextView';
+export * from './PassageView';
 export * from './SafetyAlert';
 export * from './ServiceUnavailable';
+export * from './VerseActions';

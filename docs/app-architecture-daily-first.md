@@ -14,12 +14,14 @@ The guide conversation is **supplemental and contextual**, not the main entry po
 ## Implementation Requirements
 
 ### Main Screen (`app/index.tsx`)
+
 - Shows today's Scripture passage immediately
 - **Does NOT** create `GuideGateway` on mount
 - Passage is always readable, even when offline
 - Guide button only appears if service is available
 
 ### Guide Invocation
+
 - User must explicitly tap "Ask about this" button
 - Button passes:
   - The specific passage ID(s) from the daily module
@@ -27,6 +29,7 @@ The guide conversation is **supplemental and contextual**, not the main entry po
 - GuideGateway created only when conversation starts
 
 ### Offline Behavior
+
 - Daily Scripture path works perfectly offline
 - Guide button hidden or disabled when unavailable
 - **No error messages** interrupt the reading flow
@@ -51,12 +54,14 @@ IF user taps "Ask about this"
 ## Current vs. Required
 
 **Current (WRONG)**:
+
 - App opens to conversation interface
 - GuideGateway created immediately
 - If unavailable, shows error
 - Daily path not implemented
 
 **Required (CORRECT)**:
+
 - App opens to Scripture passage
 - GuideGateway created only on explicit request
 - If unavailable, button hidden (no error)

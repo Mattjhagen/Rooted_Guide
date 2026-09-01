@@ -47,6 +47,7 @@ Only after user taps "Ask about this", show the guide interface:
 - **Back navigation**: User can return to daily passage reading
 
 **Visual Distinction in Guide Mode**:
+
 - User messages: Right-aligned, blue background
 - Guide responses: Left-aligned, "PLUMB LINE" label, neutral background
 - Citations: Dedicated cards with canonical reference, WEB label
@@ -113,18 +114,21 @@ Full support for:
 The `MockGuideGateway` creates a three-stage conversational progression:
 
 **Stage 1 — First Exchange** (turnCount 0-1):
+
 - Responds to keywords: "anxious", "grateful", "tired", etc.
 - Returns brief acknowledgment + natural question
 - No citations, no suggestions
 - Example: "I hear that. These early hours can feel heavy. What's sitting with you this morning?"
 
 **Stage 2 — Second Exchange** (turnCount 2-3):
+
 - Responds to context: "work", "peace", "stress", etc.
 - Acknowledges and transitions toward Scripture
 - No citations, no suggestions
 - Example: "That weight is real. Let's spend a few minutes with something that might speak to where you are. Would you like to receive today's passage?"
 
 **Stage 3 — Scripture Path** (turnCount 4+):
+
 - Presents Verse of the Day: Psalm 23:1-3
 - Shows full text with context and reflection prompt
 - Includes verified WEB citations from local SQLite

@@ -25,7 +25,17 @@ export const TEST_VERSES: Verse[] = [
     text: 'And God said, "Let there be light," and there was light.',
     translation: 'TEST',
   },
-  // John 3:16-17 (Gospel core)
+  // John 3:1-2, 16-17 (Gospel core)
+  {
+    ref: { book: BibleBook.John, chapter: 3, verse: 1 },
+    text: 'Now there was a man of the Pharisees named Nicodemus, a ruler of the Jews.',
+    translation: 'TEST',
+  },
+  {
+    ref: { book: BibleBook.John, chapter: 3, verse: 2 },
+    text: 'This man came to Jesus by night and said to him, "Rabbi, we know that you are a teacher come from God, for no one can do these signs that you do unless God is with him."',
+    translation: 'TEST',
+  },
   {
     ref: { book: BibleBook.John, chapter: 3, verse: 16 },
     text: 'For God so loved the world, that he gave his only Son, that whoever believes in him should not perish but have eternal life.',

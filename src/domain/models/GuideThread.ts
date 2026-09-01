@@ -3,6 +3,7 @@
  */
 
 import { BibleBookValue } from './BibleBook';
+import { PassageRef } from './VerseRef';
 
 export interface ScriptureCitation {
   book: BibleBookValue;
@@ -29,6 +30,7 @@ export interface GuideTurn {
 export interface GuideThread {
   id: string;
   turns: GuideTurn[];
+  passageRef?: PassageRef;
   createdAt: Date;
   updatedAt: Date;
 }
