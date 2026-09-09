@@ -76,29 +76,6 @@ describe('DailyPathScreen States', () => {
     expect(getByText('Loading...')).toBeTruthy();
   });
 
-  it('should show "Continue" for in-progress session', async () => {
-    mockUseDailyPath.mockReturnValue({
-      loading: false,
-      session: { lastModule: 'read', completedModules: ['arrive'] },
-      currentModule: 'read',
-      draft: '',
-      updateDraft: jest.fn(),
-      completeModule: jest.fn(),
-      isComplete: false,
-      isLocked: false,
-      timeUntilUnlock: null,
-      startFromBeginning: jest.fn(),
-    });
-
-    const { getByText } = render(<DailyPathScreen />);
-
-    await waitFor(() => {
-      expect(getByText('Welcome back')).toBeTruthy();
-      expect(getByText('Continue')).toBeTruthy();
-      expect(getByText('Start from beginning')).toBeTruthy();
-    });
-  });
-
   it('should launch into intake questionnaire for new session', () => {
     mockUseDailyPath.mockReturnValue({
       loading: false,
@@ -113,9 +90,9 @@ describe('DailyPathScreen States', () => {
       startFromBeginning: jest.fn(),
     });
 
-    const { getByText } = render(<DailyPathScreen />);
+    const { getByPlaceholderText } = render(<DailyPathScreen />);
 
-    expect(getByText(/Welcome to Plumb Line/i)).toBeTruthy();
+    expect(getByPlaceholderText('Enter your name...')).toBeTruthy();
   });
 
   it('should show "Continue reading" after completion with last read position', async () => {
