@@ -1,20 +1,27 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, useColorScheme } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { ChevronRightIcon } from '@/ui/components/FallbackIcons';
-import { getTheme, spacing, typography } from '@/ui/theme';
+import { spacing, typography } from '@/ui/theme';
+import { useTheme } from '@/features/preferences/ThemeContext';
+import { PlumbLineLogo } from '@/ui/components/PlumbLineLogo';
+import { ThemePreference } from '@/domain/models/Preferences';
 
 /**
  * Settings Screen
  *
- * Quiet entry point for app settings and data management.
- * Not part of primary devotional flow.
+ * Quiet entry point for app settings, appearance theme selection, and data management.
  */
 export function SettingsScreen() {
-  const scheme = useColorScheme();
-  const theme = getTheme(scheme);
+  const { preference, theme, setPreference } = useTheme();
   const router = useRouter();
+
+  const themeOptions: { key: ThemePreference; label: string }[] = [
+    { key: 'system', label: 'System' },
+    { key: 'light', label: 'Light' },
+    { key: 'dark', label: 'Dark' },
+  ];
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]} edges={['top']}>
@@ -23,6 +30,43 @@ export function SettingsScreen() {
       </View>
 
       <ScrollView contentContainerStyle={styles.content}>
+        {/* APPEARANCE SECTION */}
+        <View style={styles.section}>
+          <View style={styles.sectionHeader}>
+            <Text style={[styles.sectionTitle, { color: theme.textSecondary }]}>APPEARANCE</Text>
+            <PlumbLineLogo size={22} />
+          </View>
+
+          <View style={styles.themeSelectorRow}>
+            {themeOptions.map((option) => {
+              const isSelected = preference === option.key;
+              return (
+                <TouchableOpacity
+                  key={option.key}
+                  style={[
+                    styles.themeChip,
+                    {
+                      backgroundColor: isSelected ? theme.primary : theme.surface,
+                      borderColor: isSelected ? theme.primary : theme.border,
+                    },
+                  ]}
+                  onPress={() => setPreference(option.key)}
+                  accessibilityRole="radio"
+                  accessibilityState={{ selected: isSelected }}
+                  accessibilityLabel={`Set theme to ${option.label}`}
+                >
+                  <Text
+                    style={[styles.themeChipText, { color: isSelected ? '#FFFFFF' : theme.text }]}
+                  >
+                    {option.label}
+                  </Text>
+                </TouchableOpacity>
+              );
+            })}
+          </View>
+        </View>
+
+        {/* DATA SECTION */}
         <View style={styles.section}>
           <Text style={[styles.sectionTitle, { color: theme.textSecondary }]}>DATA</Text>
 
@@ -40,6 +84,7 @@ export function SettingsScreen() {
           </TouchableOpacity>
         </View>
 
+        {/* ABOUT SECTION */}
         <View style={styles.section}>
           <Text style={[styles.sectionTitle, { color: theme.textSecondary }]}>ABOUT</Text>
 
@@ -77,13 +122,38 @@ const styles = StyleSheet.create({
   section: {
     marginBottom: spacing.xl,
   },
+  sectionHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingRight: spacing.lg,
+    marginBottom: spacing.md,
+  },
   sectionTitle: {
     ...typography.caption,
     fontSize: 11,
     fontWeight: '700',
     letterSpacing: 1.5,
-    marginBottom: spacing.md,
     paddingHorizontal: spacing.lg,
+  },
+  themeSelectorRow: {
+    flexDirection: 'row',
+    paddingHorizontal: spacing.lg,
+    gap: spacing.sm,
+  },
+  themeChip: {
+    flex: 1,
+    paddingVertical: 12,
+    paddingHorizontal: spacing.md,
+    borderRadius: 20,
+    borderWidth: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  themeChipText: {
+    ...typography.body,
+    fontSize: 14,
+    fontWeight: '600',
   },
   settingItem: {
     flexDirection: 'row',

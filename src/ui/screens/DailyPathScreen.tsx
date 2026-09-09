@@ -22,6 +22,7 @@ import { TODAYS_PASSAGE } from '@/domain/models/TodaysPassage';
 import { getTheme, spacing, typography } from '@/ui/theme';
 import { ForTodaySummaryScreen } from './ForTodaySummaryScreen';
 import { useUserDatabase } from '@/infrastructure/persistence/useUserDatabase';
+import { PlumbLineLogo } from '@/ui/components/PlumbLineLogo';
 
 import { IntakeQuestionnaireScreen } from './IntakeQuestionnaireScreen';
 import { generateAdaptivePlan, GeneratedPlan } from '@/features/dailyPath/AdaptivePlanEngine';
@@ -298,7 +299,10 @@ export function DailyPathScreen() {
           <BookmarkIcon size={22} color={theme.textSecondary} />
         </TouchableOpacity>
 
-        <Text style={[styles.brandTitle, { color: theme.textSecondary }]}>PLUMB LINE</Text>
+        <View style={styles.brandHeaderGroup}>
+          <PlumbLineLogo size={18} />
+          <Text style={[styles.brandTitle, { color: theme.textSecondary }]}>PLUMB LINE</Text>
+        </View>
 
         <TouchableOpacity
           onPress={() => router.push('/browse')}
@@ -471,7 +475,12 @@ const styles = StyleSheet.create({
     paddingVertical: spacing.sm,
   },
   headerIconButton: {
-    padding: spacing.sm,
+    padding: spacing.xs,
+  },
+  brandHeaderGroup: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.xs,
   },
   brandTitle: {
     ...typography.caption,

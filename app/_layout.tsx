@@ -1,6 +1,5 @@
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
-import { useColorScheme } from 'react-native';
 import { SQLiteProvider } from 'expo-sqlite';
 import * as SQLite from 'expo-sqlite';
 import {
@@ -9,6 +8,7 @@ import {
   verifyUserDatabase,
 } from '@/infrastructure/persistence';
 import { BibleDatabaseProvider } from '@/infrastructure/scripture/BibleContext';
+import { ThemeProvider, useTheme } from '@/features/preferences/ThemeContext';
 
 /**
  * Initialize user data database
@@ -57,34 +57,44 @@ function BibleDatabaseWrapper({ children }: { children: React.ReactNode }) {
   return <BibleDatabaseProvider database={bibleDb}>{children}</BibleDatabaseProvider>;
 }
 
-export default function RootLayout() {
-  const scheme = useColorScheme();
+function NavigationStack() {
+  const { resolvedScheme, theme } = useTheme();
 
   return (
-    <SQLiteProvider
-      databaseName="bible.db"
-      assetSource={{ assetId: require('../assets/bible.db') }}
-    >
-      <BibleDatabaseWrapper>
-        <UserDataProvider>
-          <StatusBar style={scheme === 'dark' ? 'light' : 'dark'} />
-          <Stack
-            screenOptions={{
-              headerShown: false,
-              contentStyle: {
-                backgroundColor: scheme === 'dark' ? '#000000' : '#FFFFFF',
-              },
-            }}
-          >
-            <Stack.Screen name="(tabs)" />
-            <Stack.Screen name="data" />
-            <Stack.Screen name="passage" />
-            <Stack.Screen name="reader" />
-            <Stack.Screen name="browse" />
-            <Stack.Screen name="settings" />
-          </Stack>
-        </UserDataProvider>
-      </BibleDatabaseWrapper>
-    </SQLiteProvider>
+    <>
+      <StatusBar style={resolvedScheme === 'dark' ? 'light' : 'dark'} />
+      <Stack
+        screenOptions={{
+          headerShown: false,
+          contentStyle: {
+            backgroundColor: theme.background,
+          },
+        }}
+      >
+        <Stack.Screen name="(tabs)" />
+        <Stack.Screen name="data" />
+        <Stack.Screen name="passage" />
+        <Stack.Screen name="reader" />
+        <Stack.Screen name="browse" />
+        <Stack.Screen name="settings" />
+      </Stack>
+    </>
+  );
+}
+
+export default function RootLayout() {
+  return (
+    <ThemeProvider>
+      <SQLiteProvider
+        databaseName="bible.db"
+        assetSource={{ assetId: require('../assets/bible.db') }}
+      >
+        <BibleDatabaseWrapper>
+          <UserDataProvider>
+            <NavigationStack />
+          </UserDataProvider>
+        </BibleDatabaseWrapper>
+      </SQLiteProvider>
+    </ThemeProvider>
   );
 }

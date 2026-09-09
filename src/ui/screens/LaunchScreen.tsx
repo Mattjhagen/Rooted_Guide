@@ -6,14 +6,15 @@ import {
   TouchableOpacity,
   Animated,
   AccessibilityInfo,
-  useColorScheme,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useBibleRepository } from '@/infrastructure/scripture/useBibleRepository';
 import { getVerseOfTheDay, formatVerseReference } from '@/domain/services/VerseOfTheDay';
 import { PassageRef } from '@/domain/models/VerseRef';
 import { Verse } from '@/domain/models';
-import { spacing, typography, getTheme } from '@/ui/theme';
+import { spacing, typography } from '@/ui/theme';
+import { useTheme } from '@/features/preferences/ThemeContext';
+import { PlumbLineLogo } from '@/ui/components/PlumbLineLogo';
 
 interface LaunchScreenProps {
   onContinue: () => void;
@@ -26,8 +27,7 @@ interface LaunchScreenProps {
  */
 export function LaunchScreen({ onContinue }: LaunchScreenProps) {
   const bibleRepository = useBibleRepository();
-  const scheme = useColorScheme();
-  const theme = getTheme(scheme);
+  const { theme } = useTheme();
 
   const [verseRef, setVerseRef] = useState<PassageRef | null>(null);
   const [verseText, setVerseText] = useState<string>('');
@@ -122,7 +122,7 @@ export function LaunchScreen({ onContinue }: LaunchScreenProps) {
       <View style={styles.content}>
         {/* Brand header */}
         <View style={styles.brandHeader}>
-          <View style={[styles.plumbIndicator, { backgroundColor: theme.primary }]} />
+          <PlumbLineLogo size={24} />
           <Text style={[styles.brandTitle, { color: theme.textSecondary }]}>PLUMB LINE</Text>
         </View>
 
