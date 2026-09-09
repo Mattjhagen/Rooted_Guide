@@ -99,7 +99,7 @@ describe('DailyPathScreen States', () => {
     });
   });
 
-  it('should launch directly into daily practice module for new session', () => {
+  it('should launch into intake questionnaire for new session', () => {
     mockUseDailyPath.mockReturnValue({
       loading: false,
       session: { lastModule: null, completedModules: [] },
@@ -115,8 +115,7 @@ describe('DailyPathScreen States', () => {
 
     const { getByText } = render(<DailyPathScreen />);
 
-    expect(getByText('Arrive')).toBeTruthy();
-    expect(getByText('PLUMB LINE')).toBeTruthy();
+    expect(getByText(/Welcome to Plumb Line/i)).toBeTruthy();
   });
 
   it('should show "Continue reading" after completion with last read position', async () => {
