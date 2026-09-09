@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, useColorScheme } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, useColorScheme } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { PassageView } from '@/ui/components/PassageView';
@@ -10,7 +10,7 @@ import { getTheme, spacing, typography } from '@/ui/theme';
  * PassageScreen displays a Scripture passage in isolation
  *
  * Used when reopening saved items (bookmarks, highlights, notes, reflections).
- * Shows the passage with full verse action capabilities.
+ * Shows the passage with full verse action capabilities and option to open full chapter.
  */
 export function PassageScreen() {
   const scheme = useColorScheme();
@@ -30,16 +30,33 @@ export function PassageScreen() {
     verseEnd: params.verseEnd ? parseInt(params.verseEnd, 10) : parseInt(params.verseStart, 10),
   };
 
+  const handleOpenFullChapter = () => {
+    router.push(
+      `/reader?book=${encodeURIComponent(passageRef.book)}&chapter=${passageRef.chapter}`
+    );
+  };
+
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>
       <View style={[styles.header, { borderBottomColor: theme.border }]}>
-        <Text style={[styles.backButton, { color: theme.primary }]} onPress={() => router.back()}>
-          Back
-        </Text>
+        <TouchableOpacity onPress={() => router.back()}>
+          <Text style={[styles.backButton, { color: theme.primary }]}>Back</Text>
+        </TouchableOpacity>
       </View>
 
       <ScrollView contentContainerStyle={styles.content}>
         <PassageView passageRef={passageRef} />
+
+        <TouchableOpacity
+          style={[
+            styles.openChapterButton,
+            { borderColor: theme.border, backgroundColor: theme.surface },
+          ]}
+          onPress={handleOpenFullChapter}
+          accessibilityLabel="Open full chapter"
+        >
+          <Text style={[styles.openChapterText, { color: theme.primary }]}>Open full chapter</Text>
+        </TouchableOpacity>
       </ScrollView>
     </SafeAreaView>
   );
@@ -60,5 +77,18 @@ const styles = StyleSheet.create({
   },
   content: {
     padding: spacing.lg,
+  },
+  openChapterButton: {
+    marginTop: spacing.md,
+    paddingVertical: spacing.md,
+    paddingHorizontal: spacing.lg,
+    borderRadius: 12,
+    borderWidth: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  openChapterText: {
+    ...typography.body,
+    fontWeight: '600',
   },
 });
