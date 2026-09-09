@@ -9,6 +9,7 @@ export type ReadingDepth = 'gentle' | 'focused' | 'deep';
 export type ScriptureGenre = 'psalms' | 'gospels' | 'epistles' | 'promises';
 
 export interface UserIntakeAnswers {
+  userName?: string;
   focus: SeasonFocus;
   depth: ReadingDepth;
   genre: ScriptureGenre;
