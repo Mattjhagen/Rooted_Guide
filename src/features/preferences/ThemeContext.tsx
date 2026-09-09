@@ -16,7 +16,6 @@ interface ThemeContextValue {
 const ThemeContext = createContext<ThemeContextValue | undefined>(undefined);
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const rawScheme = useColorScheme();
   const [activeSystemScheme, setActiveSystemScheme] = useState<'light' | 'dark'>(() => {
     const current = Appearance.getColorScheme();
     return current === 'dark' ? 'dark' : 'light';
@@ -24,11 +23,13 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [preference, setPreferenceState] = useState<ThemePreference>(DEFAULT_THEME_PREFERENCE);
 
   useEffect(() => {
-    const current = Appearance.getColorScheme() || rawScheme;
-    if (current === 'dark' || current === 'light') {
-      setActiveSystemScheme(current);
-    }
-  }, [rawScheme]);
+    const subscription = Appearance.addChangeListener(({ colorScheme }) => {
+      if (colorScheme === 'dark' || colorScheme === 'light') {
+        setActiveSystemScheme(colorScheme);
+      }
+    });
+    return () => subscription.remove();
+  }, []);
 
   useEffect(() => {
     async function loadStoredPreference() {
@@ -79,9 +80,9 @@ export function useTheme(): ThemeContextValue {
   const context = useContext(ThemeContext);
   if (!context) {
     // Fallback if rendered outside provider (e.g. unit tests)
-    const defaultScheme = 'light';
+    const defaultScheme = 'dark';
     return {
-      preference: 'system',
+      preference: 'dark',
       resolvedScheme: defaultScheme,
       theme: getTheme(defaultScheme),
       setPreference: async () => {},

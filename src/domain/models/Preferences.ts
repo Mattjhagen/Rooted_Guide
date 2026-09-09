@@ -19,7 +19,7 @@ export interface AccountPreferences {
   notificationsEnabled: boolean;
 }
 
-export const DEFAULT_THEME_PREFERENCE: ThemePreference = 'system';
+export const DEFAULT_THEME_PREFERENCE: ThemePreference = 'dark';
 
 export const DEFAULT_READER_PREFERENCES: ReaderPreferences = {
   fontSize: 'medium',

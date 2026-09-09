@@ -44,6 +44,6 @@ describe('IntakeQuestionnaireScreen', () => {
       jest.advanceTimersByTime(2000);
     });
 
-    expect(getByText(/Peace be with you, Matthew!/)).toBeTruthy();
+    expect(getByText(/Grace and peace to you, Matthew!/)).toBeTruthy();
   });
 });

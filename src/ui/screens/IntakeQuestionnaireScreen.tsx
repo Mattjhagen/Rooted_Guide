@@ -197,7 +197,7 @@ export function IntakeQuestionnaireScreen({ onComplete }: IntakeQuestionnaireScr
             <ScrollView contentContainerStyle={styles.scrollContent}>
               <View style={styles.typewriterPromptContainer}>
                 <TypewriterText
-                  text={`Peace be with you, ${userName.trim()}! I'm here to support and guide you on your spiritual journey.`}
+                  text={`Grace and peace to you, ${userName.trim()}! I'm here to support and guide you on your spiritual journey.`}
                   speed={25}
                   style={[styles.serifPromptText, { color: theme.text }]}
                   onComplete={() => setGreetingComplete(true)}
