@@ -128,12 +128,10 @@ export function IntakeQuestionnaireScreen({ onComplete }: IntakeQuestionnaireScr
       style={[styles.container, { backgroundColor: theme.background }]}
       edges={['top', 'bottom']}
     >
-      {/* Top Header with Logo Badge & Progress Line */}
+      {/* Top Header with Seamless Logo & Progress Line */}
       <View style={styles.headerContainer}>
-        <View
-          style={[styles.logoBadge, { backgroundColor: theme.surface, borderColor: theme.border }]}
-        >
-          <PlumbLineLogo size={30} />
+        <View style={styles.logoBadge}>
+          <PlumbLineLogo size={36} />
         </View>
         <View style={[styles.progressBarTrack, { backgroundColor: theme.border }]}>
           <View
@@ -339,18 +337,9 @@ const styles = StyleSheet.create({
     paddingBottom: spacing.md,
   },
   logoBadge: {
-    width: 54,
-    height: 54,
-    borderRadius: 16,
-    borderWidth: 1,
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: spacing.md,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.05,
-    shadowRadius: 6,
-    elevation: 2,
   },
   progressBarTrack: {
     width: '85%',
