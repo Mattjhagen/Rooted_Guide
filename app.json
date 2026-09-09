@@ -10,7 +10,7 @@
     "splash": {
       "image": "./assets/splash-icon.png",
       "resizeMode": "contain",
-      "backgroundColor": "#F8F9FA"
+      "backgroundColor": "#FAF8F4"
     },
     "ios": {
       "bundleIdentifier": "com.mattjhagen.plumbline",
@@ -18,11 +18,11 @@
       "splash": {
         "image": "./assets/splash-icon.png",
         "resizeMode": "contain",
-        "backgroundColor": "#F8F9FA",
+        "backgroundColor": "#FAF8F4",
         "dark": {
           "image": "./assets/splash-icon.png",
           "resizeMode": "contain",
-          "backgroundColor": "#1A1D23"
+          "backgroundColor": "#000000"
         }
       },
       "infoPlist": {
@@ -34,11 +34,11 @@
       "splash": {
         "image": "./assets/splash-icon.png",
         "resizeMode": "contain",
-        "backgroundColor": "#F8F9FA",
+        "backgroundColor": "#FAF8F4",
         "dark": {
           "image": "./assets/splash-icon.png",
           "resizeMode": "contain",
-          "backgroundColor": "#1A1D23"
+          "backgroundColor": "#000000"
         }
       },
       "adaptiveIcon": {

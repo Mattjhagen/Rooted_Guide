@@ -6,13 +6,14 @@ import {
   TouchableOpacity,
   Animated,
   AccessibilityInfo,
+  useColorScheme,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useBibleRepository } from '@/infrastructure/scripture/useBibleRepository';
 import { getVerseOfTheDay, formatVerseReference } from '@/domain/services/VerseOfTheDay';
 import { PassageRef } from '@/domain/models/VerseRef';
 import { Verse } from '@/domain/models';
-import { spacing, typography } from '@/ui/theme';
+import { spacing, typography, getTheme } from '@/ui/theme';
 
 interface LaunchScreenProps {
   onContinue: () => void;
@@ -25,6 +26,9 @@ interface LaunchScreenProps {
  */
 export function LaunchScreen({ onContinue }: LaunchScreenProps) {
   const bibleRepository = useBibleRepository();
+  const scheme = useColorScheme();
+  const theme = getTheme(scheme);
+
   const [verseRef, setVerseRef] = useState<PassageRef | null>(null);
   const [verseText, setVerseText] = useState<string>('');
   const [showContinue, setShowContinue] = useState(false);
@@ -114,39 +118,50 @@ export function LaunchScreen({ onContinue }: LaunchScreenProps) {
   });
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>
       <View style={styles.content}>
+        {/* Brand header */}
+        <View style={styles.brandHeader}>
+          <View style={[styles.plumbIndicator, { backgroundColor: theme.primary }]} />
+          <Text style={[styles.brandTitle, { color: theme.textSecondary }]}>PLUMB LINE</Text>
+        </View>
+
         {/* Animated line */}
-        <View style={styles.lineContainer}>
-          <Animated.View style={[styles.line, { width: lineWidth }]} />
+        <View style={[styles.lineContainer, { backgroundColor: theme.border }]}>
+          <Animated.View
+            style={[styles.line, { width: lineWidth, backgroundColor: theme.primary }]}
+          />
         </View>
 
         {/* Verse content */}
         <View style={styles.verseContainer}>
-          <Text style={styles.label}>Verse of the Day</Text>
+          <Text style={[styles.label, { color: theme.textTertiary }]}>Verse of the Day</Text>
 
           {verseRef && (
-            <Text style={styles.reference} accessibilityRole="header">
+            <Text style={[styles.reference, { color: theme.text }]} accessibilityRole="header">
               {formatVerseReference(verseRef)}
             </Text>
           )}
 
           {verseText ? (
-            <Text style={styles.verseText}>{verseText}</Text>
+            <Text style={[styles.verseText, { color: theme.text }]}>{verseText}</Text>
           ) : (
-            <Text style={styles.loading}>Loading...</Text>
+            <Text style={[styles.loading, { color: theme.textTertiary }]}>Loading...</Text>
           )}
         </View>
 
         {/* Continue button */}
         {showContinue && (
           <TouchableOpacity
-            style={styles.continueButton}
+            style={[
+              styles.continueButton,
+              { backgroundColor: theme.text, borderColor: theme.border },
+            ]}
             onPress={onContinue}
             accessibilityRole="button"
             accessibilityLabel="Continue to app"
           >
-            <Text style={styles.continueText}>Continue</Text>
+            <Text style={[styles.continueText, { color: theme.background }]}>Continue</Text>
           </TouchableOpacity>
         )}
       </View>
@@ -157,23 +172,39 @@ export function LaunchScreen({ onContinue }: LaunchScreenProps) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FAFAF8',
   },
   content: {
     flex: 1,
     paddingHorizontal: spacing.xl,
-    paddingTop: spacing.xl * 2,
+    paddingTop: spacing.xl,
     paddingBottom: spacing.xl,
+  },
+  brandHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: spacing.md,
+    gap: spacing.xs,
+  },
+  plumbIndicator: {
+    width: 2,
+    height: 14,
+    borderRadius: 1,
+  },
+  brandTitle: {
+    ...typography.caption,
+    fontSize: 11,
+    letterSpacing: 2.5,
+    fontWeight: '700',
+    textTransform: 'uppercase',
   },
   lineContainer: {
     height: 1,
-    backgroundColor: '#E5E5E3',
-    marginBottom: spacing.xl * 3,
+    marginBottom: spacing.xl * 2,
     overflow: 'hidden',
   },
   line: {
     height: 1,
-    backgroundColor: '#8B8B88',
   },
   verseContainer: {
     flex: 1,
@@ -186,14 +217,12 @@ const styles = StyleSheet.create({
     fontSize: 12,
     letterSpacing: 1,
     textTransform: 'uppercase',
-    color: '#8B8B88',
     marginBottom: spacing.md,
   },
   reference: {
     ...typography.title,
     fontSize: 20,
     fontWeight: '600',
-    color: '#2B2B28',
     marginBottom: spacing.lg,
     textAlign: 'center',
   },
@@ -201,28 +230,26 @@ const styles = StyleSheet.create({
     ...typography.body,
     fontSize: 17,
     lineHeight: 28,
-    color: '#2B2B28',
     textAlign: 'center',
     maxWidth: 480,
   },
   loading: {
     ...typography.body,
     fontSize: 17,
-    color: '#8B8B88',
   },
   continueButton: {
-    paddingVertical: spacing.md,
+    paddingVertical: 14,
     paddingHorizontal: spacing.xl,
     alignSelf: 'center',
-    borderRadius: 8,
-    backgroundColor: '#2B2B28',
-    minWidth: 160,
+    borderRadius: 26,
+    minWidth: 180,
+    borderWidth: 1,
   },
   continueText: {
     ...typography.body,
-    fontSize: 16,
+    fontSize: 15,
     fontWeight: '600',
-    color: '#FAFAF8',
+    letterSpacing: 0.3,
     textAlign: 'center',
   },
 });
