@@ -10,6 +10,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   Animated,
+  Easing,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
@@ -23,6 +24,7 @@ import { getTheme, spacing, typography } from '@/ui/theme';
 import { ForTodaySummaryScreen } from './ForTodaySummaryScreen';
 import { useUserDatabase } from '@/infrastructure/persistence/useUserDatabase';
 import { PlumbLineLogo } from '@/ui/components/PlumbLineLogo';
+import { TypewriterText } from '@/ui/components/TypewriterText';
 
 import { IntakeQuestionnaireScreen } from './IntakeQuestionnaireScreen';
 import { GoogleAuthScreen } from './GoogleAuthScreen';
@@ -66,22 +68,23 @@ export function DailyPathScreen() {
     Animated.parallel([
       Animated.timing(fadeAnim, {
         toValue: 1,
-        duration: 500,
+        duration: 550,
+        easing: Easing.out(Easing.cubic),
         useNativeDriver: true,
       }),
       Animated.timing(slideUpAnim, {
         toValue: 0,
-        duration: 500,
+        duration: 550,
+        easing: Easing.out(Easing.cubic),
         useNativeDriver: true,
       }),
     ]).start();
   }, [fadeAnim, slideUpAnim]);
 
   useEffect(() => {
-    if (currentModule !== 'read') {
-      triggerEntranceAnimation();
-    }
-  }, [currentModule, triggerEntranceAnimation]);
+    fadeAnim.setValue(0);
+    slideUpAnim.setValue(24);
+  }, [currentModule, fadeAnim, slideUpAnim]);
 
   const currentModuleData = DAILY_PATH_MODULES.find((m) => m.type === currentModule);
   const moduleIndex = getModuleIndex(currentModule);
@@ -356,9 +359,19 @@ export function DailyPathScreen() {
             <Text style={[styles.moduleTitle, { color: theme.text }]}>
               {currentModuleData?.title}
             </Text>
-            <Text style={[styles.modulePrompt, { color: theme.textSecondary }]}>
-              {getModulePrompt()}
-            </Text>
+            {currentModule !== 'read' ? (
+              <TypewriterText
+                key={`prompt-${currentModule}`}
+                text={getModulePrompt() || ''}
+                speed={22}
+                style={[styles.modulePrompt, { color: theme.textSecondary }]}
+                onComplete={triggerEntranceAnimation}
+              />
+            ) : (
+              <Text style={[styles.modulePrompt, { color: theme.textSecondary }]}>
+                {getModulePrompt()}
+              </Text>
+            )}
           </View>
 
           {/* Show passage on "read" module with Typewriter */}
