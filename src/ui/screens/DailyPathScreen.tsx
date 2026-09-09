@@ -21,6 +21,10 @@ import { getTheme, spacing, typography } from '@/ui/theme';
 import { ForTodaySummaryScreen } from './ForTodaySummaryScreen';
 import { useUserDatabase } from '@/infrastructure/persistence/useUserDatabase';
 
+import { IntakeQuestionnaireScreen } from './IntakeQuestionnaireScreen';
+import { generateAdaptivePlan, GeneratedPlan } from '@/features/dailyPath/AdaptivePlanEngine';
+import { UserIntakeAnswers } from '@/domain/models/IntakeQuestionnaire';
+
 export function DailyPathScreen() {
   const scheme = useColorScheme();
   const theme = getTheme(scheme);
@@ -43,6 +47,8 @@ export function DailyPathScreen() {
   const [arriveResponse, setArriveResponse] = React.useState<string>('');
   const [lastReadRef, setLastReadRef] = React.useState<string | null>(null);
   const [hasStarted, setHasStarted] = React.useState(false);
+  const [showIntake, setShowIntake] = React.useState(false);
+  const [adaptivePlan, setAdaptivePlan] = React.useState<GeneratedPlan | null>(null);
 
   const currentModuleData = DAILY_PATH_MODULES.find((m) => m.type === currentModule);
   const moduleIndex = getModuleIndex(currentModule);
@@ -185,6 +191,18 @@ export function DailyPathScreen() {
     );
   }
 
+  const handleIntakeComplete = (answers: UserIntakeAnswers) => {
+    const plan = generateAdaptivePlan(answers);
+    setAdaptivePlan(plan);
+    setShowIntake(false);
+    setHasStarted(true);
+  };
+
+  // 3-Question Intake Questionnaire
+  if (showIntake) {
+    return <IntakeQuestionnaireScreen onComplete={handleIntakeComplete} />;
+  }
+
   // Before practice: show simple "Begin today's path"
   if (!hasStarted && currentModule === 'arrive' && !draft && !hasInProgressSession) {
     return (
@@ -201,7 +219,7 @@ export function DailyPathScreen() {
             <TouchableOpacity
               style={[styles.primaryButton, { backgroundColor: theme.primary }]}
               onPress={() => {
-                setHasStarted(true);
+                setShowIntake(true);
                 setShowContinueChoice(false);
               }}
             >
@@ -225,6 +243,15 @@ export function DailyPathScreen() {
     }
 
     await completeModule(currentModuleData.type, draft);
+  };
+
+  const getModulePrompt = () => {
+    if (adaptivePlan) {
+      if (currentModule === 'arrive') return adaptivePlan.arrivePrompt;
+      if (currentModule === 'reflect') return adaptivePlan.reflectPrompt;
+      if (currentModule === 'respond') return adaptivePlan.respondPrompt;
+    }
+    return currentModuleData?.prompt;
   };
 
   // During practice: show module with progress
@@ -259,14 +286,31 @@ export function DailyPathScreen() {
               {currentModuleData?.title}
             </Text>
             <Text style={[styles.modulePrompt, { color: theme.textSecondary }]}>
-              {currentModuleData?.prompt}
+              {getModulePrompt()}
             </Text>
           </View>
 
           {/* Show passage on "read" module */}
           {currentModule === 'read' && (
             <View style={styles.passageContainer}>
-              <PassageView passageRef={TODAYS_PASSAGE.ref} />
+              {adaptivePlan && (
+                <View
+                  style={[
+                    styles.planBadge,
+                    { backgroundColor: theme.surface, borderColor: theme.border },
+                  ]}
+                >
+                  <Text style={[styles.planBadgeTitle, { color: theme.text }]}>
+                    {adaptivePlan.title}
+                  </Text>
+                  <Text style={[styles.planBadgeSub, { color: theme.textSecondary }]}>
+                    {adaptivePlan.subtitle}
+                  </Text>
+                </View>
+              )}
+              <PassageView
+                passageRef={adaptivePlan ? adaptivePlan.passageRef : TODAYS_PASSAGE.ref}
+              />
             </View>
           )}
 
@@ -425,6 +469,22 @@ const styles = StyleSheet.create({
   },
   passageContainer: {
     marginBottom: spacing.xl,
+  },
+  planBadge: {
+    padding: spacing.md,
+    borderRadius: 12,
+    borderWidth: 1,
+    marginBottom: spacing.md,
+  },
+  planBadgeTitle: {
+    ...typography.body,
+    fontSize: 16,
+    fontWeight: '700',
+  },
+  planBadgeSub: {
+    ...typography.caption,
+    fontSize: 12,
+    marginTop: 2,
   },
   input: {
     ...typography.body,

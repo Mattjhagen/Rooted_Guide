@@ -10,3 +10,4 @@ export * from './Preferences';
 export * from './DailyPath';
 export * from './TodaysPassage';
 export * from './Reflection';
+export * from './IntakeQuestionnaire';
