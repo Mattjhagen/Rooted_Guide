@@ -99,7 +99,7 @@ describe('DailyPathScreen States', () => {
     });
   });
 
-  it('should show "Begin today\'s path" for new session', () => {
+  it('should launch directly into daily practice module for new session', () => {
     mockUseDailyPath.mockReturnValue({
       loading: false,
       session: { lastModule: null, completedModules: [] },
@@ -115,9 +115,8 @@ describe('DailyPathScreen States', () => {
 
     const { getByText } = render(<DailyPathScreen />);
 
-    expect(getByText("Today's path")).toBeTruthy();
-    expect(getByText(/15-minute guided journey/)).toBeTruthy();
-    expect(getByText("Begin today's path")).toBeTruthy();
+    expect(getByText('Arrive')).toBeTruthy();
+    expect(getByText('PLUMB LINE')).toBeTruthy();
   });
 
   it('should show "Continue reading" after completion with last read position', async () => {
