@@ -6,12 +6,13 @@ import {
   FlatList,
   TouchableOpacity,
   TextInput,
-  useColorScheme,
+  Platform,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { BookIcon, SearchIcon, ChevronRightIcon } from '@/ui/components/FallbackIcons';
 import { CANONICAL_BOOKS } from '@/infrastructure/scripture/schema';
+import { useTheme } from '@/features/preferences/ThemeContext';
 
 /**
  * Bible Browser Screen
@@ -21,8 +22,8 @@ import { CANONICAL_BOOKS } from '@/infrastructure/scripture/schema';
  */
 export function BibleBrowserScreen() {
   const router = useRouter();
-  const scheme = useColorScheme();
-  const isDark = scheme === 'dark';
+  const { theme, resolvedScheme } = useTheme();
+  const isDark = resolvedScheme === 'dark';
 
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedBook, setSelectedBook] = useState<string | null>(null);
@@ -171,19 +172,19 @@ export function BibleBrowserScreen() {
       style={[
         styles.bookItem,
         {
-          backgroundColor: isDark ? '#1A1512' : '#FFFFFF',
-          borderColor: isDark ? '#2D2824' : '#E5DDD5',
+          backgroundColor: theme.surface,
+          borderColor: theme.border,
         },
       ]}
       onPress={() => handleBookSelect(book.name)}
     >
-      <BookIcon size={20} color={isDark ? '#8B7355' : '#6B5744'} />
-      <Text style={[styles.bookText, { color: isDark ? '#F0EDE8' : '#1A1512' }]}>{book.name}</Text>
+      <BookIcon size={20} color={theme.primary} />
+      <Text style={[styles.bookText, { color: theme.text }]}>{book.name}</Text>
       <View style={styles.bookRight}>
-        <Text style={[styles.chapterCount, { color: isDark ? '#9CA3AF' : '#6B7280' }]}>
+        <Text style={[styles.chapterCount, { color: theme.textSecondary }]}>
           {getChapterCount(book.name)} ch
         </Text>
-        <ChevronRightIcon size={16} color={isDark ? '#6B7280' : '#9CA3AF'} />
+        <ChevronRightIcon size={16} color={theme.textSecondary} />
       </View>
     </TouchableOpacity>
   );
@@ -194,9 +195,7 @@ export function BibleBrowserScreen() {
 
     return (
       <View key={testament} style={styles.testamentSection}>
-        <Text style={[styles.testamentTitle, { color: isDark ? '#9CA3AF' : '#6B7280' }]}>
-          {title}
-        </Text>
+        <Text style={[styles.testamentTitle, { color: theme.textSecondary }]}>{title}</Text>
         {books.map((book) => renderBookItem(book))}
       </View>
     );
@@ -267,10 +266,9 @@ const styles = StyleSheet.create({
     paddingVertical: 16,
   },
   title: {
-    fontFamily: 'System',
+    fontFamily: Platform.OS === 'ios' ? 'Georgia' : 'serif',
     fontSize: 28,
-    fontWeight: '600',
-    letterSpacing: -0.5,
+    fontWeight: '400',
   },
   subtitle: {
     fontFamily: 'System',
@@ -278,30 +276,32 @@ const styles = StyleSheet.create({
     marginTop: 4,
   },
   searchContainer: {
+    marginBottom: 20,
+    paddingHorizontal: 20,
+  },
+  searchInputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginHorizontal: 20,
-    marginBottom: 16,
     paddingHorizontal: 16,
-    paddingVertical: 12,
-    borderRadius: 12,
+    paddingVertical: 10,
+    borderRadius: 28,
     borderWidth: 1,
-    gap: 12,
   },
   searchInput: {
     flex: 1,
     fontFamily: 'System',
-    fontSize: 16,
+    fontSize: 15,
+    marginLeft: 8,
   },
   listContent: {
-    paddingHorizontal: 20,
     paddingBottom: 40,
+    paddingHorizontal: 20,
   },
   testamentSection: {
     marginBottom: 32,
   },
   testamentTitle: {
-    fontFamily: 'System',
+    fontFamily: Platform.OS === 'ios' ? 'Georgia' : 'serif',
     fontSize: 11,
     fontWeight: '700',
     letterSpacing: 1.5,
@@ -312,14 +312,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     padding: 16,
-    borderRadius: 12,
+    borderRadius: 16,
     borderWidth: 1,
     marginBottom: 8,
   },
   bookText: {
     flex: 1,
-    fontFamily: 'System',
-    fontSize: 16,
+    fontFamily: Platform.OS === 'ios' ? 'Georgia' : 'serif',
+    fontSize: 17,
     fontWeight: '500',
     marginLeft: 12,
   },
@@ -348,9 +348,9 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   selectedBookTitle: {
-    fontFamily: 'System',
-    fontSize: 24,
-    fontWeight: '600',
+    fontFamily: Platform.OS === 'ios' ? 'Georgia' : 'serif',
+    fontSize: 26,
+    fontWeight: '400',
     letterSpacing: -0.5,
   },
   chapterSubtitle: {
@@ -365,7 +365,7 @@ const styles = StyleSheet.create({
     flex: 1,
     aspectRatio: 1,
     margin: 4,
-    borderRadius: 12,
+    borderRadius: 20,
     borderWidth: 1,
     justifyContent: 'center',
     alignItems: 'center',

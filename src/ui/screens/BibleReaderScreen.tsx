@@ -1,12 +1,13 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, useColorScheme } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Platform } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { ChevronLeftIcon, ChevronRightIcon, BookOpenIcon } from '@/ui/components/FallbackIcons';
 import { useBibleRepository } from '@/infrastructure/scripture/useBibleRepository';
 import { useUserDatabase } from '@/infrastructure/persistence/useUserDatabase';
 import { Verse, ChapterRef, HighlightColor } from '@/domain/models';
-import { getTheme, spacing, typography } from '@/ui/theme';
+import { spacing, typography } from '@/ui/theme';
+import { useTheme } from '@/features/preferences/ThemeContext';
 import { VerseActions } from '@/ui/components/VerseActions';
 
 /**
@@ -18,8 +19,7 @@ import { VerseActions } from '@/ui/components/VerseActions';
 export function BibleReaderScreen() {
   const router = useRouter();
   const params = useLocalSearchParams();
-  const scheme = useColorScheme();
-  const theme = getTheme(scheme);
+  const { theme } = useTheme();
   const bibleRepository = useBibleRepository();
   const { bookmarkRepository, highlightRepository, preferencesRepository } = useUserDatabase();
 
@@ -369,7 +369,8 @@ const styles = StyleSheet.create({
   },
   bookName: {
     ...typography.title,
-    fontSize: 18,
+    fontFamily: Platform.OS === 'ios' ? 'Georgia' : 'serif',
+    fontSize: 19,
     fontWeight: '600',
   },
   chapterNumber: {

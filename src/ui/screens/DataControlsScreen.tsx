@@ -5,7 +5,6 @@ import {
   StyleSheet,
   ScrollView,
   TouchableOpacity,
-  useColorScheme,
   Alert,
   Share,
   Platform,
@@ -15,11 +14,11 @@ import { Paths, File } from 'expo-file-system';
 import * as Sharing from 'expo-sharing';
 import { useRouter } from 'expo-router';
 import { useUserDatabase } from '@/infrastructure/persistence/useUserDatabase';
-import { getTheme, spacing, typography } from '@/ui/theme';
+import { spacing, typography } from '@/ui/theme';
+import { useTheme } from '@/features/preferences/ThemeContext';
 
 export function DataControlsScreen() {
-  const scheme = useColorScheme();
-  const theme = getTheme(scheme);
+  const { theme } = useTheme();
   const router = useRouter();
   const { dataManager } = useUserDatabase();
   const [stats, setStats] = useState({
@@ -252,6 +251,7 @@ const styles = StyleSheet.create({
   },
   title: {
     ...typography.title,
+    fontFamily: Platform.OS === 'ios' ? 'Georgia' : 'serif',
     fontSize: 28,
     textAlign: 'center',
   },
@@ -263,6 +263,7 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     ...typography.title,
+    fontFamily: Platform.OS === 'ios' ? 'Georgia' : 'serif',
     fontSize: 20,
     marginBottom: spacing.sm,
   },
@@ -293,10 +294,10 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   actionButton: {
-    paddingVertical: spacing.md,
-    paddingHorizontal: spacing.lg,
-    borderRadius: 8,
+    height: 52,
+    borderRadius: 26,
     alignItems: 'center',
+    justifyContent: 'center',
     marginBottom: spacing.sm,
   },
   actionButtonDisabled: {

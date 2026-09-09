@@ -1,18 +1,12 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  TouchableOpacity,
-  useColorScheme,
-  RefreshControl,
-} from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, RefreshControl } from 'react-native';
+import { Platform } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { useUserDatabase } from '@/infrastructure/persistence/useUserDatabase';
 import { Reflection, Note, Bookmark, Highlight, GuideThread } from '@/domain/models';
-import { getTheme, spacing, typography } from '@/ui/theme';
+import { spacing, typography } from '@/ui/theme';
+import { useTheme } from '@/features/preferences/ThemeContext';
 
 type SavedItemType = 'reflection' | 'prayer' | 'note' | 'bookmark' | 'highlight' | 'guide';
 type FilterCategory =
@@ -35,8 +29,7 @@ interface DateGroup {
 }
 
 export function SavedItemsScreen() {
-  const scheme = useColorScheme();
-  const theme = getTheme(scheme);
+  const { theme } = useTheme();
   const router = useRouter();
   const {
     reflectionRepository,
@@ -441,7 +434,8 @@ const styles = StyleSheet.create({
   },
   title: {
     ...typography.title,
-    fontSize: 28,
+    fontFamily: Platform.OS === 'ios' ? 'Georgia' : 'serif',
+    fontSize: 32,
   },
   filterScroll: {
     borderBottomWidth: 1,
@@ -452,9 +446,9 @@ const styles = StyleSheet.create({
     gap: spacing.xs,
   },
   filterTab: {
-    paddingHorizontal: spacing.md,
-    paddingVertical: spacing.xs,
-    borderRadius: 16,
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 20,
     marginRight: spacing.xs,
   },
   filterText: {
@@ -484,14 +478,17 @@ const styles = StyleSheet.create({
   },
   dateLabel: {
     ...typography.caption,
-    fontWeight: '600',
+    fontFamily: Platform.OS === 'ios' ? 'Georgia' : 'serif',
+    fontWeight: '700',
+    fontSize: 12,
+    letterSpacing: 1,
     marginBottom: spacing.xs,
     paddingHorizontal: spacing.xs,
   },
   item: {
-    padding: spacing.md,
+    padding: spacing.lg,
     borderWidth: 1,
-    borderRadius: 8,
+    borderRadius: 18,
   },
   itemHeader: {
     flexDirection: 'row',

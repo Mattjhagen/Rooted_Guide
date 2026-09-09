@@ -5,14 +5,15 @@ import {
   StyleSheet,
   ScrollView,
   TouchableOpacity,
-  useColorScheme,
   ActivityIndicator,
+  Platform,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { TODAYS_PASSAGE } from '@/domain/models/TodaysPassage';
 import { createGuideGateway, getGuideConfig } from '@/infrastructure/config/guideConfig';
 import { useBibleRepository } from '@/infrastructure/scripture/useBibleRepository';
-import { getTheme, spacing, typography } from '@/ui/theme';
+import { spacing, typography } from '@/ui/theme';
+import { useTheme } from '@/features/preferences/ThemeContext';
 
 interface ForTodaySummaryProps {
   arriveResponse: string;
@@ -25,8 +26,7 @@ export function ForTodaySummaryScreen({
   onContinue,
   onAskQuestion,
 }: ForTodaySummaryProps) {
-  const scheme = useColorScheme();
-  const theme = getTheme(scheme);
+  const { theme } = useTheme();
   const bibleRepository = useBibleRepository();
   const [summary, setSummary] = useState<string>('');
   const [invitation, setInvitation] = useState<string>('');
@@ -199,6 +199,7 @@ const styles = StyleSheet.create({
   },
   title: {
     ...typography.title,
+    fontFamily: Platform.OS === 'ios' ? 'Georgia' : 'serif',
     fontSize: 32,
     textAlign: 'center',
   },
@@ -208,6 +209,7 @@ const styles = StyleSheet.create({
   },
   summaryText: {
     ...typography.body,
+    fontFamily: Platform.OS === 'ios' ? 'Georgia' : 'serif',
     fontSize: 18,
     lineHeight: 28,
     textAlign: 'center',
@@ -226,10 +228,15 @@ const styles = StyleSheet.create({
     gap: spacing.md,
   },
   primaryButton: {
-    paddingVertical: spacing.md + 2,
-    paddingHorizontal: spacing.lg,
-    borderRadius: 8,
+    height: 54,
+    borderRadius: 27,
     alignItems: 'center',
+    justifyContent: 'center',
+    shadowColor: '#5E9C76',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.25,
+    shadowRadius: 8,
+    elevation: 3,
   },
   primaryButtonText: {
     ...typography.body,
@@ -237,10 +244,10 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   secondaryButton: {
-    paddingVertical: spacing.md + 2,
-    paddingHorizontal: spacing.lg,
-    borderRadius: 8,
+    height: 52,
+    borderRadius: 26,
     alignItems: 'center',
+    justifyContent: 'center',
   },
   secondaryButtonText: {
     ...typography.body,
