@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Plumb Line — A Daily Practice in Grace & Scripture</title>
+  <link rel="icon" type="image/jpeg" href="./assets/logo.jpg">
+  <style>
+    :root {
+      --bg: #0d0e11;
+      --surface: #17181c;
+      --border: #28292e;
+      --text: #f0f0f3;
+      --text-muted: #9a9ab0;
+      --accent: #d4af37;
+      --pill: #ffffff;
+      --pill-text: #0d0e11;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      padding: 0;
+      margin: 0;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 24px 32px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      text-decoration: none;
+      color: var(--text);
+    }
+
+    .brand img {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+    }
+
+    .brand-name {
+      font-family: Georgia, serif;
+      font-size: 20px;
+      letter-spacing: 0.5px;
+      font-weight: 500;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 24px;
+    }
+
+    .nav-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover {
+      color: var(--text);
+    }
+
+    .hero {
+      max-width: 800px;
+      margin: 80px auto 60px;
+      text-align: center;
+      padding: 0 24px;
+    }
+
+    .logo-large {
+      width: 110px;
+      height: 110px;
+      border-radius: 24px;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.08);
+      margin-bottom: 32px;
+    }
+
+    h1 {
+      font-family: Georgia, serif;
+      font-size: 44px;
+      line-height: 1.2;
+      font-weight: 400;
+      margin-bottom: 20px;
+      color: #ffffff;
+    }
+
+    .hero p {
+      font-size: 18px;
+      color: var(--text-muted);
+      max-width: 620px;
+      margin: 0 auto 36px;
+    }
+
+    .cta-group {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      height: 52px;
+      padding: 0 32px;
+      border-radius: 26px;
+      font-size: 15px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: transform 0.15s, opacity 0.15s;
+    }
+
+    .btn-primary {
+      background-color: var(--pill);
+      color: var(--pill-text);
+    }
+
+    .btn-secondary {
+      background-color: var(--surface);
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+      opacity: 0.95;
+    }
+
+    .features {
+      max-width: 1000px;
+      margin: 60px auto 100px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+      padding: 0 24px;
+    }
+
+    .card {
+      background-color: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 32px;
+    }
+
+    .card h3 {
+      font-family: Georgia, serif;
+      font-size: 20px;
+      font-weight: 400;
+      margin-bottom: 12px;
+      color: #ffffff;
+    }
+
+    .card p {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    .footer {
+      border-top: 1px solid var(--border);
+      padding: 40px 24px;
+      text-align: center;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      margin-bottom: 16px;
+    }
+
+    .footer-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+    }
+
+    .footer-links a:hover {
+      color: var(--text);
+    }
+  </style>
+</head>
+<body>
+
+  <header class="header">
+    <a href="./index.html" class="brand">
+      <img src="./assets/logo.jpg" alt="Plumb Line Logo">
+      <span class="brand-name">Plumb Line</span>
+    </a>
+    <nav class="nav-links">
+      <a href="./privacy.html">Privacy Policy</a>
+      <a href="./terms.html">Terms of Service</a>
+    </nav>
+  </header>
+
+  <main class="hero">
+    <img src="./assets/logo.jpg" alt="Plumb Line Logo" class="logo-large">
+    <h1>A daily practice in grace, prayer, & Scripture</h1>
+    <p>Plumb Line provides a calm, quiet space for personalized daily Bible readings, deep reflections, and Scripture study tailored to your personal walk.</p>
+    
+    <div class="cta-group">
+      <a href="./privacy.html" class="btn btn-primary">Privacy Policy</a>
+      <a href="./terms.html" class="btn btn-secondary">Terms of Service</a>
+    </div>
+  </main>
+
+  <section class="features">
+    <div class="card">
+      <h3>Personalized Daily Paths</h3>
+      <p>Answer conversational intake prompts to receive an AI-crafted daily Scripture journey tuned to your current season of life.</p>
+    </div>
+    <div class="card">
+      <h3>Local-First & Offline Ready</h3>
+      <p>Your practice remains fast and fully functional offline with full World English Bible (WEB) text stored locally on your device.</p>
+    </div>
+    <div class="card">
+      <h3>Multi-Device Cloud Sync</h3>
+      <p>Sign in securely with Google to automatically back up and synchronize your notes, bookmarks, and daily progress across all your devices.</p>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-links">
+      <a href="./privacy.html">Privacy Policy</a>
+      <a href="./terms.html">Terms of Service</a>
+    </div>
+    <p>&copy; 2026 Plumb Line (rootedapp.space). All rights reserved.</p>
+  </footer>
+
+</body>
+</html>

@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Privacy Policy — Plumb Line</title>
+  <link rel="icon" type="image/jpeg" href="../assets/logo.jpg">
+  <style>
+    :root {
+      --bg: #0d0e11;
+      --surface: #17181c;
+      --border: #28292e;
+      --text: #f0f0f3;
+      --text-muted: #9a9ab0;
+      --accent: #d4af37;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+      padding: 0;
+      margin: 0;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 24px 32px;
+      max-width: 900px;
+      margin: 0 auto;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: var(--text);
+    }
+
+    .brand img { width: 32px; height: 32px; border-radius: 8px; }
+
+    .brand-name {
+      font-family: Georgia, serif;
+      font-size: 18px;
+    }
+
+    .nav-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 14px;
+      margin-left: 20px;
+    }
+
+    .nav-links a:hover { color: var(--text); }
+
+    .container {
+      max-width: 800px;
+      margin: 60px auto 100px;
+      padding: 0 24px;
+    }
+
+    h1 {
+      font-family: Georgia, serif;
+      font-size: 36px;
+      font-weight: 400;
+      color: #ffffff;
+      margin-bottom: 8px;
+    }
+
+    .meta {
+      font-size: 14px;
+      color: var(--text-muted);
+      margin-bottom: 40px;
+    }
+
+    h2 {
+      font-family: Georgia, serif;
+      font-size: 22px;
+      font-weight: 400;
+      color: #ffffff;
+      margin-top: 36px;
+      margin-bottom: 14px;
+    }
+
+    p, li {
+      font-size: 15px;
+      color: #c4c4d4;
+      margin-bottom: 16px;
+    }
+
+    ul {
+      padding-left: 24px;
+      margin-bottom: 20px;
+    }
+
+    li { margin-bottom: 8px; }
+
+    .highlight-box {
+      background-color: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+      margin: 28px 0;
+    }
+
+    .footer {
+      border-top: 1px solid var(--border);
+      padding: 40px 24px;
+      text-align: center;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+
+  <header class="header">
+    <a href="../index.html" class="brand">
+      <img src="../assets/logo.jpg" alt="Plumb Line Logo">
+      <span class="brand-name">Plumb Line</span>
+    </a>
+    <nav class="nav-links">
+      <a href="../index.html">Home</a>
+      <a href="../terms.html">Terms of Service</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <h1>Privacy Policy</h1>
+    <div class="meta">Effective Date: September 8, 2026 | Last Updated: September 8, 2026</div>
+
+    <p>Plumb Line ("we," "our," or "us") is dedicated to protecting your privacy and giving you complete control over your personal data. This Privacy Policy describes how Plumb Line collects, uses, and safeguards information when you use our mobile application and website (<a href="https://plumbline.rootedapp.space" style="color: #ffffff;">plumbline.rootedapp.space</a>).</p>
+
+    <div class="highlight-box">
+      <strong style="color: #ffffff;">Our Privacy Principle:</strong> Plumb Line is built with a local-first architecture. Your Scripture readings, daily notes, reflections, and bookmarks are saved on your device. When you choose to sign in with Google, your data is securely backed up to your personal account so you can sync across devices.
+    </div>
+
+    <h2>1. Information We Collect</h2>
+    <p>We collect only the minimum necessary information required to provide our service:</p>
+    <ul>
+      <li><strong>Google Account Information:</strong> When you sign in using Google OAuth, we receive your basic account details provided by Google, including your email address, display name, user ID, and profile picture URL.</li>
+      <li><strong>App Practice Data:</strong> Your personal responses to daily intake questions, reflections, study notes, highlights, bookmarks, and completed daily module sessions.</li>
+      <li><strong>Technical & Session Data:</strong> Authentication tokens and local storage preferences managed securely via local device storage (`AsyncStorage` / SQLite).</li>
+    </ul>
+
+    <h2>2. How We Use Your Information</h2>
+    <p>We use your information strictly to:</p>
+    <ul>
+      <li>Authenticate your identity and allow you to log in securely across multiple devices.</li>
+      <li>Synchronize your daily practice progress, reflections, notes, and bookmarks across your devices.</li>
+      <li>Generate personalized daily Bible readings and devotional pathways tailored to your preferences.</li>
+    </ul>
+
+    <h2>3. Limited Use & Data Sharing Policy</h2>
+    <p>We strictly protect your personal information:</p>
+    <ul>
+      <li><strong>No Selling or Renting:</strong> We do NOT sell, rent, trade, or monetize your personal data or Google account information to third parties.</li>
+      <li><strong>No Advertising:</strong> We do NOT use your Google user data for targeted advertising, marketing, or retargeting purposes.</li>
+      <li><strong>Third-Party Service Providers:</strong> We use Supabase as our secure cloud backend provider to store and sync your encrypted user account data.</li>
+    </ul>
+
+    <h2>4. Data Storage, Security, & Encryption</h2>
+    <p>All user data in transit between your device and our cloud servers is encrypted using standard HTTPS / TLS 1.3 protocol. Database storage is protected using Row Level Security (RLS), ensuring that only your authenticated account can access your data.</p>
+
+    <h2>5. Data Control & Deletion Rights</h2>
+    <p>You have full ownership of your data. You may request deletion of your account and associated data at any time:</p>
+    <ul>
+      <li><strong>In-App Deletion:</strong> You can delete all your stored data directly inside the app by opening Settings &rarr; Data Controls &rarr; Clear All My Data.</li>
+      <li><strong>Account Deletion Request:</strong> You can request complete removal of your cloud account and backups by emailing us at <a href="mailto:privacy@rootedapp.space" style="color: #ffffff;">privacy@rootedapp.space</a>.</li>
+    </ul>
+
+    <h2>6. Contact Us</h2>
+    <p>If you have any questions or concerns regarding this Privacy Policy or your data, please contact us at:</p>
+    <p>Email: <a href="mailto:privacy@rootedapp.space" style="color: #ffffff;">privacy@rootedapp.space</a><br>
+    Website: <a href="https://plumbline.rootedapp.space" style="color: #ffffff;">https://plumbline.rootedapp.space</a></p>
+  </main>
+
+  <footer class="footer">
+    <p>&copy; 2026 Plumb Line (rootedapp.space). All rights reserved.</p>
+  </footer>
+
+</body>
+</html>
