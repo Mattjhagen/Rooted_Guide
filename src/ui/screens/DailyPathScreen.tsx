@@ -46,7 +46,6 @@ export function DailyPathScreen() {
     isComplete,
     isLocked,
     timeUntilUnlock,
-    startFromBeginning,
   } = useDailyPath();
   const [showForTodaySummary, setShowForTodaySummary] = React.useState(false);
   const [arriveResponse, setArriveResponse] = React.useState<string>('');
