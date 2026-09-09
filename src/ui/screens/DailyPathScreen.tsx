@@ -226,7 +226,6 @@ export function DailyPathScreen() {
               style={[styles.primaryButton, { backgroundColor: theme.primary }]}
               onPress={() => {
                 setShowIntake(true);
-                setShowContinueChoice(false);
               }}
             >
               <Text style={styles.primaryButtonText}>Begin today's path</Text>
