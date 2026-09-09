@@ -53,8 +53,8 @@ export function SubscriptionProvider({ children }: { children: React.ReactNode }
 
     try {
       const customerInfo = await Purchases.getCustomerInfo();
-      // Assume "pro" is the entitlement identifier in RevenueCat
-      if (typeof customerInfo.entitlements.active['pro'] !== 'undefined') {
+      // Assume "plumbline_pro" is the entitlement identifier in RevenueCat
+      if (typeof customerInfo.entitlements.active['plumbline_pro'] !== 'undefined') {
         setIsPro(true);
       }
       
@@ -70,7 +70,7 @@ export function SubscriptionProvider({ children }: { children: React.ReactNode }
   const purchasePackage = async (pkg: PurchasesPackage) => {
     try {
       const { customerInfo } = await Purchases.purchasePackage(pkg);
-      if (typeof customerInfo.entitlements.active['pro'] !== 'undefined') {
+      if (typeof customerInfo.entitlements.active['plumbline_pro'] !== 'undefined') {
         setIsPro(true);
         return true;
       }
