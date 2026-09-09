@@ -25,6 +25,7 @@ import { useUserDatabase } from '@/infrastructure/persistence/useUserDatabase';
 import { PlumbLineLogo } from '@/ui/components/PlumbLineLogo';
 
 import { IntakeQuestionnaireScreen } from './IntakeQuestionnaireScreen';
+import { GoogleAuthScreen } from './GoogleAuthScreen';
 import { generateAdaptivePlan, GeneratedPlan } from '@/features/dailyPath/AdaptivePlanEngine';
 import { UserIntakeAnswers } from '@/domain/models/IntakeQuestionnaire';
 
@@ -51,6 +52,9 @@ export function DailyPathScreen() {
   const [lastReadRef, setLastReadRef] = React.useState<string | null>(null);
   const [hasStarted, setHasStarted] = React.useState(false);
   const [showIntake, setShowIntake] = React.useState(false);
+  const [showAuth, setShowAuth] = React.useState(false);
+  const [intakeUserName, setIntakeUserName] = React.useState<string | undefined>(undefined);
+  const [pendingPlan, setPendingPlan] = React.useState<GeneratedPlan | null>(null);
   const [adaptivePlan, setAdaptivePlan] = React.useState<GeneratedPlan | null>(null);
 
   const fadeAnim = useRef(new Animated.Value(0)).current;
@@ -222,14 +226,28 @@ export function DailyPathScreen() {
 
   const handleIntakeComplete = (answers: UserIntakeAnswers) => {
     const plan = generateAdaptivePlan(answers);
-    setAdaptivePlan(plan);
+    setPendingPlan(plan);
+    setIntakeUserName(answers.userName);
     setShowIntake(false);
+    setShowAuth(true);
+  };
+
+  const handleAuthComplete = () => {
+    if (pendingPlan) {
+      setAdaptivePlan(pendingPlan);
+    }
+    setShowAuth(false);
     setHasStarted(true);
   };
 
   // 3-Question Intake Questionnaire
   if (showIntake) {
     return <IntakeQuestionnaireScreen onComplete={handleIntakeComplete} />;
+  }
+
+  // Google Sign-In step after opening questions
+  if (showAuth) {
+    return <GoogleAuthScreen userName={intakeUserName} onComplete={handleAuthComplete} />;
   }
 
   // Before practice: show simple "Begin today's path"

@@ -9,6 +9,7 @@ import {
 } from '@/infrastructure/persistence';
 import { BibleDatabaseProvider } from '@/infrastructure/scripture/BibleContext';
 import { ThemeProvider, useTheme } from '@/features/preferences/ThemeContext';
+import { AuthProvider } from '@/features/auth/AuthContext';
 
 /**
  * Initialize user data database
@@ -84,17 +85,19 @@ function NavigationStack() {
 
 export default function RootLayout() {
   return (
-    <ThemeProvider>
-      <SQLiteProvider
-        databaseName="bible.db"
-        assetSource={{ assetId: require('../assets/bible.db') }}
-      >
-        <BibleDatabaseWrapper>
-          <UserDataProvider>
-            <NavigationStack />
-          </UserDataProvider>
-        </BibleDatabaseWrapper>
-      </SQLiteProvider>
-    </ThemeProvider>
+    <AuthProvider>
+      <ThemeProvider>
+        <SQLiteProvider
+          databaseName="bible.db"
+          assetSource={{ assetId: require('../assets/bible.db') }}
+        >
+          <BibleDatabaseWrapper>
+            <UserDataProvider>
+              <NavigationStack />
+            </UserDataProvider>
+          </BibleDatabaseWrapper>
+        </SQLiteProvider>
+      </ThemeProvider>
+    </AuthProvider>
   );
 }
