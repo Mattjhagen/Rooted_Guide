@@ -42,16 +42,13 @@ export function usePushNotifications() {
     loadPreferences();
   }, []);
 
-  const enableDailyReminder = useCallback(
-    async (hour: number = 8, minute: number = 0) => {
-      await scheduleDailyReminder({ hour, minute });
-      setIsReminderEnabled(true);
-      setReminderTime({ hour, minute });
-      await safeStorage.setItem(REMINDER_ENABLED_KEY, 'true');
-      await safeStorage.setItem(REMINDER_TIME_KEY, JSON.stringify({ hour, minute }));
-    },
-    []
-  );
+  const enableDailyReminder = useCallback(async (hour: number = 8, minute: number = 0) => {
+    await scheduleDailyReminder({ hour, minute });
+    setIsReminderEnabled(true);
+    setReminderTime({ hour, minute });
+    await safeStorage.setItem(REMINDER_ENABLED_KEY, 'true');
+    await safeStorage.setItem(REMINDER_TIME_KEY, JSON.stringify({ hour, minute }));
+  }, []);
 
   const disableDailyReminder = useCallback(async () => {
     await cancelDailyReminder();

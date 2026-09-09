@@ -48,7 +48,6 @@ export function DailyPathScreen() {
     timeUntilUnlock,
     startFromBeginning,
   } = useDailyPath();
-  const [showContinueChoice, setShowContinueChoice] = React.useState(true);
   const [showForTodaySummary, setShowForTodaySummary] = React.useState(false);
   const [arriveResponse, setArriveResponse] = React.useState<string>('');
   const [lastReadRef, setLastReadRef] = React.useState<string | null>(null);
@@ -181,49 +180,6 @@ export function DailyPathScreen() {
   if (shouldShowSummary) {
     return (
       <ForTodaySummaryScreen arriveResponse={arriveResponse} onContinue={handleSummaryContinue} />
-    );
-  }
-
-  // Show welcome back choice when returning to incomplete session
-  if (showContinueChoice && hasInProgressSession && currentModule !== 'arrive') {
-    const lastModuleData = DAILY_PATH_MODULES.find((m) => m.type === session.lastModule);
-    return (
-      <SafeAreaView
-        style={StyleSheet.flatten([styles.container, { backgroundColor: theme.background }])}
-      >
-        <ScrollView contentContainerStyle={styles.completeContent}>
-          <View style={styles.completeState}>
-            <Text style={[styles.completeTitle, { color: theme.text }]}>Welcome back</Text>
-            <Text style={[styles.completeMessage, { color: theme.textSecondary }]}>
-              You paused during "{lastModuleData?.title}".
-            </Text>
-            <Text style={[styles.completeMessage, { color: theme.textSecondary }]}>
-              Continue where you left off, or start from the beginning.
-            </Text>
-
-            <View style={styles.buttonGroup}>
-              <TouchableOpacity
-                style={[styles.primaryButton, { backgroundColor: theme.primary }]}
-                onPress={() => setShowContinueChoice(false)}
-              >
-                <Text style={styles.primaryButtonText}>Continue</Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                style={[styles.secondaryButton, { borderColor: theme.border }]}
-                onPress={() => {
-                  startFromBeginning();
-                  setShowContinueChoice(false);
-                }}
-              >
-                <Text style={[styles.secondaryButtonText, { color: theme.text }]}>
-                  Start from beginning
-                </Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </ScrollView>
-      </SafeAreaView>
     );
   }
 
