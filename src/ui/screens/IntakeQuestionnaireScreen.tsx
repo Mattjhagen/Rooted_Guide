@@ -211,7 +211,7 @@ const styles = StyleSheet.create({
   },
   optionCard: {
     padding: spacing.lg,
-    borderRadius: 12,
+    borderRadius: 16,
     borderWidth: 1.5,
     gap: spacing.xs,
   },
@@ -237,7 +237,7 @@ const styles = StyleSheet.create({
   primaryButton: {
     flex: 2,
     height: 52,
-    borderRadius: 12,
+    borderRadius: 26,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -249,7 +249,7 @@ const styles = StyleSheet.create({
   secondaryButton: {
     flex: 1,
     height: 52,
-    borderRadius: 12,
+    borderRadius: 26,
     borderWidth: 1,
     alignItems: 'center',
     justifyContent: 'center',

@@ -7,9 +7,13 @@ import { Verse, HighlightColor } from '@/domain/models';
 import { getTheme, spacing, typography } from '@/ui/theme';
 import { VerseActions } from './VerseActions';
 
+import { TypewriterText } from './TypewriterText';
+
 interface PassageViewProps {
   passageRef: PassageRef;
   onVersePress?: (verse: Verse) => void;
+  enableTypewriter?: boolean;
+  onTypewriterComplete?: () => void;
 }
 
 interface VerseState {
@@ -17,7 +21,12 @@ interface VerseState {
   highlightColor?: HighlightColor;
 }
 
-export function PassageView({ passageRef, onVersePress }: PassageViewProps) {
+export function PassageView({
+  passageRef,
+  onVersePress,
+  enableTypewriter,
+  onTypewriterComplete,
+}: PassageViewProps) {
   const scheme = useColorScheme();
   const theme = getTheme(scheme);
   const bibleRepository = useBibleRepository();
@@ -82,6 +91,24 @@ export function PassageView({ passageRef, onVersePress }: PassageViewProps) {
     return (
       <View style={styles.container}>
         <Text style={[styles.error, { color: theme.textSecondary }]}>Passage not found</Text>
+      </View>
+    );
+  }
+
+  if (enableTypewriter) {
+    const fullText = verses.map((v) => `${v.ref.verse}. ${v.text}`).join('\n\n');
+    return (
+      <View style={styles.container}>
+        <Text style={[styles.reference, { color: theme.textSecondary }]}>
+          {passageRef.book} {passageRef.chapter}:{passageRef.verseStart}
+          {passageRef.verseEnd > passageRef.verseStart && `-${passageRef.verseEnd}`}
+        </Text>
+        <TypewriterText
+          text={fullText}
+          speed={20}
+          style={[styles.verseText, { color: theme.text }]}
+          onComplete={onTypewriterComplete}
+        />
       </View>
     );
   }

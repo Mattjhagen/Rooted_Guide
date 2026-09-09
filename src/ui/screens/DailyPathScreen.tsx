@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import {
   View,
   Text,
@@ -9,9 +9,11 @@ import {
   useColorScheme,
   KeyboardAvoidingView,
   Platform,
+  Animated,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
+import { BookOpenIcon, BookmarkIcon } from '@/ui/components/FallbackIcons';
 import { useDailyPath } from '@/features/dailyPath/useDailyPath';
 import { formatTimeRemaining } from '@/features/dailyPath/formatTimeRemaining';
 import { DAILY_PATH_MODULES, getModuleIndex } from '@/domain/models/DailyPath';
@@ -49,6 +51,32 @@ export function DailyPathScreen() {
   const [hasStarted, setHasStarted] = React.useState(false);
   const [showIntake, setShowIntake] = React.useState(false);
   const [adaptivePlan, setAdaptivePlan] = React.useState<GeneratedPlan | null>(null);
+
+  const fadeAnim = useRef(new Animated.Value(0)).current;
+  const slideUpAnim = useRef(new Animated.Value(24)).current;
+
+  const triggerEntranceAnimation = React.useCallback(() => {
+    fadeAnim.setValue(0);
+    slideUpAnim.setValue(24);
+    Animated.parallel([
+      Animated.timing(fadeAnim, {
+        toValue: 1,
+        duration: 500,
+        useNativeDriver: true,
+      }),
+      Animated.timing(slideUpAnim, {
+        toValue: 0,
+        duration: 500,
+        useNativeDriver: true,
+      }),
+    ]).start();
+  }, [fadeAnim, slideUpAnim]);
+
+  useEffect(() => {
+    if (currentModule !== 'read') {
+      triggerEntranceAnimation();
+    }
+  }, [currentModule, triggerEntranceAnimation]);
 
   const currentModuleData = DAILY_PATH_MODULES.find((m) => m.type === currentModule);
   const moduleIndex = getModuleIndex(currentModule);
@@ -260,6 +288,27 @@ export function DailyPathScreen() {
       style={StyleSheet.flatten([styles.container, { backgroundColor: theme.background }])}
       edges={['top']}
     >
+      {/* Top Header Navigation */}
+      <View style={styles.topHeaderNav}>
+        <TouchableOpacity
+          onPress={() => router.push('/saved')}
+          style={styles.headerIconButton}
+          accessibilityLabel="Open saved collection"
+        >
+          <BookmarkIcon size={22} color={theme.textSecondary} />
+        </TouchableOpacity>
+
+        <Text style={[styles.brandTitle, { color: theme.textSecondary }]}>PLUMB LINE</Text>
+
+        <TouchableOpacity
+          onPress={() => router.push('/browse')}
+          style={styles.headerIconButton}
+          accessibilityLabel="Open Bible reader"
+        >
+          <BookOpenIcon size={22} color={theme.textSecondary} />
+        </TouchableOpacity>
+      </View>
+
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={styles.container}
@@ -290,7 +339,7 @@ export function DailyPathScreen() {
             </Text>
           </View>
 
-          {/* Show passage on "read" module */}
+          {/* Show passage on "read" module with Typewriter */}
           {currentModule === 'read' && (
             <View style={styles.passageContainer}>
               {adaptivePlan && (
@@ -310,31 +359,40 @@ export function DailyPathScreen() {
               )}
               <PassageView
                 passageRef={adaptivePlan ? adaptivePlan.passageRef : TODAYS_PASSAGE.ref}
+                enableTypewriter={true}
+                onTypewriterComplete={triggerEntranceAnimation}
               />
             </View>
           )}
 
-          {/* Response input */}
-          <TextInput
-            style={[
-              styles.input,
-              {
-                color: theme.text,
-                backgroundColor: theme.surface,
-                borderColor: theme.border,
-              },
-            ]}
-            placeholder={currentModuleData?.placeholder}
-            placeholderTextColor={theme.textTertiary}
-            value={draft}
-            onChangeText={updateDraft}
-            multiline
-            textAlignVertical="top"
-            autoFocus
-          />
+          {/* Animated entrance for response input */}
+          <Animated.View
+            style={{
+              opacity: fadeAnim,
+              transform: [{ translateY: slideUpAnim }],
+            }}
+          >
+            <TextInput
+              style={[
+                styles.input,
+                {
+                  color: theme.text,
+                  backgroundColor: theme.surface,
+                  borderColor: theme.border,
+                },
+              ]}
+              placeholder={currentModuleData?.placeholder}
+              placeholderTextColor={theme.textTertiary}
+              value={draft}
+              onChangeText={updateDraft}
+              multiline
+              textAlignVertical="top"
+              autoFocus={currentModule !== 'read'}
+            />
+          </Animated.View>
         </ScrollView>
 
-        {/* Continue button - fixed at bottom */}
+        {/* Continue button - fixed at bottom with animated entrance */}
         <SafeAreaView
           style={[
             styles.footer,
@@ -342,23 +400,30 @@ export function DailyPathScreen() {
           ]}
           edges={['bottom']}
         >
-          <TouchableOpacity
-            style={[
-              styles.footerButton,
-              { backgroundColor: draft.trim() ? theme.primary : theme.border },
-            ]}
-            onPress={handleNext}
-            disabled={!draft.trim()}
+          <Animated.View
+            style={{
+              opacity: fadeAnim,
+              transform: [{ translateY: slideUpAnim }],
+            }}
           >
-            <Text
+            <TouchableOpacity
               style={[
-                styles.footerButtonText,
-                { color: draft.trim() ? '#FFFFFF' : theme.textTertiary },
+                styles.footerButton,
+                { backgroundColor: draft.trim() ? theme.primary : theme.border },
               ]}
+              onPress={handleNext}
+              disabled={!draft.trim()}
             >
-              {moduleIndex === DAILY_PATH_MODULES.length - 1 ? 'Complete' : 'Continue'}
-            </Text>
-          </TouchableOpacity>
+              <Text
+                style={[
+                  styles.footerButtonText,
+                  { color: draft.trim() ? '#FFFFFF' : theme.textTertiary },
+                ]}
+              >
+                {moduleIndex === DAILY_PATH_MODULES.length - 1 ? 'Complete' : 'Continue'}
+              </Text>
+            </TouchableOpacity>
+          </Animated.View>
         </SafeAreaView>
       </KeyboardAvoidingView>
     </SafeAreaView>
@@ -398,11 +463,28 @@ const styles = StyleSheet.create({
     lineHeight: 28,
     maxWidth: 400,
   },
+  topHeaderNav: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: spacing.lg,
+    paddingVertical: spacing.sm,
+  },
+  headerIconButton: {
+    padding: spacing.sm,
+  },
+  brandTitle: {
+    ...typography.caption,
+    fontSize: 12,
+    fontWeight: '700',
+    letterSpacing: 2,
+    textTransform: 'uppercase',
+  },
   primaryButton: {
     width: '100%',
     maxWidth: 400,
     height: 56,
-    borderRadius: 12,
+    borderRadius: 28,
     alignItems: 'center',
     justifyContent: 'center',
     marginTop: spacing.xl,
@@ -422,7 +504,7 @@ const styles = StyleSheet.create({
   secondaryButton: {
     width: '100%',
     height: 56,
-    borderRadius: 12,
+    borderRadius: 28,
     borderWidth: 1,
     alignItems: 'center',
     justifyContent: 'center',
@@ -434,7 +516,7 @@ const styles = StyleSheet.create({
   },
   moduleContent: {
     padding: spacing.lg,
-    paddingTop: spacing.xl,
+    paddingTop: spacing.md,
     paddingBottom: spacing.xl * 2,
   },
   progressContainer: {
@@ -472,7 +554,7 @@ const styles = StyleSheet.create({
   },
   planBadge: {
     padding: spacing.md,
-    borderRadius: 12,
+    borderRadius: 16,
     borderWidth: 1,
     marginBottom: spacing.md,
   },
@@ -490,7 +572,7 @@ const styles = StyleSheet.create({
     ...typography.body,
     minHeight: 160,
     borderWidth: 1,
-    borderRadius: 12,
+    borderRadius: 16,
     padding: spacing.lg,
   },
   footer: {
@@ -500,7 +582,7 @@ const styles = StyleSheet.create({
   },
   footerButton: {
     height: 56,
-    borderRadius: 12,
+    borderRadius: 28,
     alignItems: 'center',
     justifyContent: 'center',
   },
