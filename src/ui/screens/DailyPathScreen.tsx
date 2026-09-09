@@ -31,9 +31,10 @@ import { GoogleAuthScreen } from './GoogleAuthScreen';
 import { generateAdaptivePlan, GeneratedPlan } from '@/features/dailyPath/AdaptivePlanEngine';
 import { UserIntakeAnswers } from '@/domain/models/IntakeQuestionnaire';
 
+import { useTheme } from '@/features/preferences/ThemeContext';
+
 export function DailyPathScreen() {
-  const scheme = useColorScheme();
-  const theme = getTheme(scheme);
+  const { theme } = useTheme();
   const router = useRouter();
   const { preferencesRepository } = useUserDatabase();
   const {

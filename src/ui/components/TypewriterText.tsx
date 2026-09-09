@@ -12,6 +12,11 @@ export function TypewriterText({ text, speed = 25, style, onComplete }: Typewrit
   const [displayedLength, setDisplayedLength] = useState(0);
   const [isFinished, setIsFinished] = useState(false);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const onCompleteRef = useRef(onComplete);
+
+  useEffect(() => {
+    onCompleteRef.current = onComplete;
+  }, [onComplete]);
 
   useEffect(() => {
     setDisplayedLength(0);
@@ -19,7 +24,7 @@ export function TypewriterText({ text, speed = 25, style, onComplete }: Typewrit
 
     if (!text) {
       setIsFinished(true);
-      onComplete?.();
+      onCompleteRef.current?.();
       return;
     }
 
@@ -31,21 +36,21 @@ export function TypewriterText({ text, speed = 25, style, onComplete }: Typewrit
       if (currentLength >= text.length) {
         if (timerRef.current) clearInterval(timerRef.current);
         setIsFinished(true);
-        onComplete?.();
+        onCompleteRef.current?.();
       }
     }, speed);
 
     return () => {
       if (timerRef.current) clearInterval(timerRef.current);
     };
-  }, [text, speed, onComplete]);
+  }, [text, speed]);
 
   const handleSkip = () => {
     if (!isFinished) {
       if (timerRef.current) clearInterval(timerRef.current);
       setDisplayedLength(text.length);
       setIsFinished(true);
-      onComplete?.();
+      onCompleteRef.current?.();
     }
   };
 
