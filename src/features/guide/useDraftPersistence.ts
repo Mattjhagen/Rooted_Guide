@@ -1,20 +1,20 @@
 import { useCallback } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { safeStorage } from '../../infrastructure/storage/safeStorage';
 
 const DRAFT_KEY = '@plumbline_guide_draft';
 
 /**
  * Hook for persisting and restoring draft text
  *
- * Saves draft to AsyncStorage to preserve across app relaunches
+ * Saves draft to safeStorage to preserve across app relaunches
  */
 export function useDraftPersistence() {
   const saveDraft = useCallback(async (draft: string) => {
     try {
       if (draft.trim()) {
-        await AsyncStorage.setItem(DRAFT_KEY, draft);
+        await safeStorage.setItem(DRAFT_KEY, draft);
       } else {
-        await AsyncStorage.removeItem(DRAFT_KEY);
+        await safeStorage.removeItem(DRAFT_KEY);
       }
     } catch (error) {
       console.warn('Failed to save draft:', error);
@@ -23,7 +23,7 @@ export function useDraftPersistence() {
 
   const loadDraft = useCallback(async (): Promise<string | null> => {
     try {
-      return await AsyncStorage.getItem(DRAFT_KEY);
+      return await safeStorage.getItem(DRAFT_KEY);
     } catch (error) {
       console.warn('Failed to load draft:', error);
       return null;
@@ -32,7 +32,7 @@ export function useDraftPersistence() {
 
   const clearDraft = useCallback(async () => {
     try {
-      await AsyncStorage.removeItem(DRAFT_KEY);
+      await safeStorage.removeItem(DRAFT_KEY);
     } catch (error) {
       console.warn('Failed to clear draft:', error);
     }

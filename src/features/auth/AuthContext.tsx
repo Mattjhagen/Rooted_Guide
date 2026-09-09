@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useState, useMemo, useCallback } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { safeStorage } from '../../infrastructure/storage/safeStorage';
 import * as WebBrowser from 'expo-web-browser';
 import * as Google from 'expo-auth-session/providers/google';
 
@@ -39,7 +39,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     async function loadStoredUser() {
       try {
-        const stored = await AsyncStorage.getItem(ASYNC_STORAGE_AUTH_KEY);
+        const stored = await safeStorage.getItem(ASYNC_STORAGE_AUTH_KEY);
         if (stored) {
           setUser(JSON.parse(stored));
         }
@@ -77,7 +77,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       };
 
       setUser(userProfile);
-      await AsyncStorage.setItem(ASYNC_STORAGE_AUTH_KEY, JSON.stringify(userProfile));
+      await safeStorage.setItem(ASYNC_STORAGE_AUTH_KEY, JSON.stringify(userProfile));
     } catch (error) {
       console.error('Failed to fetch Google user info:', error);
     }
@@ -100,12 +100,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       isOffline: true,
     };
     setUser(offlineProfile);
-    await AsyncStorage.setItem(ASYNC_STORAGE_AUTH_KEY, JSON.stringify(offlineProfile));
+    await safeStorage.setItem(ASYNC_STORAGE_AUTH_KEY, JSON.stringify(offlineProfile));
   }, []);
 
   const signOut = useCallback(async () => {
     setUser(null);
-    await AsyncStorage.removeItem(ASYNC_STORAGE_AUTH_KEY);
+    await safeStorage.removeItem(ASYNC_STORAGE_AUTH_KEY);
   }, []);
 
   const value = useMemo(

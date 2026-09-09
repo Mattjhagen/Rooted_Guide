@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useState, useMemo } from 'react';
 import { useColorScheme } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { safeStorage } from '@/infrastructure/storage/safeStorage';
 import { ThemePreference, DEFAULT_THEME_PREFERENCE } from '@/domain/models/Preferences';
 import { getTheme, Theme } from '@/ui/theme/colors';
 
@@ -22,7 +22,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     async function loadStoredPreference() {
       try {
-        const stored = await AsyncStorage.getItem(ASYNC_STORAGE_THEME_KEY);
+        const stored = await safeStorage.getItem(ASYNC_STORAGE_THEME_KEY);
         if (stored === 'system' || stored === 'light' || stored === 'dark') {
           setPreferenceState(stored as ThemePreference);
         }
@@ -36,7 +36,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const setPreference = async (newPref: ThemePreference) => {
     try {
       setPreferenceState(newPref);
-      await AsyncStorage.setItem(ASYNC_STORAGE_THEME_KEY, newPref);
+      await safeStorage.setItem(ASYNC_STORAGE_THEME_KEY, newPref);
     } catch (error) {
       console.error('Failed to save theme preference to storage:', error);
     }
