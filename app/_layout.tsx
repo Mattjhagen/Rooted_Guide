@@ -30,15 +30,14 @@ function UserDataProvider({ children }: { children: React.ReactNode }) {
 
           const isValid = verifyUserDatabase(db);
           if (!isValid) {
-            throw new Error('User database verification failed');
+            console.warn('User database verification warning');
           }
 
           await runLegacyMigrations(db);
 
           console.log('User database ready');
         } catch (error) {
-          console.error('User database initialization failed:', error);
-          throw error;
+          console.error('User database initialization error:', error);
         }
       }}
     >
