@@ -3,6 +3,7 @@ export * from './MockBibleRepository';
 export * from './MockGuideGateway';
 export * from './HTTPGuideGateway';
 export * from './LocalDevGuideGateway';
+export * from './OpenRouterGuideGateway';
 
 // Production Scripture Repository
 export { SQLiteBibleRepository } from '../scripture/SQLiteBibleRepository';

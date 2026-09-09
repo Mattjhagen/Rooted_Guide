@@ -8,6 +8,7 @@
 import { GuideGateway } from '@/domain/services';
 import { HTTPGuideGateway } from '../adapters/HTTPGuideGateway';
 import { LocalDevGuideGateway } from '../adapters/LocalDevGuideGateway';
+import { OpenRouterGuideGateway } from '../adapters/OpenRouterGuideGateway';
 import { BibleRepository } from '@/domain/repositories';
 
 export interface GuideConfig {
@@ -27,26 +28,22 @@ export interface GuideConfig {
   apiBaseUrl?: string;
 
   /**
+   * OpenRouter API key if present
+   */
+  openRouterApiKey?: string;
+
+  /**
    * Whether to use local development mock
    */
   useLocalDevMock: boolean;
 }
 
-/**
- * Get guide configuration from environment
- *
- * IMPORTANT: No AI provider keys or secrets should ever be in these variables.
- * All provider credentials belong exclusively on the server.
- */
 export function getGuideConfig(): GuideConfig {
-  // Check if we should use local development mock
-  const useLocalDevMock = __DEV__ && !process.env.EXPO_PUBLIC_GUIDE_API_URL;
-
-  // Get API URL from environment (production only)
+  const openRouterApiKey = process.env.EXPO_PUBLIC_OPENROUTER_API_KEY;
   const apiBaseUrl = process.env.EXPO_PUBLIC_GUIDE_API_URL;
+  const useLocalDevMock = __DEV__ && !apiBaseUrl && !openRouterApiKey;
 
-  // Service is available if we have either a mock or a configured API
-  const isAvailable = useLocalDevMock || !!apiBaseUrl;
+  const isAvailable = useLocalDevMock || !!apiBaseUrl || !!openRouterApiKey;
 
   let unavailableReason: string | undefined;
   if (!isAvailable) {
@@ -57,13 +54,11 @@ export function getGuideConfig(): GuideConfig {
     isAvailable,
     unavailableReason,
     apiBaseUrl,
+    openRouterApiKey,
     useLocalDevMock,
   };
 }
 
-/**
- * Create a GuideGateway instance based on configuration
- */
 export function createGuideGateway(bibleRepository: BibleRepository): GuideGateway | null {
   const config = getGuideConfig();
 
@@ -71,13 +66,17 @@ export function createGuideGateway(bibleRepository: BibleRepository): GuideGatew
     return null;
   }
 
+  if (config.openRouterApiKey) {
+    return new OpenRouterGuideGateway({
+      apiKey: config.openRouterApiKey,
+    });
+  }
+
   if (config.useLocalDevMock) {
-    // Use local development mock
     return new LocalDevGuideGateway();
   }
 
   if (config.apiBaseUrl) {
-    // Use HTTP gateway to production server
     return new HTTPGuideGateway(
       {
         baseUrl: config.apiBaseUrl,
