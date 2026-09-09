@@ -3,6 +3,8 @@ import { safeStorage } from '../../infrastructure/storage/safeStorage';
 import * as WebBrowser from 'expo-web-browser';
 import * as Google from 'expo-auth-session/providers/google';
 import { makeRedirectUri } from 'expo-auth-session';
+import { supabase } from '../../infrastructure/sync/supabaseClient';
+import { SyncEngine } from '../../infrastructure/sync/syncEngine';
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -65,11 +67,43 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     if (response?.type === 'success') {
       const { authentication } = response;
-      if (authentication?.accessToken) {
+      if (authentication?.accessToken && authentication?.idToken) {
+        handleSupabaseLogin(authentication.idToken, authentication.accessToken);
+      } else if (authentication?.accessToken) {
         fetchUserInfo(authentication.accessToken);
       }
     }
   }, [response]);
+
+  const handleSupabaseLogin = async (idToken: string, accessToken: string) => {
+    try {
+      const { data, error } = await supabase.auth.signInWithIdToken({
+        provider: 'google',
+        token: idToken,
+        access_token: accessToken,
+      });
+      if (error) throw error;
+      
+      if (data.session) {
+        const userProfile: UserProfile = {
+          id: data.session.user.id,
+          name: data.session.user.user_metadata?.full_name || 'Friend',
+          email: data.session.user.email,
+          photoUrl: data.session.user.user_metadata?.avatar_url,
+          isOffline: false,
+        };
+        setUser(userProfile);
+        await safeStorage.setItem(ASYNC_STORAGE_AUTH_KEY, JSON.stringify(userProfile));
+        
+        // Trigger Sync Down!
+        SyncEngine.syncDown(data.session.user.id);
+      }
+    } catch (e) {
+      console.error('Supabase Login Error:', e);
+      // Fallback to offline mode
+      fetchUserInfo(accessToken);
+    }
+  };
 
   const fetchUserInfo = async (token: string) => {
     try {
