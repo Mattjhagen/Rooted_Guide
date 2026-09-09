@@ -51,7 +51,7 @@ export function DailyPathScreen() {
   const [arriveResponse, setArriveResponse] = React.useState<string>('');
   const [lastReadRef, setLastReadRef] = React.useState<string | null>(null);
   const [hasStarted, setHasStarted] = React.useState(false);
-  const [showIntake, setShowIntake] = React.useState(true);
+  const [showIntake, setShowIntake] = React.useState(false);
   const [showAuth, setShowAuth] = React.useState(false);
   const [intakeUserName, setIntakeUserName] = React.useState<string | undefined>(undefined);
   const [pendingPlan, setPendingPlan] = React.useState<GeneratedPlan | null>(null);
