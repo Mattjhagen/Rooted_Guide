@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, fireEvent } from '@testing-library/react-native';
+import { render, fireEvent, waitFor } from '@testing-library/react-native';
 import { GoogleAuthScreen } from '@/ui/screens/GoogleAuthScreen';
 import { ThemeProvider } from '@/features/preferences/ThemeContext';
 import { AuthProvider } from '@/features/auth/AuthContext';
@@ -31,7 +31,7 @@ describe('GoogleAuthScreen', () => {
     expect(getByText(/Save & sync your practice, Matthew/)).toBeTruthy();
   });
 
-  it('handles offline continue action', () => {
+  it('handles offline continue action', async () => {
     const onCompleteMock = jest.fn();
     const { getByLabelText } = render(
       <AuthProvider>
@@ -44,6 +44,8 @@ describe('GoogleAuthScreen', () => {
     const skipBtn = getByLabelText('Continue offline');
     fireEvent.press(skipBtn);
 
-    expect(onCompleteMock).toHaveBeenCalled();
+    await waitFor(() => {
+      expect(onCompleteMock).toHaveBeenCalled();
+    });
   });
 });
