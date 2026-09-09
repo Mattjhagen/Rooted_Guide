@@ -42,6 +42,7 @@ export function DailyPathScreen() {
   const [showForTodaySummary, setShowForTodaySummary] = React.useState(false);
   const [arriveResponse, setArriveResponse] = React.useState<string>('');
   const [lastReadRef, setLastReadRef] = React.useState<string | null>(null);
+  const [hasStarted, setHasStarted] = React.useState(false);
 
   const currentModuleData = DAILY_PATH_MODULES.find((m) => m.type === currentModule);
   const moduleIndex = getModuleIndex(currentModule);
@@ -185,7 +186,7 @@ export function DailyPathScreen() {
   }
 
   // Before practice: show simple "Begin today's path"
-  if (currentModule === 'arrive' && !draft && !hasInProgressSession) {
+  if (!hasStarted && currentModule === 'arrive' && !draft && !hasInProgressSession) {
     return (
       <SafeAreaView
         style={StyleSheet.flatten([styles.container, { backgroundColor: theme.background }])}
@@ -200,7 +201,7 @@ export function DailyPathScreen() {
             <TouchableOpacity
               style={[styles.primaryButton, { backgroundColor: theme.primary }]}
               onPress={() => {
-                // Trigger the module view by setting a non-empty draft trigger
+                setHasStarted(true);
                 setShowContinueChoice(false);
               }}
             >
