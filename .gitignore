@@ -57,3 +57,5 @@ coverage/
 # Build artifacts
 scripts/*.js
 scripts/*.js.map
+*.apk
+*.aab

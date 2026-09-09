@@ -15,32 +15,12 @@
     "ios": {
       "bundleIdentifier": "com.mattjhagen.plumbline",
       "supportsTablet": false,
-      "splash": {
-        "image": "./assets/splash-icon.png",
-        "resizeMode": "contain",
-        "backgroundColor": "#FAF8F4",
-        "dark": {
-          "image": "./assets/splash-icon.png",
-          "resizeMode": "contain",
-          "backgroundColor": "#000000"
-        }
-      },
       "infoPlist": {
         "UISupportsDocumentBrowser": false
       }
     },
     "android": {
       "package": "com.mattjhagen.plumbline",
-      "splash": {
-        "image": "./assets/splash-icon.png",
-        "resizeMode": "contain",
-        "backgroundColor": "#FAF8F4",
-        "dark": {
-          "image": "./assets/splash-icon.png",
-          "resizeMode": "contain",
-          "backgroundColor": "#000000"
-        }
-      },
       "adaptiveIcon": {
         "foregroundImage": "./assets/android-icon-foreground.png",
         "backgroundImage": "./assets/android-icon-background.png",

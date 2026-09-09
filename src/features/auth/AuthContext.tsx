@@ -2,6 +2,7 @@ import React, { createContext, useContext, useEffect, useState, useMemo, useCall
 import { safeStorage } from '../../infrastructure/storage/safeStorage';
 import * as WebBrowser from 'expo-web-browser';
 import * as Google from 'expo-auth-session/providers/google';
+import { makeRedirectUri } from 'expo-auth-session';
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -29,11 +30,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<UserProfile | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
+  const redirectUri = useMemo(() => {
+    try {
+      return makeRedirectUri({ scheme: 'plumbline' });
+    } catch {
+      return 'plumbline://';
+    }
+  }, []);
+
   // Expo Google Auth Request configuration
   const [_request, response, promptAsync] = Google.useAuthRequest({
-    iosClientId: 'YOUR_IOS_CLIENT_ID.apps.googleusercontent.com',
-    androidClientId: 'YOUR_ANDROID_CLIENT_ID.apps.googleusercontent.com',
-    webClientId: 'YOUR_WEB_CLIENT_ID.apps.googleusercontent.com',
+    androidClientId: process.env.EXPO_PUBLIC_GOOGLE_ANDROID_CLIENT_ID,
+    iosClientId: process.env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID,
+    webClientId: process.env.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID,
+    redirectUri,
   });
 
   useEffect(() => {

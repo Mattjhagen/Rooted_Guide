@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useState, useMemo } from 'react';
-import { useColorScheme } from 'react-native';
+import { useColorScheme, Appearance } from 'react-native';
 import { safeStorage } from '@/infrastructure/storage/safeStorage';
 import { ThemePreference, DEFAULT_THEME_PREFERENCE } from '@/domain/models/Preferences';
 import { getTheme, Theme } from '@/ui/theme/colors';
@@ -16,8 +16,19 @@ interface ThemeContextValue {
 const ThemeContext = createContext<ThemeContextValue | undefined>(undefined);
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const systemScheme = useColorScheme();
+  const rawScheme = useColorScheme();
+  const [activeSystemScheme, setActiveSystemScheme] = useState<'light' | 'dark'>(() => {
+    const current = Appearance.getColorScheme();
+    return current === 'dark' ? 'dark' : 'light';
+  });
   const [preference, setPreferenceState] = useState<ThemePreference>(DEFAULT_THEME_PREFERENCE);
+
+  useEffect(() => {
+    const current = Appearance.getColorScheme() || rawScheme;
+    if (current === 'dark' || current === 'light') {
+      setActiveSystemScheme(current);
+    }
+  }, [rawScheme]);
 
   useEffect(() => {
     async function loadStoredPreference() {
@@ -44,10 +55,10 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 
   const resolvedScheme: 'light' | 'dark' = useMemo(() => {
     if (preference === 'system') {
-      return systemScheme === 'dark' ? 'dark' : 'light';
+      return activeSystemScheme;
     }
     return preference;
-  }, [preference, systemScheme]);
+  }, [preference, activeSystemScheme]);
 
   const theme = useMemo(() => getTheme(resolvedScheme), [resolvedScheme]);
 
